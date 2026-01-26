@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 15, 2023 at 05:29 AM
--- Server version: 10.4.22-MariaDB
--- PHP Version: 7.3.33
+-- Generation Time: Jan 26, 2026 at 12:11 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 7.2.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -31,34 +31,37 @@ CREATE TABLE `admin` (
   `ID` int(20) NOT NULL,
   `Name` varchar(100) NOT NULL,
   `Designation` varchar(100) NOT NULL,
+  `Email` varchar(255) NOT NULL,
+  `Contact` varchar(11) NOT NULL,
   `UserName` varchar(50) NOT NULL,
-  `Passcode` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `Passcode` varchar(50) NOT NULL,
+  `Role` varchar(20) NOT NULL,
+  `Status` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `admin`
 --
 
-INSERT INTO `admin` (`ID`, `Name`, `Designation`, `UserName`, `Passcode`) VALUES
-(1, 'Sami Kabir', 'Programmer', 'irdmof', 'PhDLTUNobel1'),
-(2, 'Sami Kabir', 'Programmer', 'sami.kabir', 'PhDLTUNobel1'),
-(3, 'Farhad Khan Pathan', 'Assistant Programmer', 'farhad.pathan', 'FPird1#'),
-(4, 'Md. Moinul Alam', 'Assistant Programmer', 'moinul.alam', 'MAKUET07eee!ird2#'),
-(5, 'Anando Kumar Biswas', 'Assistant Programmer', 'anando.biswas', 'Ab@12288'),
-(6, 'Visitor', 'Visitor', 'visitor', '123456'),
-(7, 'S.M. Abdul Kader', 'Deputy Secretary', 'sm.abdulkader', 'SMAKbuet93@admin20!'),
-(8, 'Md. Shafiqur Rahman', 'Joint Secretary', 'shafiqur.rahman', 'srrueco@admin9@#'),
-(9, 'Suraiya Pervin Shelley\r\n', 'Joint Secretary', 'sp.shelley', 'DULingui@admin18_#!'),
-(10, 'Md. Abdul Gafur', 'Joint Secretary', 'abdul.gafur', 'DUeco@tax15*&%'),
-(11, 'Nusrat Jahan Nisu', 'Senior Assistant Secretary', 'nusrat.jahan', 'BMCeco*30_admin*(%@'),
-(12, 'Md. Ahsan Habib', 'Deputy Secretary', 'ahsan.habib', 'RUsoc#admin24_$*^'),
-(13, 'Dipak Kumar Biswas', 'Deputy Secretary', 'prof.dipakkumar', 'DUAct&edu16_%$'),
-(14, 'Md. Shameem Ahsan', 'Assistant Secretary', 'shameem.ahsan', 'JnUeco&ec#!'),
-(15, 'Mohammad Nairuzzaman', 'Personal Secretary to Senior Secretary', 'm.nairuzzaman', 'JUeco@%25admin*$'),
-(16, 'Kanai Lal Shil', 'Senior Assistant Secretary', 'kanai.lal', 'BMnu@53!%'),
-(17, 'Md. Abdul Jabbar', 'Senior Assistant Secretary', 'abdul.jabbar', 'aj^%@#22263'),
-(18, 'Muhammad Firoz Reza', 'Accounts Officer', 'firoz.reza', 'fzaIrdactfin$@'),
-(19, 'Abu Hena Md. Rahmatul Muneem\r\n', 'Senior Secretary', 'sr_secy', 'srsecy@IrdMoF1');
+INSERT INTO `admin` (`ID`, `Name`, `Designation`, `Email`, `Contact`, `UserName`, `Passcode`, `Role`, `Status`) VALUES
+(2, 'Sami Kabir', 'Programmer', '', '', 'sami.kabir', 'PhDLTUNobel1', '1', 1),
+(3, 'Farhad Khan Pathan', 'Assistant Programmer', '', '', 'farhad.pathan', 'FPird1#', '', 0),
+(4, 'Md. Moinul Alam', 'Assistant Programmer', '', '', 'moinul.alam', 'MAKUET07eee!ird2#', '', 0),
+(5, 'Anando Kumar Biswas', 'Assistant Programmer', 'abku07@gmail.com', '01790012288', 'anando.biswas', 'Ab@12288', '1', 1),
+(6, 'Visitor', 'Visitor', '', '', 'visitor', '123456', '4', 1),
+(7, 'S.M. Abdul Kader', 'Deputy Secretary', '', '', 'sm.abdulkader', 'SMAKbuet93@admin20!', '', 0),
+(8, 'Md. Shafiqur Rahman', 'Joint Secretary', '', '', 'shafiqur.rahman', 'srrueco@admin9@#', '', 0),
+(9, 'Suraiya Pervin Shelley\r\n', 'Joint Secretary', '', '', 'sp.shelley', 'DULingui@admin18_#!', '', 0),
+(10, 'Md. Abdul Gafur', 'Joint Secretary', '', '', 'abdul.gafur', 'DUeco@tax15*&%', '', 0),
+(11, 'Nusrat Jahan Nisu', 'Senior Assistant Secretary', '', '', 'nusrat.jahan', 'BMCeco*30_admin*(%@', '', 0),
+(12, 'Md. Ahsan Habib', 'Deputy Secretary', '', '', 'ahsan.habib', 'RUsoc#admin24_$*^', '', 0),
+(13, 'Dipak Kumar Biswas', 'Deputy Secretary', '', '', 'prof.dipakkumar', 'DUAct&edu16_%$', '', 0),
+(14, 'Md. Shameem Ahsan', 'Assistant Secretary', '', '', 'shameem.ahsan', 'JnUeco&ec#!', '', 0),
+(15, 'Mohammad Nairuzzaman', 'Personal Secretary to Senior Secretary', '', '', 'm.nairuzzaman', 'JUeco@%25admin*$', '', 0),
+(16, 'Kanai Lal Shil', 'Senior Assistant Secretary', '', '', 'kanai.lal', 'BMnu@53!%', '', 0),
+(17, 'Md. Abdul Jabbar', 'Senior Assistant Secretary', '', '', 'abdul.jabbar', 'aj^%@#22263', '', 0),
+(18, 'Muhammad Firoz Reza', 'Accounts Officer', '', '', 'firoz.reza', 'fzaIrdactfin$@', '', 0),
+(19, 'Abu Hena Md. Rahmatul Muneem\r\n', 'Senior Secretary', '', '', 'sr_secy', 'srsecy@IrdMoF1', '', 0);
 
 -- --------------------------------------------------------
 
@@ -85,7 +88,7 @@ CREATE TABLE `foreignvisit` (
   `Days` int(20) NOT NULL,
   `GO` varchar(1000) NOT NULL,
   `Uploader` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `foreignvisit`
@@ -597,231 +600,7 @@ INSERT INTO `foreignvisit` (`ID`, `ServiceID`, `Cadre`, `Office`, `Name`, `Desig
 (554, '0', 'Non Cadre', 'NBR', 'Md. Ronju Mia', 'Assistant Programmer', 9, 'National Board of Revenue, Dhaka', 'Malaysia', 'IO', 'Official Trip', '2022-11-28', '2022-12-09', '0000-00-00', '0000-00-00', 12, '1668678599G.O (NBR).pdf', 'moinul.alam'),
 (555, '0', 'Non Cadre', 'NBR', 'Md. Ahad Ali', 'Assistant Programmer', 9, 'Custom House, Benapole', 'Malaysia', 'IO', 'Official Trip', '2022-11-28', '2022-12-09', '0000-00-00', '0000-00-00', 12, '1668678649G.O (NBR).pdf', 'moinul.alam'),
 (556, '0', 'Non Cadre', 'NBR', 'Istiaq Akbar', 'Assistant Programmer', 9, 'National Board of Revenue, Dhaka', 'Malaysia', 'IO', 'Official Trip', '2022-11-28', '2022-12-09', '0000-00-00', '0000-00-00', 12, '1668678699G.O (NBR).pdf', 'moinul.alam'),
-(557, '2002991', 'Tax', 'NBR', 'Mohammad Naimur Rasul', 'Joint Commissioner of Taxes', 5, 'Taxes Appeal Zone-3, Dhaka', 'India', 'Self', 'EBL', '2022-11-17', '2022-12-01', '0000-00-00', '0000-00-00', 15, '1668918232Mohammad Naimur Rasul.pdf', 'anando.biswas'),
-(558, '200452', 'Tax', 'NBR', 'Md. Golam Kibria', 'Deputy Commissioner of Taxes', 6, 'National Board of Revenue, Dhaka', 'India', 'Self', 'EBL', '2022-11-27', '2022-12-08', '0000-00-00', '0000-00-00', 12, '1669003572419.pdf', 'moinul.alam'),
-(559, '300378', 'Customs', 'NBR', 'Md. Billal Hossain', 'Deputy Commissioner', 6, 'Customs Excise & VAT Commissionerate, Rangpur', 'India', 'Self', 'EBL', '2022-12-25', '2023-01-08', '0000-00-00', '0000-00-00', 15, '1669175097Md. Billal Hossain.pdf', 'anando.biswas'),
-(560, '300089', 'Customs', 'NBR', 'Mohammad Akbar Hossain', 'Commissioner (Current Charge)', 4, 'Customs Excise and VAT Commissionerate, Sylhet', 'Belgium', 'IO', 'Official Trip', '2022-12-12', '2022-12-16', '0000-00-00', '0000-00-00', 5, '1669175259Mohammad Akbar Hossain.pdf', 'anando.biswas'),
-(561, '300304', 'Customs', 'NBR', 'Kaniz Farhana Shimu', 'Deputy Director', 6, 'Duty Exemption and Drawback Office, Dhaka ', 'India', 'Self', 'EBL', '2022-12-16', '2022-12-30', '0000-00-00', '0000-00-00', 15, '1669197530Kaniz Farhana Shimu.pdf', 'anando.biswas'),
-(562, '300275', 'Customs', 'NBR', 'Mohammed Mahraj ul Alam Samrat', 'Deputy Director', 6, 'Central Intelligence Cell', 'India', 'Self', 'EBL', '2022-12-01', '2022-12-15', '0000-00-00', '0000-00-00', 15, '1669520349Mohammed Mahraj ul Alam Samrat.pdf', 'anando.biswas'),
-(563, '200214', 'Tax', 'NBR', 'Towhidul Munir', 'Additional Director General', 4, 'Directorate of Taxes Inspection, Dhaka', 'India', 'Self', 'EBL', '2022-11-27', '2022-12-06', '0000-00-00', '0000-00-00', 10, '1669520486Towhidul Munir.pdf', 'anando.biswas'),
-(564, '200460', 'Tax', 'NBR', 'Mafruj Sultana Ema', 'Second Secretary', 6, 'National Board of Revenue, Dhaka', 'India', 'Self', 'EBL', '2022-12-09', '2022-12-23', '0000-00-00', '0000-00-00', 15, '1669525211Tax-427 E.pdf', 'moinul.alam'),
-(565, '00', 'Tax', 'NBR', 'Mohammad Fazley Ahad Kaiser', 'First Secretary', 5, 'National Board of Revenue, Dhaka', 'India', 'IO', 'Official Trip', '2022-12-12', '2022-12-16', '0000-00-00', '0000-00-00', 5, '1669604983Mohammad Fazley Ahad Kaiser.pdf', 'anando.biswas'),
-(566, '00', 'Tax', 'NBR', 'Md. Jahidul Islam', 'Second Secretary', 6, 'National Board of Revenue, Dhaka.', 'India', 'IO', 'Official Trip', '2022-12-12', '2022-12-16', '0000-00-00', '0000-00-00', 5, '1669605048Md. Jahidul Islam.pdf', 'anando.biswas'),
-(567, '00', 'Tax', 'NBR', 'Sukti Rani Sarker', 'Second Secretary', 6, 'National Board of Revenue, Dhaka.', 'India', 'IO', 'Official Trip', '2022-12-12', '2022-12-16', '0000-00-00', '0000-00-00', 5, '1669605113Sukti Rani Sarker.pdf', 'anando.biswas'),
-(568, '00', 'Tax', 'NBR', 'Mir Md. Arif Hossain', 'Deputy Director', 6, 'Central Intelligence Cell (CIC)', 'India', 'IO', 'Official Trip', '2022-12-12', '2022-12-16', '0000-00-00', '0000-00-00', 5, '1669605183Mir Md. Arif Hossain.pdf', 'anando.biswas'),
-(569, '00', 'Tax', 'NBR', 'A K M Mainuddin', 'Deputy Director', 6, 'Central Intelligence Cell (CIC', 'India', 'IO', 'Official Trip', '2022-12-12', '2022-12-16', '0000-00-00', '0000-00-00', 5, '1669605262A K M Mainuddin.pdf', 'anando.biswas'),
-(570, '00', 'Tax', 'NBR', 'Tofayel Ahmed', 'Second Secretary', 6, 'National Board Revenue, Dhaka.', 'India', 'IO', 'Official Trip', '2022-12-12', '2022-12-16', '0000-00-00', '0000-00-00', 5, '1669605326Tofayel Ahmed.pdf', 'anando.biswas'),
-(571, '300156', 'Customs', 'NBR', 'Abdul Rashid Miah', 'Joint Commissioner', 5, 'Custom House, Benapole', 'Saudi Arabia', 'Self', 'EBL', '2022-12-27', '2023-01-03', '0000-00-00', '0000-00-00', 8, '1669625542go roshid mia.pdf', 'moinul.alam'),
-(572, '200570', 'Tax', 'NBR', 'Anamul Hasan Al Noman', 'Deputy Commissioner of Taxes', 6, 'Taxes Zone-Sylhet', 'India', 'Self', 'EBL', '2022-12-01', '2022-12-19', '0000-00-00', '0000-00-00', 19, '1669625870Tax-425 E.pdf', 'moinul.alam'),
-(573, '6916', 'Administration', 'IRD', 'S M ABDUL KADER', 'Joint Secretary', 3, 'Admin Wing', 'Saudi Arabia', 'Self', 'EBL', '2022-12-07', '2022-12-21', '0000-00-00', '0000-00-00', 15, '1669884903getContent.pdf', 'irdmof'),
-(574, '00', 'Non Cadre', 'NBR', 'Md. Shamim Ul Islam', 'Programmer', 6, 'Customs House, Chattogram', 'India', 'Self', 'EBL', '2022-12-04', '2022-12-18', '0000-00-00', '0000-00-00', 15, '1670212671G.O-482.pdf', 'irdmof'),
-(575, '0', 'Non Cadre', 'NBR', 'Khan Majles Shams E Tabriz', 'Assistant Programmer', 9, 'Taxes Zone-10, Dhaka', 'India', 'GoB', 'EBL', '2022-12-04', '2022-12-18', '0000-00-00', '0000-00-00', 15, '1670212995G.O-484.pdf', 'irdmof'),
-(576, '300098', 'Customs', 'NBR', 'Dr. Nahida Faridy', 'Commissioner', 4, 'Customs, Excise and VAT (Appeal) Commissionerate, Khulna', 'Saudi Arabia', 'Self', 'EBL', '2022-12-27', '2023-01-03', '0000-00-00', '0000-00-00', 8, '1670213553getContent - 2022-12-04T131301.880.pdf', 'irdmof'),
-(577, '0', 'Non Cadre', 'NBR', 'Smaranika Chakma', 'Revenue Officer', 9, 'Custom House, Chattogram', 'India', 'Self', 'EBL', '2022-12-01', '2022-12-20', '0000-00-00', '0000-00-00', 20, '1670213809GO of Smaranika.pdf', 'irdmof'),
-(578, '300145', 'Customs', 'NBR', 'Mohammad Shahidul Islam', 'First Secretary', 5, 'Customs Wing', 'Thailand', 'IO', 'Official Trip', '2022-12-12', '2022-12-15', '0000-00-00', '0000-00-00', 4, '1670214201GO of Shahidul Islam.pdf', 'irdmof'),
-(579, '200168', 'Tax', 'NBR', 'Touhida Jiasmin Chowdhury', 'Additional Commissioner of Taxes', 4, 'Central Taxes Survey Zone, Dhaka', 'Saudi Arabia', 'Self', 'EBL', '2022-12-14', '2022-12-21', '0000-00-00', '0000-00-00', 8, '1670316910437.pdf', 'irdmof'),
-(580, '300177', 'Customs', 'NBR', 'Raquibul Hassan', 'First Secretary', 5, 'National Board of Revenue, Dhaka', 'Saudi Arabia', 'Self', 'EBL', '2022-12-09', '2022-12-16', '0000-00-00', '0000-00-00', 8, '1670404462Raquibul Hassan.pdf', 'anando.biswas'),
-(581, '200551', 'Tax', 'NBR', 'Sharif Mahmud', 'Deputy Commissioner of Taxes', 6, 'Taxes Zone-06, Dhaka ', 'India', 'Self', 'EBL', '2022-12-07', '2023-02-05', '0000-00-00', '0000-00-00', 61, '1670469581Sharif Mahmud.pdf', 'anando.biswas'),
-(582, '00', 'Non Cadre', 'NBR', 'Md Al Ahsan Habib', 'Revenue Officer', 9, 'Audit, Intelligence & Investigation Directorate, Value Added', 'Saudi Arabia', 'Self', 'EBL', '2022-12-12', '2022-12-19', '0000-00-00', '0000-00-00', 8, '1670493275Md Al Ahsan Habib.pdf', 'anando.biswas'),
-(583, '200225', 'Tax', 'NBR', 'Mrs. Zeenat Ara', 'Additional Commissioner of Taxes', 4, 'Tax appeal Zone-1, Dhaka', 'India', 'Self', 'EBL', '2022-12-15', '2023-01-03', '0000-00-00', '0000-00-00', 20, '1670815554Mrs. Zeenat Ara.pdf', 'anando.biswas'),
-(584, '200469', 'Tax', 'NBR', 'Md. Mehedi Hasan', 'Deputy Commissioner of Taxes', 6, 'Taxes Zone-8, Dhaka', 'India', 'Self', 'EBL', '2022-12-11', '2022-12-24', '0000-00-00', '0000-00-00', 14, '1670993093Tax-459 E.pdf', 'irdmof'),
-(585, '300300', 'Customs', 'NBR', 'Sanjida Khanam ', 'Deputy Director', 6, 'Customs Intelligence and Investigation Directorate, Dhaka.', 'Belgium', 'IO', 'Official Trip', '2023-01-09', '2023-01-20', '0000-00-00', '0000-00-00', 12, '1670996506Sanjida Khanam.pdf', 'anando.biswas'),
-(586, '300119', 'Customs', 'NBR', 'Mohammed Shafi Uddin', 'Director', 4, 'Central Intelligence Cell, National Board of Revenue, Dhaka.', 'Belgium', 'IO', 'Official Trip', '2023-01-09', '2023-01-20', '0000-00-00', '0000-00-00', 12, '1670997253Mohammed Shafi Uddin.pdf', 'anando.biswas'),
-(587, '300134', 'Customs', 'NBR', 'Dr. Md Neyamul Islam', 'First Secretary', 5, 'National Board of Revenue,Dhaka', 'Belgium', 'IO', 'Official Trip', '2023-01-09', '2023-01-20', '0000-00-00', '0000-00-00', 12, '1670997380Dr. Md Neyamul Islam.pdf', 'anando.biswas'),
-(588, '300054', 'Customs', 'NBR', 'Dr. Moinul Khan', 'Member', 2, 'VAT Implementation and IT', 'India', 'IO', 'Official Trip', '2022-12-19', '2022-12-23', '0000-00-00', '0000-00-00', 5, '1671076452India_tour.pdf', 'irdmof'),
-(589, '300053', 'Customs', 'NBR', 'Mr. Mohammed Enamul Hoque', 'Commissioner', 3, 'Customs Valuation and Internal Audit Commissionerate, Dhaka', 'India', 'IO', 'Official Trip', '2022-12-19', '2022-12-23', '0000-00-00', '0000-00-00', 5, '1671076585India_tour.pdf', 'irdmof'),
-(590, '300129', 'Customs', 'NBR', 'Md. Khairul Kabir Mia', 'First Secretary', 5, 'VAT Wing', 'India', 'IO', 'Official Trip', '2022-12-19', '2022-12-23', '0000-00-00', '0000-00-00', 5, '1671076887India_tour.pdf', 'irdmof'),
-(591, '300221', 'Customs', 'NBR', 'Mr. Mohammad Nahidunnabi', 'Deputy Commissioner', 6, 'Custom House, Chattogram', 'India', 'IO', 'Official Trip', '2022-12-19', '2022-12-23', '0000-00-00', '0000-00-00', 5, '1671076974India_tour.pdf', 'irdmof'),
-(592, '300307', 'Customs', 'NBR', 'Mr. Imam Gazzali', 'Second Secretary', 6, 'VAT Wing', 'India', 'IO', 'Official Trip', '2022-12-19', '2022-12-23', '0000-00-00', '0000-00-00', 5, '1671077053India_tour.pdf', 'irdmof'),
-(593, '300307', 'Customs', 'NBR', 'Mr. Tanvir Ahmed', 'Deputy Commissioner', 6, 'VAT Wing', 'India', 'IO', 'Official Trip', '2022-12-19', '2022-12-23', '0000-00-00', '0000-00-00', 5, '1671077096India_tour.pdf', 'irdmof'),
-(594, '300308', 'Customs', 'NBR', 'Mr. Pravat Kumar Singha', 'Deputy Commissioner', 6, 'Customs Excise & VAT Commissionerate, Rajshahi', 'India', 'IO', 'Official Trip', '2022-12-19', '2022-12-23', '0000-00-00', '0000-00-00', 5, '1671077208India_tour.pdf', 'irdmof'),
-(595, '300365', 'Customs', 'NBR', 'Mr. Shagufta Mahjabin', 'Deputy Commissioner', 6, 'Custom House, Dhaka', 'India', 'IO', 'Official Trip', '2022-12-19', '2022-12-23', '0000-00-00', '0000-00-00', 5, '1671077307India_tour.pdf', 'irdmof'),
-(596, '0', 'Non Cadre', 'NBR', 'Mr. Md. Nazmul Islam', 'Assistant Programmer', 9, 'ICT wing', 'India', 'IO', 'Official Trip', '2022-12-19', '2022-12-23', '0000-00-00', '0000-00-00', 5, '1671077349India_tour.pdf', 'irdmof'),
-(597, '8119', 'Education Cadre', 'IRD', 'Mr. Dipak Kumar Biswas', 'Deputy Secretary', 5, 'Planning Wing', 'India', 'IO', 'Official Trip', '2022-12-19', '2022-12-23', '0000-00-00', '0000-00-00', 5, '1671078028India_tour.pdf', 'irdmof'),
-(598, '00', 'Non Cadre', 'NBR', 'B.M. Syedur Rahman', 'System Analyst', 5, 'ICT wing', 'Saudi Arabia', 'Self', 'EBL', '2022-12-15', '2022-12-22', '0000-00-00', '0000-00-00', 8, '1671094597GO-523_221215_112652.pdf', 'irdmof'),
-(599, '00', 'Non Cadre', 'NSD', 'Tahmina Shirin', 'Assistant Director', 9, 'National Savings Divisional Office, Khulna ', 'India', 'Self', 'EBL', '2022-12-18', '2023-01-01', '0000-00-00', '0000-00-00', 15, '1671350900Tahmina Shirin.pdf', 'anando.biswas'),
-(600, '00', 'Non Cadre', 'TAT', 'Mrs. Aleya Begum', 'Assistant Registrar', 9, 'Taxes Appellate Tribunal, Dhaka', 'Australia', 'Self', 'EBL', '2022-12-21', '2023-01-09', '0000-00-00', '0000-00-00', 20, '1671351043Mrs. Aleya Begum.pdf', 'anando.biswas'),
-(601, '300080', 'Customs', 'NBR', 'Tasmina Hossain', 'Commissioner', 3, 'Customs Excise & Vat Commissionerate, Dhaka (East), Dhaka', 'Thailand', 'Self', 'EBL', '2022-12-15', '2022-12-24', '0000-00-00', '0000-00-00', 10, '1671351163Tasmina Hossain.pdf', 'anando.biswas'),
-(602, '300372', 'Customs', 'NBR', 'Rezaul Karim', 'Deputy Commissioner', 6, 'Customs Excise & VAT Commissionerate, Dhaka (West), Dhaka', 'Singapore', 'Self', 'EBL', '2022-12-15', '2022-12-29', '0000-00-00', '0000-00-00', 15, '1671699029Rezaul Karim.pdf', 'anando.biswas'),
-(603, '00', 'Non Cadre', 'NBR', 'Khandakar Lutfal Azam', 'Revenue Officer', 9, 'Customs, Excise & VAT Commissionerate, Rajshahi ', 'India', 'Self', 'EBL', '2023-01-15', '2023-02-04', '0000-00-00', '0000-00-00', 21, '1671699123Khandakar Lutfal Azam.pdf', 'anando.biswas'),
-(604, '300348', 'Customs', 'NBR', 'Madhab Bikash Dev Roy', 'Deputy Director', 6, 'Customs Intelligence and Investigation Directorate, Dhaka', 'Australia', 'University', 'Deputation', '2023-01-02', '2024-12-31', '0000-00-00', '0000-00-00', 730, '1671699257Madhab Bikash Dev Roy.pdf', 'anando.biswas'),
-(605, '200280', 'Tax', 'NBR', 'Shaikh Shamim Bulbul', 'First Secretary', 5, 'National Board of Revenue, Dhaka ', 'India', 'Self', 'EBL', '2022-12-20', '2023-01-03', '0000-00-00', '0000-00-00', 15, '1672032438Shaikh Shamim Bulbul.pdf', 'anando.biswas'),
-(606, '200229', 'Tax', 'NBR', 'Mr. Mohammad Mahmuduzzaman', 'Additional Commissioner of Taxes', 4, 'Taxes Zone-10, Dhaka', 'Thailand', 'Self', 'EBL', '2023-01-03', '2023-01-17', '0000-00-00', '0000-00-00', 15, '1672032556Mr. Mohammad Mahmuduzzaman.pdf', 'anando.biswas'),
-(607, '00', 'Non Cadre', 'NBR', 'Gita Das Gupta', 'Revenue Officer', 9, 'Customs Excise and VAT Training Academy, Chattogram ', 'India', 'Self', 'EBL', '2022-12-20', '2022-12-29', '0000-00-00', '0000-00-00', 10, '1672037197Gita Das Gupta.pdf', 'anando.biswas'),
-(608, '300336', 'Customs', 'NBR', 'Sabrina Amin', 'Assistant Commissioner', 9, 'Custom House, Pangaon, Dhaka', 'Thailand', 'Self', 'EBL', '2023-01-01', '2023-01-15', '0000-00-00', '0000-00-00', 15, '1672285725Sabrina Amin.pdf', 'anando.biswas'),
-(609, '200431', 'Tax', 'NBR', 'Dipak Kumar Paul', 'Deputy Commissioner of Taxes', 6, 'Taxes Zone-08, Dhaka ', 'India', 'Self', 'EBL', '2023-01-04', '2023-01-23', '0000-00-00', '0000-00-00', 20, '1672285813Dipak Kumar Paul.pdf', 'anando.biswas'),
-(610, '300295', 'Customs', 'NBR', 'Md Shahiduzzaman Sarkar', 'Deputy Commissioner', 6, 'Customs Excise and VAT Commissionerate, Dhaka (South), Dhaka', 'Australia', 'IO', 'Official Trip', '2023-02-27', '2023-03-03', '0000-00-00', '0000-00-00', 5, '1672826105Shahiduzzaman Sarkar.pdf', 'moinul.alam'),
-(611, '300159', 'Customs', 'NBR', 'Mst. Shakila Pervin', 'Joint Commissioner', 5, 'Customs Bond Commissionerate, Dhaka.', 'Australia', 'IO', 'Official Trip', '2023-02-27', '2023-03-03', '0000-00-00', '0000-00-00', 5, '1672906568GO of Shakila Pervin (1).pdf', 'moinul.alam'),
-(612, '2225', 'Administration', 'IRD', 'Abu Hena Md. Rahmatul  Muneem', 'Senior Secretary', 1, 'Internal Resources .Division', 'Mauritius', 'GoB', 'Official Trip', '2023-01-16', '2023-01-20', '0000-00-00', '0000-00-00', 5, '1673155405Government order.pdf', 'moinul.alam'),
-(613, '200393', 'Tax', 'NBR', 'Niaz Morshed', 'Second Secretary', 6, 'National Board of Revenue', 'Mauritius', 'GoB', 'Official Trip', '2023-01-16', '2023-01-20', '0000-00-00', '0000-00-00', 5, '1673155755Government order.pdf', 'moinul.alam'),
-(614, '200404', 'Tax', 'NBR', 'Md. Mohidul Islam Chowdhury', 'Second Secretary', 6, 'National Board of Revenue', 'Mauritius', 'GoB', 'Official Trip', '2023-01-16', '2023-01-20', '0000-00-00', '0000-00-00', 5, '1673158580Government order.pdf', 'moinul.alam'),
-(615, '300123', 'Customs', 'NBR', 'Mohammad Hasmat Ali', 'First Secretary', 5, 'National Board of Revenue', 'Japan', 'IO', 'Official Trip', '2023-02-14', '2023-02-16', '0000-00-00', '0000-00-00', 3, '1673248309go hasmot.pdf', 'moinul.alam'),
-(616, '00', 'Non Cadre', 'NSD', 'Tahmina Shirin', 'Assistant Director', 9, 'National Savings Divisional Office, Khulna ', 'India', 'Self', 'EBL', '2022-12-18', '2023-01-01', '0000-00-00', '0000-00-00', 15, '1673251739Tahmima shirin.pdf', 'moinul.alam'),
-(617, '00', 'Non Cadre', 'NBR', 'Shamima Akter', 'Revenue Officer', 9, 'Customs, Excise & Vat Commissionerate, Dhaka (South), Dhaka ', 'India', 'Self', 'EBL', '2023-02-17', '2023-03-08', '0000-00-00', '0000-00-00', 20, '1673252690go shamima ro.pdf', 'moinul.alam'),
-(618, '00', 'Customs', 'NBR', 'Md. Asraf Ali Miah', 'Assistant Commissioner', 9, 'Customs, Excise & Vat Commissionerate, Rangpur ', 'Saudi Arabia', 'Self', 'EBL', '2023-01-05', '2023-01-12', '0000-00-00', '0000-00-00', 8, '1673253432getContent - 2023-01-09T092210.957 (1).pdf', 'moinul.alam'),
-(619, '300275', 'Customs', 'NBR', 'Mohammed Mahraj ul Alam Samrat ', 'Deputy Director', 6, 'Central Intelligence Cell, National Board of Revenue, Dhaka', 'India', 'Self', 'EBL', '2023-01-06', '2023-01-25', '0000-00-00', '0000-00-00', 20, '1673253932GO_Samrat Sir_DD (1).pdf', 'moinul.alam'),
-(620, '200583', 'Tax', 'NBR', 'Ferdouse Hoque Shakur', 'Second Secretary', 6, 'National Board of Revenue', 'Mauritius', 'IO', 'Official Trip', '2023-01-16', '2023-01-20', '0000-00-00', '0000-00-00', 5, '1673764775IMG_0008.pdf', 'moinul.alam'),
-(621, '200234', 'Tax', 'NBR', 'Ayesha Siddiqua Shelley', 'Additional Commissioner of Taxes', 4, 'Taxes Appeallate Zone-1, Dhaka', 'United Kingdom', 'Self', 'EBL', '2023-01-14', '2023-02-07', '0000-00-00', '0000-00-00', 25, '167376580721.pdf', 'moinul.alam'),
-(622, '200313', 'Tax', 'NBR', 'Quazi Abu Mahmud Faisal', 'Joint Commissioner of Taxes', 5, 'Taxes Zone- Narayanganj', 'India', 'Self', 'EBL', '2023-02-06', '2023-02-20', '0000-00-00', '0000-00-00', 15, '1673774548Tax-26 E.pdf', 'moinul.alam'),
-(623, '200290', 'Tax', 'NBR', 'Mr. Muhammad Muyenul Islam', 'Joint Commissioner of Taxes', 5, 'Taxes Zone-13,', 'Thailand', 'Self', 'EBL', '2023-01-14', '2023-01-28', '0000-00-00', '0000-00-00', 15, '1673774884Tax-19 E.pdf', 'moinul.alam'),
-(624, '700174', 'Non Cadre', 'NBR', 'Md. Jahirul Islam Bhuiyan', 'Assistant Commissioner of Taxes', 9, 'Taxes Zone-1, Chattogram', 'Thailand', 'Self', 'EBL', '2023-01-12', '2023-01-26', '0000-00-00', '0000-00-00', 15, '167385536225.pdf', 'moinul.alam'),
-(625, '300095', 'Customs', 'NBR', 'Kazi Tauhida Akther', 'Commissioner', 3, 'Custom House, Pangaon, Dhaka', 'India', 'Self', 'EBL', '2023-02-05', '2023-02-19', '0000-00-00', '0000-00-00', 15, '1673948732commissioner.pdf', 'moinul.alam'),
-(626, '00', 'Non Cadre', 'NBR', 'Md. Atiquzzaman Chy', 'Assistant Commissioner', 9, 'Customs, Excise & Vat Commissionerate, Chattogram', 'Saudi Arabia', 'Self', 'EBL', '2023-01-22', '2023-01-29', '0000-00-00', '0000-00-00', 8, '1673949302Attikuzzaman.pdf', 'moinul.alam'),
-(627, '00', 'Non Cadre', 'NBR', 'Subashis Kundu', 'Revenue Officer', 9, 'Customs, Excise & Vat Commissionerate, Jessore', 'India', 'Self', 'EBL', '2023-01-17', '2023-01-23', '0000-00-00', '0000-00-00', 7, '1673949479Revenue officer.pdf', 'moinul.alam'),
-(628, '200246', 'Tax', 'NBR', 'Mr. Shaon Chowdhury', 'Additional Commissioner of Taxes', 4, 'Taxes Zone-15, Dhaka', 'Saudi Arabia', 'Self', 'EBL', '2023-01-25', '2023-01-31', '0000-00-00', '0000-00-00', 7, '167402577038.pdf', 'moinul.alam'),
-(629, '200171', 'Tax', 'NBR', 'Monju Man Ara Begum', 'Commissioner of Taxes', 3, 'Taxes Appeal Zone-1', 'India', 'Self', 'EBL', '2023-01-19', '2023-03-19', '0000-00-00', '0000-00-00', 60, '167409906940.pdf', 'moinul.alam'),
-(630, '0', 'Non Cadre', 'NBR', 'Nurun Nahar Siddiquea', 'Assistant Commissioner', 9, 'Customs Bond Commissionerate, Dhaka (South), Dhaka', 'India', 'Self', 'EBL', '2023-01-20', '2023-01-29', '0000-00-00', '0000-00-00', 10, '1674107694customs bond.pdf', 'moinul.alam'),
-(631, '300358', 'Customs', 'NBR', 'Ahmedur Reza Chowdhury', 'Deputy Director', 6, ' Customs Intelligence and Investigation Directorate, Dhaka.', 'Singapore', 'Self', 'EBL', '2023-01-15', '2023-01-28', '0000-00-00', '0000-00-00', 14, '1674112448Deputy Director.pdf', 'moinul.alam'),
-(632, '200280', 'Tax', 'NBR', 'Shaikh Shamim Bulbul', 'First Secretary', 4, 'National Board of Revenue, Dhaka', 'India', 'Self', 'EBL', '2022-12-20', '2023-01-03', '0000-00-00', '0000-00-00', 15, '1674113975Tax-480 E.pdf', 'moinul.alam'),
-(633, '200133', 'Tax', 'TAT', 'Md. Alamgir Hossain', 'Member', 3, 'Taxes Appellate Tribunal, Dhaka', 'India', 'Self', 'EBL', '2023-01-19', '2023-02-08', '0000-00-00', '0000-00-00', 21, '1674359243Tax-43 E.pdf', 'moinul.alam'),
-(634, '0', 'Non Cadre', 'NBR', 'Tomal Kumer Mozumder', 'Assistant Programmer', 9, 'ICT wing', 'India', 'Self', 'EBL', '2023-01-15', '2023-01-29', '0000-00-00', '0000-00-00', 15, '1674446984notification-42.pdf', 'irdmof'),
-(635, '300292', 'Customs', 'NBR', 'Nazmun Nahar', 'Second Secretary', 6, 'National Board of Revenue, Dhaka', 'India', 'Self', 'EBL', '2023-01-24', '2023-02-07', '0000-00-00', '0000-00-00', 15, '1674535718Nazmun naher.pdf', 'moinul.alam'),
-(636, '4172', 'Administration', 'IRD', 'Md. Shafiqur Rahman', 'Joint Secretary', 3, 'Internal Resources Division, Dhaka.', 'Japan', 'IO', 'Official Trip', '2023-03-27', '2023-03-29', '0000-00-00', '0000-00-00', 3, '1674537289Tax-46 E.pdf', 'moinul.alam'),
-(637, '200423', 'Tax', 'NBR', 'Mr. Shajidul Islam', 'Second Secretary', 6, 'National Board of Revenue, Dhaka', 'Japan', 'IO', 'Official Trip', '2023-03-27', '2023-03-29', '0000-00-00', '0000-00-00', 3, '1674537497Tax-46 E.pdf', 'moinul.alam'),
-(638, '300185', 'Customs', 'NBR', 'Suman Das', 'Joint Commissioner', 5, 'Customs, Excise and Vat Commissionerate, Dhaka (East), Dhaka', 'India', 'Self', 'EBL', '2023-01-22', '2023-02-05', '0000-00-00', '0000-00-00', 15, '1674537908go sumon das.pdf', 'moinul.alam'),
-(639, '300231', 'Customs', 'NBR', 'Shahed Ahmed', 'Deputy Commissioner', 6, 'Customs Excise & VAT Commissionerate, Chattogram.', 'Saudi Arabia', 'Self', 'EBL', '2023-01-16', '2023-01-23', '0000-00-00', '0000-00-00', 8, '1674538182go shahed dc.pdf', 'moinul.alam'),
-(640, '700180', 'Tax', 'NBR', 'Gazi Md. Bazlur Rahman', 'Deputy Commissioner of Taxes', 6, 'Taxes Zone-Rangpur', 'India', 'Self', 'EBL', '2023-01-20', '2023-01-29', '0000-00-00', '0000-00-00', 10, '1674707999Gazi Md. Bazlur Rahman.pdf', 'anando.biswas'),
-(641, '200339', 'Tax', 'NBR', 'Mr. Md. Faruqul Islam', 'Joint Commissioner of Taxes', 5, ' Taxes Zone-4, Dhaka', 'Singapore', 'Self', 'EBL', '2023-03-01', '2023-03-12', '0000-00-00', '0000-00-00', 12, '167496617047.pdf', 'moinul.alam'),
-(642, '400029', 'Non Cadre', 'NSD', 'Mohammed Khalilur Rahman', 'Assistant Director', 9, 'Department of National savings, Dhaka.', 'Saudi Arabia', 'Self', 'EBL', '2023-02-10', '2023-02-17', '0000-00-00', '0000-00-00', 8, '167496668025-01-2023 (1).pdf', 'moinul.alam'),
-(643, '300273', 'Customs', 'NBR', 'Imam Gazzali', 'Second Secretary', 6, 'National Board of Revenue, Dhaka.', 'Cambodia', 'IO', 'Official Trip', '2023-01-29', '2023-02-02', '0000-00-00', '0000-00-00', 5, '1674967084getContent - 2023-01-26T145656.561 (1).pdf', 'moinul.alam'),
-(644, '400016', 'Non Cadre', 'NSD', 'Mohammad Mohinul Islam', 'Deputy Director', 6, 'Department of National Savings, Dhaka.', 'India', 'Self', 'EBL', '2023-01-29', '2023-02-12', '0000-00-00', '0000-00-00', 15, '1674969619mohinul islam.pdf', 'moinul.alam'),
-(645, '400013', 'Non Cadre', 'NSD', 'Kaniz Fatama', 'Deputy Director', 6, ' National Savings Divisional Office, Mymensingh.', 'India', 'Self', 'EBL', '2023-01-29', '2023-02-12', '0000-00-00', '0000-00-00', 15, '167497085829-01-2023.pdf', 'moinul.alam'),
-(646, '300069', 'Customs', 'NBR', 'Mohammad Belal Hossain Chowdhury', 'Director General', 3, 'Duty Exemption and Drawback Office, Dhaka .', 'United States of America', 'Self', 'EBL', '2023-01-26', '2023-02-09', '0000-00-00', '0000-00-00', 15, '1675071915IMG_0002 (13).pdf', 'moinul.alam'),
-(647, '300218', 'Customs', 'NBR', 'Md Enamul Hoque', 'Deputy Commissioner', 6, 'Customs, Excise & VAT Commissionerate, Khulna.', 'Saudi Arabia', 'Self', 'EBL', '2023-02-19', '2023-02-26', '0000-00-00', '0000-00-00', 8, '1675135702getContent - 2023-01-30T151433.076 (1).pdf', 'moinul.alam'),
-(648, '300099', 'Customs', 'NBR', 'AKM Nurul Huda Azad', 'Commissioner', 3, 'Custom House, Dhaka .', 'Singapore', 'IO', 'Official Trip', '2023-02-01', '2023-02-05', '0000-00-00', '0000-00-00', 5, '1675136553go azad rezvi sir.pdf', 'moinul.alam'),
-(649, '300182', 'Customs', 'NBR', 'Razvee Ahmed', 'Joint Commissioner', 5, 'Customs Excise and VAT Commissionerate, Dhaka (North), Dhaka', 'Singapore', 'IO', 'Official Trip', '2023-02-01', '2023-02-05', '0000-00-00', '0000-00-00', 5, '1675136889go azad rezvi sir.pdf', 'moinul.alam'),
-(650, '300150', 'Customs', 'NBR', 'Mohammad Tafsir Uddin Bhuyan', 'Joint Commissioner', 5, 'Custom House, Chattgram.', 'Cambodia', 'IO', 'Official Trip', '2023-02-14', '2023-02-15', '0000-00-00', '0000-00-00', 2, '1675137462getContent - 2023-01-30T153025.888 (1).pdf', 'moinul.alam'),
-(651, '300181', 'Customs', 'NBR', 'Adip Billah', 'Joint Director', 5, 'Customs Intelligence and Investigation Directorate, Dhaka', 'Cambodia', 'IO', 'Official Trip', '2023-02-14', '2023-02-15', '0000-00-00', '0000-00-00', 2, '1675137989getContent - 2023-01-30T153025.888 (1).pdf', 'moinul.alam'),
-(652, '200270', 'Tax', 'NBR', 'Mohammad Wahid Ullah Khan', 'First Secretary', 4, 'National Board of Revenue, Dhaka.', 'Malaysia', 'IO', 'Official Trip', '2023-03-06', '2023-03-10', '0000-00-00', '0000-00-00', 5, '167513993458.pdf', 'moinul.alam'),
-(653, '400011', 'Non Cadre', 'NSD', 'Md. Rezanur Rahman', 'Deputy Director', 6, 'Divisional Savings Office, Khulna.', 'Saudi Arabia', 'Self', 'EBL', '2023-02-10', '2023-02-24', '0000-00-00', '0000-00-00', 15, '1675675336getContent-5.pdf', 'moinul.alam'),
-(654, '200282', 'Tax', 'NBR', 'Md. Saiduzzaman Bhuiyan', 'Additional Commissioner of Taxes (C.C.)', 5, 'Taxes Zone-3, Chattogram.', 'Saudi Arabia', 'Self', 'EBL', '2023-02-10', '2023-02-17', '0000-00-00', '0000-00-00', 8, '167574602564 (1).pdf', 'moinul.alam');
-INSERT INTO `foreignvisit` (`ID`, `ServiceID`, `Cadre`, `Office`, `Name`, `Designation`, `Grade`, `Workplace`, `DestinationCountry`, `FundingSource`, `Purpose`, `StartDate`, `EndDate`, `ActualArrival`, `ActualDeparture`, `Days`, `GO`, `Uploader`) VALUES
-(655, '200260', 'Tax', 'NBR', 'Md. Masudur Rahman Masud', 'Director', 4, 'Central Intelligence Cell (CIC), NBR, Dhaka. ', 'Saudi Arabia', 'Self', 'EBL', '2023-02-10', '2023-02-17', '0000-00-00', '0000-00-00', 8, '167574642056 (1).pdf', 'moinul.alam'),
-(656, '00', 'Non Cadre', 'NBR', 'Shepon Kumer Das', 'Revenue Officer', 9, 'Customs Excise & VAT Commissionerate, Khulna.', 'India', 'Self', 'EBL', '2023-02-05', '2023-02-14', '0000-00-00', '0000-00-00', 10, '1675746675Shepon Kumer Das (3).pdf', 'moinul.alam'),
-(657, '300376', 'Customs', 'CEVT', 'Jewela Khanam', 'Registrar', 6, 'Customs Excise and VAT Appellate Tribunal, Dhaka', 'Turkey', 'Self', 'EBL', '2023-02-11', '2023-02-27', '0000-00-00', '0000-00-00', 17, '1675912485Jewela Khanam.pdf', 'anando.biswas'),
-(658, '200371', 'Tax', 'NBR', 'Tapas Kumar Chanda', 'Deputy Commissioner of Taxes', 6, 'Taxes Zone-3, Chattogram', 'India', 'Self', 'EBL', '2023-01-20', '2023-02-09', '0000-00-00', '0000-00-00', 21, '1675921463Tax-44 E (1).pdf', 'moinul.alam'),
-(659, '300163', 'Customs', 'NBR', 'H M Shariful Hassan ', 'Joint Commissioner', 5, 'Customs Excise & VAT Commissionerate, Dhaka (East), Dhaka.', 'India', 'IO', 'Official Trip', '2023-02-27', '2023-03-03', '0000-00-00', '0000-00-00', 5, '1676174619IMG_0004 (1).pdf', 'moinul.alam'),
-(660, '300259', 'Customs', 'NBR', 'Md. Shohel Rana', 'Deputy Commissioner', 6, 'Customs Excise & VAT Commissionerate, Dhaka (East), Dhaka.', 'India', 'IO', 'Official Trip', '2023-02-27', '2023-03-03', '0000-00-00', '0000-00-00', 5, '1676174790IMG_0004 (1).pdf', 'moinul.alam'),
-(661, '300271', 'Customs', 'NBR', 'Mohammad Abdus Sadek ', 'Second Secretary', 6, 'National Board of Revenue, Dhaka.', 'India', 'IO', 'Official Trip', '2023-02-27', '2023-03-03', '0000-00-00', '0000-00-00', 5, '1676174970IMG_0004 (1).pdf', 'moinul.alam'),
-(662, '300281', 'Customs', 'NBR', 'Mohammad Sydul Islam ', 'Deputy Commissioner', 6, 'Customs Excise & VAT Commissionerate, Rangpur.', 'India', 'IO', 'Official Trip', '2023-02-27', '2023-03-03', '0000-00-00', '0000-00-00', 5, '1676175097IMG_0004 (1).pdf', 'moinul.alam'),
-(663, '300285', 'Customs', 'NBR', 'Kagia Sultana ', 'Second Secretary', 6, 'National Board of Revenue, Dhaka.', 'India', 'IO', 'Official Trip', '2023-02-27', '2023-03-03', '0000-00-00', '0000-00-00', 5, '1676175289IMG_0004 (1).pdf', 'moinul.alam'),
-(664, '200429', 'Tax', 'NBR', 'Md. Saifur Rahaman Rasel', 'Second Secretary', 6, 'National Board of Revenue, Dhaka.', 'India', 'IO', 'Official Trip', '2023-02-27', '2023-03-03', '0000-00-00', '0000-00-00', 5, '1676176629IMG_0004 (1).pdf', 'moinul.alam'),
-(665, '200460', 'Tax', 'NBR', 'Mafruj Sultana Ema', 'Second Secretary', 6, 'National Board of Revenue, Dhaka.', 'India', 'IO', 'Official Trip', '2023-02-27', '2023-03-03', '0000-00-00', '0000-00-00', 5, '1676176736IMG_0004 (1).pdf', 'moinul.alam'),
-(666, '200491', 'Tax', 'NBR', 'Md. Sa ad Ullah', 'Deputy Director', 6, 'National Board of Revenue, Dhaka.', 'India', 'IO', 'Official Trip', '2023-02-27', '2023-03-03', '0000-00-00', '0000-00-00', 5, '1676176931IMG_0004 (1).pdf', 'moinul.alam'),
-(667, '300121', 'Customs', 'NBR', 'Mohammad Bashir Ahmed', 'Additional Director General', 4, 'Customs Intelligence and Investigation Directorate, Dhaka.', 'India', 'Self', 'EBL', '2023-02-01', '2023-02-07', '0000-00-00', '0000-00-00', 7, '1676260881getContent - 2023-02-09T153403.665 (1).pdf', 'moinul.alam'),
-(668, '00', 'Non Cadre', 'NBR', 'Kamrun Naher Maya', 'Assistant Programmer', 9, 'National Board of Revenue, Dhaka.', 'United States of America', 'Self', 'EBL', '2023-04-01', '2023-04-15', '0000-00-00', '0000-00-00', 15, '1676281342getContent (4).pdf', 'moinul.alam'),
-(669, '200435', 'Tax', 'NBR', 'Md. Nasim Haque Palash', 'Deputy Commissioner of Taxes', 6, 'Taxes Zone-1, Dhaka.', 'India', 'Self', 'EBL', '2023-02-18', '2023-03-09', '0000-00-00', '0000-00-00', 20, '167643235583 (1).pdf', 'moinul.alam'),
-(670, '200143', 'Tax', 'NBR', 'Md. Lutful Azeem', 'Commissioner of Taxes', 3, 'Taxes Zone-6, Dhaka.', 'India', 'IO', 'Official Trip', '2023-02-17', '2023-02-23', '0000-00-00', '0000-00-00', 7, '1676439896GO. india.pdf', 'moinul.alam'),
-(671, '7771', 'Tax', 'IRD', 'Md. Abdul Gafur', 'Joint Secretary', 3, 'Internal Resources Division, Ministry of Finance.', 'India', 'IO', 'Official Trip', '2023-02-17', '2023-02-23', '0000-00-00', '0000-00-00', 7, '1676440423GO. india.pdf', 'moinul.alam'),
-(672, '200272', 'Tax', 'NBR', 'Md. Masud Rana', 'Additional Commissioner of Taxes (C.C.)', 5, 'Taxes Zone-2, Dhaka', 'India', 'IO', 'Official Trip', '2023-02-17', '2023-02-23', '0000-00-00', '0000-00-00', 7, '1676440649GO. india.pdf', 'moinul.alam'),
-(673, '200377', 'Tax', 'NBR', 'Ariful Hoque', 'Deputy Commissioner of Taxes', 6, 'Taxes Zone-8, Dhaka.', 'India', 'IO', 'Official Trip', '2023-02-17', '2023-02-23', '0000-00-00', '0000-00-00', 7, '1676441110GO. india.pdf', 'moinul.alam'),
-(674, '200276', 'Tax', 'NBR', 'Md.Moniruzzaman', 'Deputy Commissioner of Taxes', 6, 'Taxes Zone-6, Dhaka', 'India', 'IO', 'Official Trip', '2023-02-17', '2023-02-23', '0000-00-00', '0000-00-00', 7, '1676441249GO. india.pdf', 'moinul.alam'),
-(675, '200429', 'Tax', 'NBR', 'Md. Saifur Rahaman Rasel', 'Second Secretary', 6, 'National Board of Revenue, Dhaka.', 'India', 'IO', 'Official Trip', '2023-02-17', '2023-02-23', '0000-00-00', '0000-00-00', 7, '1676442488GO. india.pdf', 'moinul.alam'),
-(676, '00', 'Non Cadre', 'NBR', 'Golam Sarwar', 'Programmer', 6, 'National Board of Revenue, Dhaka.', 'United Arab Erimates', 'IO', 'Official Trip', '2023-02-20', '2023-03-03', '0000-00-00', '0000-00-00', 12, '1676442978g.o-84 (1).pdf', 'moinul.alam'),
-(677, '00', 'Non Cadre', 'NBR', 'Kamrun Naher Maya', 'Assistant Programmer', 9, 'National Board of Revenue, Dhaka.', 'United Arab Erimates', 'IO', 'Official Trip', '2023-02-20', '2023-03-03', '0000-00-00', '0000-00-00', 12, '1676443100g.o-84 (1).pdf', 'moinul.alam'),
-(678, '00', 'Non Cadre', 'NBR', 'Md. Monirul Islam', 'Assistant Programmer', 9, 'National Board of Revenue, Dhaka.', 'United Arab Erimates', 'IO', 'Official Trip', '2023-02-20', '2023-03-03', '0000-00-00', '0000-00-00', 12, '1676443190g.o-84 (1).pdf', 'moinul.alam'),
-(679, '00', 'Non Cadre', 'NBR', 'Rajib Das', 'Assistant Programmer', 9, 'National Board of Revenue, Dhaka.', 'United Arab Erimates', 'IO', 'Official Trip', '2023-02-20', '2023-03-03', '0000-00-00', '0000-00-00', 12, '1676443294g.o-84 (1).pdf', 'moinul.alam'),
-(680, '00', 'Non Cadre', 'NBR', 'Md. Ronju Mia', 'Assistant Programmer', 9, 'National Board of Revenue, Dhaka.', 'United Arab Erimates', 'IO', 'Official Trip', '2023-02-20', '2023-03-03', '0000-00-00', '0000-00-00', 12, '1676443367g.o-84 (1).pdf', 'moinul.alam'),
-(681, '00', 'Non Cadre', 'NBR', 'Md. Nazmul Islam', 'Assistant Programmer', 9, 'National Board of Revenue, Dhaka.', 'United Arab Erimates', 'IO', 'Official Trip', '2023-02-20', '2023-03-03', '0000-00-00', '0000-00-00', 12, '1676443467g.o-84 (1).pdf', 'moinul.alam'),
-(682, '00', 'Non Cadre', 'NBR', 'Istiaq Akbar', 'Assistant Programmer', 9, 'National Board of Revenue, Dhaka.', 'United Arab Erimates', 'IO', 'Official Trip', '2023-02-20', '2023-03-03', '0000-00-00', '0000-00-00', 12, '1676443600g.o-84 (1).pdf', 'moinul.alam'),
-(683, '00', 'Non Cadre', 'NBR', 'Md. Mutarrif', 'Assistant Programmer', 9, 'National Board of Revenue, Dhaka.', 'United Arab Erimates', 'IO', 'Official Trip', '2023-02-20', '2023-03-03', '0000-00-00', '0000-00-00', 12, '1676443681g.o-84 (1).pdf', 'moinul.alam'),
-(684, '300239', 'Customs', 'NBR', 'Sushanta Paul', 'Deputy Commissioner', 6, 'Customs Excise and VAT Commissionerate, Dhaka (North), Dhaka', 'India', 'Self', 'EBL', '2023-02-17', '2023-03-08', '0000-00-00', '0000-00-00', 20, '1676781894go shushanto.pdf', 'moinul.alam'),
-(685, '200242', 'Tax', 'NBR', 'Lutfunnahar Begum', 'Additional Commissioner of Taxes (C.C.)', 5, 'Taxes Zone-03, Dhaka', 'Phillipines', 'IO', 'Official Trip', '2023-03-01', '2023-03-03', '0000-00-00', '0000-00-00', 3, '167679340386 (2).pdf', 'moinul.alam'),
-(686, '200404', 'Tax', 'NBR', 'Md. Mohidul Islam Chowdhury', 'Second Secretary', 6, 'National Board of Revenue, Dhaka.', 'Phillipines', 'IO', 'Official Trip', '2023-03-01', '2023-03-03', '0000-00-00', '0000-00-00', 3, '167679354686 (2).pdf', 'moinul.alam'),
-(687, '200445', 'Tax', 'NBR', 'Bapan Chandra Das', 'Second Secretary', 6, 'National Board of Revenue, Dhaka.', 'Phillipines', 'IO', 'Official Trip', '2023-03-01', '2023-03-03', '0000-00-00', '0000-00-00', 3, '167679362886 (2).pdf', 'moinul.alam'),
-(688, '200509', 'Tax', 'NBR', 'H M Shahriar Hassan ', 'Second Secretary', 6, 'National Board of Revenue, Dhaka.', 'Phillipines', 'IO', 'Official Trip', '2023-03-01', '2023-03-03', '0000-00-00', '0000-00-00', 3, '167679397986 (2).pdf', 'moinul.alam'),
-(689, '300145', 'Customs', 'NBR', 'Mohammad Shahidul Islam', 'First Secretary', 4, 'National Board of Revenue, Dhaka.', 'Japan', 'IO', 'Official Trip', '2023-03-06', '2023-03-10', '0000-00-00', '0000-00-00', 5, '1676794169getContent - 2023-02-19T122704.084.pdf', 'moinul.alam'),
-(690, '300109', 'Customs', 'NBR', 'Khandker Nazmul Huque', 'First Secretary', 4, 'National Board of Revenue, Dhaka.', 'Malaysia', 'IO', 'Official Trip', '2023-03-12', '2023-03-16', '0000-00-00', '0000-00-00', 5, '1677039497getContent - 2023-02-20T101608.131 (1).pdf', 'moinul.alam'),
-(691, '200171', 'Tax', 'NBR', 'Monju Man Ara Begum', 'Commissioner of Taxes', 3, 'Taxes Appeal Zone-1, Dhaka.', 'Singapore', 'Self', 'EBL', '2023-01-25', '2023-03-25', '0000-00-00', '0000-00-00', 60, '1677040028Tax-85 E (1).pdf', 'moinul.alam'),
-(692, '200457', 'Tax', 'NBR', 'Abdullah Al Mamun', 'Deputy Commissioner of Taxes', 6, 'Taxes Zone-3, Chattogram', 'India', 'Self', 'EBL', '2023-02-19', '2023-03-02', '0000-00-00', '0000-00-00', 12, '1677126359Abdullah Al Mamun.pdf', 'anando.biswas'),
-(693, '300170', 'Customs', 'NBR', 'Nusrat Jahan', 'Joint Commissioner', 5, 'Customs, Excise & VAT Commissionerate, Khulna.', 'India', 'Self', 'EBL', '2023-03-01', '2023-03-15', '0000-00-00', '0000-00-00', 15, '1677142869GO Nusrat Jahan.pdf', 'moinul.alam'),
-(694, '300159', 'Customs', 'NBR', 'Mst. Shakila Pervin', 'Joint Commissioner', 5, 'Customs Bond Commissionerate, Dhaka (South), Dhaka.', 'Australia', 'Self', 'EBL', '2023-03-04', '2023-03-13', '0000-00-00', '0000-00-00', 10, '1677143062go shakila.pdf', 'moinul.alam'),
-(695, '00', 'Non Cadre', 'NBR', 'Md. Zahidur Rahman', 'System Analyst', 5, 'National Board of Revenue, Dhaka.', 'United Arab Erimates', 'IO', 'Official Trip', '2023-03-06', '2023-03-17', '0000-00-00', '0000-00-00', 12, '1677144226getContent (2) (1).pdf', 'moinul.alam'),
-(696, '00', 'Non Cadre', 'NBR', 'Md. Jakir Hosen Khan', 'Programmer', 6, 'National Board of Revenue, Dhaka.', 'United Arab Erimates', 'IO', 'Official Trip', '2023-03-06', '2023-03-17', '0000-00-00', '0000-00-00', 12, '1677144336getContent (2) (1).pdf', 'moinul.alam'),
-(697, '00', 'Non Cadre', 'NBR', 'Golam Sarwar', 'Programmer', 6, 'National Board of Revenue, Dhaka.', 'United Arab Erimates', 'IO', 'Official Trip', '2023-03-06', '2023-03-17', '2023-03-17', '0000-00-00', 12, '1677144436getContent (2) (1).pdf', 'moinul.alam'),
-(698, '00', 'Non Cadre', 'NBR', 'Kamrun Naher Maya', 'Assistant Programmer', 9, 'National Board of Revenue, Dhaka.', 'United Arab Erimates', 'IO', 'Official Trip', '2023-03-06', '2023-03-17', '0000-00-00', '0000-00-00', 12, '1677144564getContent (2) (1).pdf', 'moinul.alam'),
-(699, '.00', 'Non Cadre', 'IRD', 'Md. Amirul Islam Jiban', 'Assistant Programmer', 9, 'National Board of Revenue, Dhaka.', 'United Arab Erimates', 'IO', 'Official Trip', '2023-03-06', '2023-03-17', '0000-00-00', '0000-00-00', 12, '1677144671getContent (2) (1).pdf', 'moinul.alam'),
-(700, '00', 'Non Cadre', 'NBR', 'Md. Monirul Islam', 'Assistant Programmer', 9, 'National Board of Revenue, Dhaka.', 'United Arab Erimates', 'IO', 'Official Trip', '2023-03-06', '2023-03-17', '0000-00-00', '0000-00-00', 12, '1677144765getContent (2) (1).pdf', 'moinul.alam'),
-(701, '00', 'Non Cadre', 'NBR', 'Istiaq Akbar', 'Assistant Programmer', 9, 'National Board of Revenue, Dhaka.', 'United Arab Erimates', 'IO', 'Official Trip', '2023-03-06', '2023-03-17', '0000-00-00', '0000-00-00', 12, '1677144864getContent (2) (1).pdf', 'moinul.alam'),
-(702, '00', 'Non Cadre', 'NBR', 'Md. Mutarrif', 'Assistant Programmer', 9, 'National Board of Revenue, Dhaka.', 'United Arab Erimates', 'IO', 'Official Trip', '2023-03-06', '2023-03-17', '0000-00-00', '0000-00-00', 12, '1677144951getContent (2) (1).pdf', 'moinul.alam'),
-(703, '300295', 'Customs', 'NBR', 'Md Shahiduzzaman Sarkar', 'Deputy Commissioner', 6, 'Customs Excise and VAT Commissionerate, Dhaka (South), Dhaka', 'Japan', 'IO', 'Official Trip', '2023-03-06', '2023-03-10', '0000-00-00', '0000-00-00', 5, '1677658881GO of Shahiduzzam sarker.pdf', 'moinul.alam'),
-(704, '300289', 'Customs', 'NBR', 'Anupam Chakma', 'Deputy Commissioner', 6, 'Custom House, Chattogram.', 'Japan', 'IO', 'Deputation', '2023-03-01', '2024-03-31', '0000-00-00', '0000-00-00', 397, '1677659477getContent - 2023-02-28T095605.119.pdf', 'moinul.alam'),
-(705, '300259', 'Customs', 'NBR', 'Md. Sohel Rana', 'Deputy Commissioner', 6, 'Customs, Excise & VAT Commissionerate, Dhaka (East), Dhaka.', 'India', 'Self', 'EBL', '2023-03-04', '2023-03-13', '0000-00-00', '0000-00-00', 10, '1677735377go sohel rana 1.pdf', 'moinul.alam'),
-(706, '300091', 'Customs', 'NBR', 'Mohammad Neazur Rahman', 'Commissioner (C.C)', 3, 'Custom House, Mongla.', 'Japan', 'IO', 'Official Trip', '2023-03-08', '2023-03-15', '0000-00-00', '0000-00-00', 8, '1677736256GO of Japan Tour.pdf', 'moinul.alam'),
-(707, '300137', 'Customs', 'NBR', 'Muhammad Safiur Rahaman', 'First Secretary', 4, 'National Board of Revenue, Dhaka.', 'Japan', 'IO', 'Official Trip', '2023-03-08', '2023-03-15', '0000-00-00', '0000-00-00', 8, '1677736439GO of Japan Tour.pdf', 'moinul.alam'),
-(708, '300171', 'Customs', 'NBR', 'Md. Shamsul Arafin Khan', 'Joint Director', 5, 'Customs Intelligence and Investigation Directorate, Dhaka.', 'Japan', 'IO', 'Official Trip', '2023-03-08', '2023-03-15', '0000-00-00', '0000-00-00', 8, '1677736644GO of Japan Tour.pdf', 'moinul.alam'),
-(709, '300179', 'Customs', 'NBR', 'Akter Hossen', 'Joint Commissioner', 5, 'Customs Bond Commissionerate, Dhaka (North), Dhaka.', 'Japan', 'IO', 'Official Trip', '2023-03-08', '2023-03-15', '0000-00-00', '0000-00-00', 8, '1677736762GO of Japan Tour.pdf', 'moinul.alam'),
-(710, '300200', 'Customs', 'NBR', 'Abu Hanif Mohammad Abdul Ahad', 'Deputy Commissioner', 6, 'Customs, Excise and VAT Commissionerate, Cumilla.', 'Japan', 'IO', 'Official Trip', '2023-03-08', '2023-03-15', '0000-00-00', '0000-00-00', 8, '1677736873GO of Japan Tour.pdf', 'moinul.alam'),
-(711, '300255', 'Customs', 'NBR', 'Mukitul Hasan', 'Second Secretary', 6, 'National Board of Revenue, Dhaka.', 'Japan', 'IO', 'Official Trip', '2023-03-08', '2023-03-13', '0000-00-00', '0000-00-00', 6, '1677738404GO of Japan Tour.pdf', 'moinul.alam'),
-(712, '300272', 'Customs', 'NBR', 'Md. Shahadat Jamil', 'Deputy Commissioner', 6, 'Custom House, Dhaka.', 'Japan', 'IO', 'Official Trip', '2023-03-08', '2023-03-15', '0000-00-00', '0000-00-00', 8, '1677738499GO of Japan Tour.pdf', 'moinul.alam'),
-(713, '300273', 'Customs', 'NBR', 'Imam Gazzali', 'Second Secretary', 6, 'National Board of Revenue, Dhaka.', 'Japan', 'IO', 'Official Trip', '2023-03-08', '2023-03-15', '0000-00-00', '0000-00-00', 8, '1677738575GO of Japan Tour.pdf', 'moinul.alam'),
-(714, '300306', 'Customs', 'NBR', 'Mitul Banik', 'Deputy Commissioner', 6, 'Large Taxpayers Unit, Value Added  Tax, Dhaka.', 'Japan', 'IO', 'Official Trip', '2023-03-08', '2023-03-15', '0000-00-00', '0000-00-00', 8, '1677738662GO of Japan Tour.pdf', 'moinul.alam'),
-(715, '300328', 'Customs', 'NBR', 'Shakera Khatun', 'Deputy Commissioner', 6, 'Custom House, ICD, Kamalapur,  Dhaka.', 'Japan', 'IO', 'Official Trip', '2023-03-08', '2023-03-13', '0000-00-00', '0000-00-00', 6, '1677738754GO of Japan Tour.pdf', 'moinul.alam'),
-(716, '300092', 'Customs', 'NBR', 'Khaled Mohammad Abu Hossain', 'Commissioner (C.C)', 4, 'Customs, Excise & VAT Commissionerate, Cumilla.', 'Thailand', 'IO', 'Official Trip', '2023-03-20', '2023-03-21', '0000-00-00', '0000-00-00', 2, '1678592924go Kh. Md. Abu Hossain.pdf', 'moinul.alam'),
-(717, '200229', 'Tax', 'NBR', 'Mohammad Mahmuduzzaman', 'Additional Commissioner of Taxes', 4, 'Taxes Zone-10, Dhaka.', 'India', 'Self', 'EBL', '2023-03-15', '2023-03-21', '0000-00-00', '0000-00-00', 7, '1678607953Tax-105 E.pdf', 'moinul.alam'),
-(718, '00', 'Non Cadre', 'NBR', 'B. M Abdullah Al Masum', 'Revenue Officer', 9, 'Customs Excise & VAT Commissionerate, Dhaka (North), Dhaka.', 'Saudi Arabia', 'Self', 'EBL', '2023-04-07', '2023-04-14', '0000-00-00', '0000-00-00', 8, '1678678376getContent - 2023-03-12T153703.055.pdf', 'moinul.alam'),
-(719, '300306', 'Customs', 'NBR', 'Mitul Banik', 'Deputy Commissioner', 6, 'Large Taxpayers Unit, Value Added Tax, Dhaka.', 'India', 'Self', 'EBL', '2023-04-01', '2023-04-22', '0000-00-00', '0000-00-00', 22, '1678678661getContent - 2023-03-12T162829.503.pdf', 'moinul.alam'),
-(720, '300336', 'Customs', 'NBR', 'Sabrina Amin', 'Assistant Commissioner', 9, 'Custom House, Pangaon, Dhaka.', 'Saudi Arabia', 'Self', 'EBL', '2023-03-26', '2023-04-02', '0000-00-00', '0000-00-00', 8, '1678956014sabrina go.pdf', 'moinul.alam'),
-(721, '300317', 'Customs', 'NBR', 'Mohammad Zakaria', 'Deputy Commissioner', 6, 'Customs, Excise & VAT Commissionerate, Khulna.', 'India', 'IO', 'Official Trip', '2023-04-10', '2023-04-21', '0000-00-00', '0000-00-00', 12, '1679381133getContent - 2023-03-19T124220.214 (1).pdf', 'moinul.alam'),
-(722, '300244', 'Customs', 'NBR', 'Rukba Iffat', 'Deputy Commissioner', 6, 'Large Taxpayers Unit, Value Added Tax, Dhaka', 'Saudi Arabia', 'Self', 'EBL', '2023-04-19', '2023-04-26', '0000-00-00', '0000-00-00', 8, '1679381336GO of Rukba Iffat (1).pdf', 'moinul.alam'),
-(723, '200534', 'Tax', 'NBR', 'Sumon Kumar Bormon', 'Deputy Commissioner of Taxes', 6, 'Taxes Zone- Gazipur', 'India', 'Self', 'EBL', '2023-03-14', '2023-04-04', '0000-00-00', '0000-00-00', 22, '1679381502Tax-107 E (1).pdf', 'moinul.alam'),
-(724, '00', 'Non Cadre', 'NSD', 'Tapan Kumar Das', 'Assistant Director', 9, 'District Savings Office, Narayanganj', 'India', 'Self', 'EBL', '2023-03-27', '2023-04-25', '0000-00-00', '0000-00-00', 30, '167938169020-03-2023 (1).pdf', 'moinul.alam'),
-(725, '200244', 'Tax', 'NBR', 'Rukshana Hoque', 'Additional Commissioner of Taxes', 4, 'Taxes Zone-8, Dhaka', 'India', 'Self', 'EBL', '2023-03-24', '2023-04-07', '0000-00-00', '0000-00-00', 15, '1679909128116.pdf', 'moinul.alam'),
-(726, '300191', 'Customs', 'NBR', 'Hasnain Mahmood', 'Joint Commissioner', 5, 'Customs, Excise & VAT Commissionerate, Rajshahi', 'Canada', 'Self', 'EBL', '2023-03-27', '2023-04-23', '0000-00-00', '0000-00-00', 28, '1680062407GO of Hasnain sir.pdf', 'moinul.alam'),
-(727, '300213', 'Customs', 'NBR', 'Md Sakil Khondoker', 'Deputy Director', 6, 'Customs Intelligence and Investigation Directorate, Dhaka.', 'China', 'IO', 'Official Trip', '2023-04-11', '2023-04-13', '0000-00-00', '0000-00-00', 3, '1680062745getContent - 2023-03-27T120030.860 (1).pdf', 'moinul.alam'),
-(728, '300358', 'Customs', 'NBR', 'Ahmedur Reza Chowdhury', 'Deputy Director', 6, 'Customs Intelligence and Investigation Directorate, Dhaka.', 'China', 'IO', 'Official Trip', '2023-04-11', '2023-04-13', '0000-00-00', '0000-00-00', 3, '1680062893getContent - 2023-03-27T120030.860 (1).pdf', 'moinul.alam'),
-(729, '300249', 'Customs', 'NBR', 'Md. Sanuwarul Kabir', 'Deputy Commissioner', 6, 'Customs, Excise & Vat Commissionerate, Dhaka (South), Dhaka.', 'Bangladesh', 'Employer', 'Lien', '2023-03-15', '2023-04-14', '0000-00-00', '0000-00-00', 31, '1680068414getContent - 2023-03-22T162650.514 (1).pdf', 'moinul.alam'),
-(730, '300295', 'Customs', 'NBR', 'Md Shahiduzzaman Sarkar', 'Deputy Commissioner', 6, 'Customs Excise and VAT Commissionerate, Dhaka (South), Dhaka', 'Cambodia', 'IO', 'Official Trip', '2023-04-17', '2023-04-21', '0000-00-00', '0000-00-00', 5, '1680164203customs 123.pdf', 'moinul.alam'),
-(731, '200317', 'Tax', 'NBR', 'Md. Shahadat Hossain', 'Joint Commissioner of Taxes', 5, 'Large Taxpayer Unit (LTU), Dhaka', 'Saudi Arabia', 'Self', 'EBL', '2023-05-21', '2023-07-04', '0000-00-00', '0000-00-00', 45, '1680164540126 1.pdf', 'moinul.alam'),
-(732, '300145', 'Customs', 'NBR', 'Mohammad Shahidul Islam', 'First Secretary', 4, 'National Board of Revenue, Dhaka.', 'India', 'IO', 'Official Trip', '2023-04-25', '2023-04-26', '0000-00-00', '0000-00-00', 2, '1680675069getContent - 2023-04-04T101630.930.pdf', 'moinul.alam'),
-(733, '200449', 'Tax', 'NBR', 'Md. Mamun Mia', 'Deputy Commissioner of Taxes', 6, 'Taxes ZoneRajshahi', 'Saudi Arabia', 'Self', 'EBL', '2023-04-09', '2023-04-16', '0000-00-00', '0000-00-00', 8, '1681027843134.pdf', 'moinul.alam'),
-(734, '300153', 'Customs', 'NBR', 'Md. Ziaur Rahman Khan', 'Joint Commissioner', 5, 'Customs, Excise & VAT Commissionerate, Dhaka (West), Dhaka', 'United States of America', 'Self', 'EBL', '2023-04-10', '2023-04-24', '0000-00-00', '0000-00-00', 15, '1681028012go ziaur.pdf', 'moinul.alam'),
-(735, '300181', 'Customs', 'NBR', 'Adip Billah', 'Joint Director', 5, 'Customs Intelligence and Investigation Directorate, Dhaka ', 'Belgium', 'IO', 'Official Trip', '2023-04-24', '2023-05-05', '0000-00-00', '0000-00-00', 12, '1681359552go edip billah.pdf', 'moinul.alam'),
-(736, '2225', 'Administration', 'IRD', 'Abu Hena Md. Rahmatul Muneem', 'Senior Secretary', 1, 'Internal Resources Division (IRD)', 'Korea South', 'IO', 'Official Trip', '2023-04-26', '2023-04-28', '0000-00-00', '0000-00-00', 3, '1681360565South Korea.pdf', 'moinul.alam'),
-(737, '200588', 'Tax', 'NBR', 'Md. Ashraf Jamil Afgan ', 'Deputy Commissioner of Taxes', 6, 'Taxes Zone-Rangpur', 'India', 'Self', 'EBL', '2023-04-27', '2023-05-11', '0000-00-00', '0000-00-00', 15, '1681361596148.pdf', 'moinul.alam'),
-(738, '00', 'Non Cadre', 'NBR', 'Md. Anisur Rahman', 'Assistant Programmer', 9, 'Taxes Zone-12, Dhaka.', 'India', 'Self', 'EBL', '2023-04-12', '2023-04-26', '0000-00-00', '0000-00-00', 15, '1681373475G.O-173.pdf', 'moinul.alam'),
-(739, '200476', 'Tax', 'NBR', 'Md. Mahbubur Rahman ', 'Deputy Commissioner of Taxes', 6, 'Taxes Zone-04, Dhaka.', 'Saudi Arabia', 'Self', 'EBL', '2023-04-14', '2023-04-21', '0000-00-00', '0000-00-00', 8, '1681373912155.pdf', 'moinul.alam'),
-(740, '300145', 'Customs', 'NBR', 'Mohammad Shahidul Islam', 'First Secretary', 4, 'National Board of Revenue, Dhaka.', 'Nepal', 'IO', 'Official Trip', '2023-05-15', '2023-05-19', '0000-00-00', '0000-00-00', 5, '1681619923140.pdf', 'moinul.alam'),
-(741, '300256', 'Customs', 'NBR', 'Ayesha Tamanna', 'Second Secretary', 6, 'National Board of Revenue, Dhaka.', 'Nepal', 'IO', 'Official Trip', '2023-05-15', '2023-05-19', '0000-00-00', '0000-00-00', 5, '1681620025140.pdf', 'moinul.alam'),
-(742, '300267', 'Customs', 'NBR', 'Md. Salim Reza', 'Deputy Commissioner', 6, 'Custom House, Chattogram.', 'Nepal', 'IO', 'Official Trip', '2023-05-15', '2023-05-19', '0000-00-00', '0000-00-00', 5, '1681620132140.pdf', 'moinul.alam'),
-(743, '300292', 'Customs', 'NBR', 'Nazmun Nahar', 'Second Secretary', 6, 'National Board of Revenue, Dhaka.', 'Nepal', 'IO', 'Official Trip', '2023-05-15', '2023-05-19', '0000-00-00', '0000-00-00', 5, '1681620231140.pdf', 'moinul.alam'),
-(744, '300303', 'Customs', 'NBR', 'Nipun Chakma', 'Second Secretary', 6, 'National Board of Revenue, Dhaka.', 'Nepal', 'IO', 'Official Trip', '2023-05-15', '2023-05-19', '0000-00-00', '0000-00-00', 5, '1681620443140.pdf', 'moinul.alam'),
-(745, '300335', 'Customs', 'NBR', 'Md. Tarek Mahmud', 'Deputy Director', 6, 'Central Intelligence Cell, National Board of Revenue, Dhaka.', 'Nepal', 'IO', 'Official Trip', '2023-05-15', '2023-05-19', '0000-00-00', '0000-00-00', 5, '1681620546140.pdf', 'moinul.alam'),
-(746, '300231', 'Customs', 'NBR', 'Shahed Ahmed', 'Deputy Commissioner', 6, 'Customs, Excise and VAT Commissionerate, Chattogram.', 'India', 'IO', 'Official Trip', '2023-04-24', '2023-04-28', '0000-00-00', '0000-00-00', 5, '1681620694139.pdf', 'moinul.alam'),
-(747, '200422', 'Tax', 'NBR', 'Nargis Akhter', 'Second Secretary', 6, 'National Board of Revenue, Dhaka.', 'India', 'IO', 'Official Trip', '2023-04-24', '2023-04-28', '0000-00-00', '0000-00-00', 5, '1681620839139.pdf', 'moinul.alam'),
-(748, '300248', 'Customs', 'NBR', 'Kamrul Islam', 'Deputy Commissioner', 6, 'National Single Window Project, National Board of Revenue, D', 'India', 'IO', 'Official Trip', '2023-04-24', '2023-04-28', '0000-00-00', '0000-00-00', 5, '1681620955139.pdf', 'moinul.alam'),
-(749, '300293', 'Customs', 'NBR', 'Suraiya Sultana', 'Second Secretary', 6, 'National Board of Revenue, Dhaka.', 'India', 'IO', 'Official Trip', '2023-04-24', '2023-04-28', '0000-00-00', '0000-00-00', 5, '1681621035139.pdf', 'moinul.alam'),
-(750, '300294', 'Customs', 'NBR', 'Dipa Rani Haldar', 'Deputy Commissioner', 6, 'Customs, Excise and VAT Commissionerate, Dhaka (East), Dhaka', 'India', 'IO', 'Official Trip', '2023-04-24', '2023-04-28', '0000-00-00', '0000-00-00', 5, '1681621121139.pdf', 'moinul.alam'),
-(751, '300347', 'Customs', 'NBR', 'Md. Abdul Baten', 'Deputy Commissioner', 6, 'Customs, Excise and VAT Commissionerate, Chattogram.', 'India', 'IO', 'Official Trip', '2023-04-24', '2023-04-28', '0000-00-00', '0000-00-00', 5, '1681621195139.pdf', 'moinul.alam'),
-(752, '200393', 'Tax', 'NBR', 'Niaz Morshed', 'Second Secretary', 6, 'National Board of Revenue, Dhaka.', 'Japan', 'IO', 'Official Trip', '2023-05-10', '2023-05-31', '0000-00-00', '0000-00-00', 22, '1681621902157.pdf', 'moinul.alam'),
-(753, '200400', 'Tax', 'NBR', 'Tania Sultana', 'Deputy Director', 6, 'Central Intelligence Cell, National Board of Revenue, Dhaka.', 'India', 'IO', 'Official Trip', '2023-04-24', '2023-04-28', '0000-00-00', '0000-00-00', 5, '1681702387139.pdf', 'moinul.alam'),
-(754, '200288', 'Tax', 'NBR', 'Dr. Md. Kausar Ali', 'First Secretary', 4, 'National Board of Revenue, Dhaka.', 'India', 'IO', 'Official Trip', '2023-04-24', '2023-04-28', '0000-00-00', '0000-00-00', 5, '1681702492139.pdf', 'moinul.alam'),
-(755, '2225', 'Administration', 'IRD', 'Abu Hena Md. Rahmatul Muneem', 'Senior Secretary', 1, 'Internal Resources Division (IRD)', 'Japan', 'GoB', 'Official Trip', '2023-04-25', '2023-04-28', '0000-00-00', '0000-00-00', 4, '1681703045IMG_0003 (9).pdf', 'moinul.alam'),
-(756, '300145', 'Customs', 'NBR', 'Mohammad Shahidul Islam', 'First Secretary', 4, 'National Board of Revenue, Dhaka.', 'Japan', 'IO', 'Official Trip', '2023-05-08', '2023-05-12', '0000-00-00', '0000-00-00', 5, '1681722753getContent - 2023-04-17T122435.314 (1).pdf', 'moinul.alam'),
-(757, '300088', 'Customs', 'NBR', 'Md. Shamsul Islam', 'Commissioner', 3, 'Custom House, ICD, Kamalapur,  Dhaka.', 'Korea South', 'IO', 'Official Trip', '2023-04-26', '2023-04-28', '0000-00-00', '0000-00-00', 3, '1681723047South Korea.pdf', 'moinul.alam'),
-(758, '3002921', 'Customs', 'NBR', 'Nazmun Nahar', 'Second Secretary', 6, 'National Board of Revenue, Dhaka.', 'India', 'Self', 'EBL', '2023-04-20', '2023-05-04', '0000-00-00', '0000-00-00', 15, '1681800647go najmun nahar.pdf', 'moinul.alam'),
-(759, '300031', 'Customs', 'NBR', 'Abdul Mannan Shikder', 'Member', 1, 'National Board of Revenue, Dhaka.', 'Saudi Arabia', 'Self', 'EBL', '2023-06-18', '2023-07-07', '0000-00-00', '0000-00-00', 20, '1683442176IMG_0004 (4).pdf', 'moinul.alam'),
-(760, '300033', 'Customs', 'NBR', 'Md Masud Sadiq', 'Member', 1, 'National Board of Revenue, Dhaka.', 'Saudi Arabia', 'Self', 'EBL', '2023-06-18', '2023-07-19', '0000-00-00', '0000-00-00', 32, '1683442391IMG_0003 (10).pdf', 'moinul.alam'),
-(761, '200296', 'Tax', 'NBR', 'Md. Naseruzzaman', 'First Secretary', 4, 'National Board of Revenue, Dhaka.', 'Indonesia', 'IO', 'Official Trip', '2023-05-03', '2023-05-05', '0000-00-00', '0000-00-00', 3, '1683442605170.pdf', 'moinul.alam'),
-(762, '200452', 'Tax', 'NBR', 'Md. Golam Kibria', 'Second Secretary', 6, 'National Board of Revenue, Dhaka.', 'Indonesia', 'IO', 'Official Trip', '2023-05-03', '2023-05-05', '0000-00-00', '0000-00-00', 3, '1683442680170.pdf', 'moinul.alam'),
-(763, '200218', 'Tax', 'NBR', 'Md. Golam Kabir', 'Additional Commissioner of Taxes', 4, 'Taxes Zone-05, Dhaka ', 'Thailand', 'Self', 'EBL', '2023-05-05', '2023-05-19', '0000-00-00', '0000-00-00', 15, '1683442870171.pdf', 'moinul.alam'),
-(764, '200446', 'Tax', 'NBR', 'Mohidul Islam', 'Deputy Commissioner of Taxes', 6, 'Taxes Zone-1, Chattogram ', 'Saudi Arabia', 'Self', 'EBL', '2023-05-25', '2023-07-30', '0000-00-00', '0000-00-00', 67, '1683443292174 (1).pdf', 'moinul.alam'),
-(765, '200221', 'Tax', 'NBR', 'S. M. Abul Kalam Azad', 'Additional Commissioner of Taxes', 4, 'Taxes Appeal Zone-Chattogram', 'Thailand', 'Self', 'EBL', '2023-04-24', '2023-05-08', '0000-00-00', '0000-00-00', 15, '1683443458172.pdf', 'moinul.alam'),
-(766, '00', 'Non Cadre', 'NBR', 'Md Faridul Alam', 'Revenue Officer', 9, 'Customs Excise and Vat Commissionerate, Sylhet ', 'Saudi Arabia', 'Self', 'EBL', '2023-05-28', '2023-07-11', '0000-00-00', '0000-00-00', 45, '1683443601go faridul.pdf', 'moinul.alam'),
-(767, '00', 'Non Cadre', 'NBR', 'Md. Golam Faruque', 'Revenue Officer', 9, 'Customs Excise and Vat Commissionerate, Dhaka (South), Dhaka', 'Saudi Arabia', 'Self', 'EBL', '2023-06-01', '2023-07-15', '0000-00-00', '0000-00-00', 45, '1683443761go golam faruk.pdf', 'moinul.alam'),
-(768, '00', 'Non Cadre', 'NBR', 'Md. Shaheen Akhter', 'Revenue Officer', 9, 'Customs Excise and Vat Commissionerate, Chattogram', 'Saudi Arabia', 'Self', 'EBL', '2023-06-01', '2023-07-15', '0000-00-00', '0000-00-00', 45, '1683444688shahin Akter.pdf', 'moinul.alam'),
-(769, '00', 'Non Cadre', 'NBR', 'Md. Alamgir Hossain', 'Revenue Officer', 9, 'Custom House, Benapole', 'Saudi Arabia', 'Self', 'EBL', '2023-06-01', '2023-07-15', '0000-00-00', '0000-00-00', 45, '1683444794getContent (1) (2).pdf', 'moinul.alam'),
-(770, '00', 'Non Cadre', 'NBR', 'Kazi Shariful Islam', 'Revenue Officer', 9, 'Customs, Excise and Vat Commissionerate, Rangpur ', 'Saudi Arabia', 'Self', 'EBL', '2023-06-11', '2023-07-13', '0000-00-00', '0000-00-00', 33, '1683445132Kazi.pdf', 'moinul.alam'),
-(771, '00', 'Non Cadre', 'NBR', 'Md. Majedul Islam', 'Revenue Officer', 9, 'Audit Intelligence & Investigation Directorate, Value Added ', 'Saudi Arabia', 'Self', 'EBL', '2023-06-11', '2023-07-25', '0000-00-00', '0000-00-00', 45, '1683445273162.pdf', 'moinul.alam'),
-(772, '300079', 'Customs', 'NBR', 'Mohammad Lutfor Rahman', 'Commissioner', 3, 'Customs, Excise & VAT (Appeal) Commissionerate, Dhaka-1, Dha', 'Saudi Arabia', 'Self', 'EBL', '2023-06-18', '2023-08-02', '0000-00-00', '0000-00-00', 46, '1683445479161.pdf', 'moinul.alam'),
-(773, '300274', 'Non Cadre', 'NBR', 'Md Shaiful Hoque', 'Deputy Commissioner', 6, ', Custom House, Chattogram ', 'Saudi Arabia', 'Self', 'EBL', '2023-06-11', '2023-07-25', '0000-00-00', '0000-00-00', 45, '1683445617164.pdf', 'moinul.alam'),
-(774, '300064', 'Customs', 'NBR', 'Mohammad Ahsanul Haque', 'Commissioner', 3, 'Customs Bond Commissionerate, Dhaka (South), Dhaka', 'Saudi Arabia', 'Self', 'EBL', '2023-06-15', '2023-07-29', '0000-00-00', '0000-00-00', 45, '1683445807158.pdf', 'moinul.alam'),
-(775, '00', 'Non Cadre', 'NBR', 'Mst. Sayela Afroz', 'Assistant Revenue Officer', 10, 'Customs Bond Commissionerate, Dhaka (North), Dhaka ', 'Japan', 'Self', 'Study Leave', '2023-05-01', '2025-04-30', '0000-00-00', '0000-00-00', 731, '1683519346getContent (25).pdf', 'moinul.alam'),
-(776, '00', 'Non Cadre', 'NBR', 'Mst. Sayela Afroz', 'Assistant Revenue Officer', 10, 'Customs Bond Commissionerate, Dhaka (North), Dhaka', 'Japan', 'Self', 'EL', '2025-05-01', '2026-04-30', '0000-00-00', '0000-00-00', 365, '1683519481getContent (25).pdf', 'moinul.alam'),
-(777, '200552', 'Tax', 'NBR', 'A K M Mainuddin', 'Deputy Director', 6, 'Central Intelligence Cell, National Board of Revenue, Dhaka', 'Saudi Arabia', 'Self', 'EBL', '2023-05-22', '2023-06-30', '0000-00-00', '0000-00-00', 40, '1683608632180.pdf', 'moinul.alam'),
-(778, '300378', 'Customs', 'NBR', ' Md. Billal Hossain', 'Deputy Commissioner', 6, 'Customs Excise & VAT Commissionerate, Rangpur', 'India', 'Self', 'EBL', '2023-05-14', '2023-05-23', '0000-00-00', '0000-00-00', 10, '1683779184go billal.pdf', 'moinul.alam'),
-(779, '300069', 'Customs', 'NBR', 'Mohammad Belal Hossain Chowdhury', 'Director General', 3, 'Duty Exemption and Drawback Office, Dhaka', 'Thailand', 'Self', 'EBL', '2023-05-21', '2023-05-25', '0000-00-00', '0000-00-00', 5, '1684050814go belal h chaw.pdf', 'moinul.alam'),
-(780, '200323', 'Tax', 'NBR', 'Tasmia Dilawar', 'Joint Commissioner of Taxes', 5, 'Taxes Zone-3, Dhaka', 'Saudi Arabia', 'Self', 'EBL', '2023-06-05', '2023-07-14', '0000-00-00', '0000-00-00', 40, '1684051091198.pdf', 'moinul.alam');
+(557, '2002991', 'Tax', 'NBR', 'Mohammad Naimur Rasul', 'Joint Commissioner of Taxes', 5, 'Taxes Appeal Zone-3, Dhaka', 'India', 'Self', 'EBL', '2022-11-17', '2022-12-01', '0000-00-00', '0000-00-00', 15, '1668918232Mohammad Naimur Rasul.pdf', 'anando.biswas');
 
 -- --------------------------------------------------------
 
@@ -832,7 +611,7 @@ INSERT INTO `foreignvisit` (`ID`, `ServiceID`, `Cadre`, `Office`, `Name`, `Desig
 CREATE TABLE `images` (
   `file_name` varchar(50) NOT NULL,
   `uploaded_on` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `images`
@@ -861,7 +640,7 @@ CREATE TABLE `officers` (
   `Name` varchar(50) NOT NULL,
   `Designation` varchar(80) NOT NULL,
   `Workplace` varchar(200) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -881,7 +660,7 @@ CREATE TABLE `passnid` (
   `ExpiryDate` date NOT NULL,
   `NID_Num` varchar(50) DEFAULT NULL,
   `Uploader` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `passnid`
@@ -904,7 +683,7 @@ INSERT INTO `passnid` (`ID`, `ServiceID`, `Cadre`, `Office`, `Name`, `Designatio
 CREATE TABLE `revisedgo` (
   `ID` int(50) NOT NULL,
   `RevGO` varchar(2000) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `revisedgo`
@@ -997,6 +776,28 @@ INSERT INTO `revisedgo` (`ID`, `RevGO`) VALUES
 (518, '1665456547Mohammad Morshed Alam.pdf'),
 (523, '1665651808Sefat-E-Mariam.pdf');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `role`
+--
+
+CREATE TABLE `role` (
+  `SL` int(10) NOT NULL,
+  `Role` varchar(25) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `role`
+--
+
+INSERT INTO `role` (`SL`, `Role`) VALUES
+(1, 'Administrator'),
+(2, 'Admin'),
+(3, 'User'),
+(4, 'Visitor'),
+(5, 'Operator');
+
 --
 -- Indexes for dumped tables
 --
@@ -1020,6 +821,12 @@ ALTER TABLE `passnid`
   ADD PRIMARY KEY (`ID`);
 
 --
+-- Indexes for table `role`
+--
+ALTER TABLE `role`
+  ADD PRIMARY KEY (`SL`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -1033,13 +840,19 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `foreignvisit`
 --
 ALTER TABLE `foreignvisit`
-  MODIFY `ID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=781;
+  MODIFY `ID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=558;
 
 --
 -- AUTO_INCREMENT for table `passnid`
 --
 ALTER TABLE `passnid`
   MODIFY `ID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `role`
+--
+ALTER TABLE `role`
+  MODIFY `SL` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
