@@ -46,9 +46,11 @@ $allUsers = mysqli_fetch_all($users, MYSQLI_ASSOC);
                         : "<span class='badge badge-danger'>Inactive</span>" ?>
                 </td>
                 <td>
-                    <button title="Edit" class="btn btn-sm btn-warning" onclick="window.location.href='base.php?page=add_user&id=<?= $user['ID'] ?>'">✏️</button>
-                    <button title="Change Password" class="btn btn-sm btn-info" onclick="window.location.href='base.php?page=change_password&id=<?= $user['ID'] ?>'">🔑</button>
-                    <button title="Delete" class="btn btn-sm btn-danger" onclick="confirmDelete(<?= $user['ID'] ?>)">🗑️</button>
+                    <?php if ($user['Role_ID'] != 1): ?>
+                        <button title="Edit" class="btn btn-sm btn-warning" onclick="window.location.href='base.php?page=add_user&id=<?= $user['ID'] ?>'">✏️</button>
+                        <button title="Change Password" class="btn btn-sm btn-info" onclick="window.location.href='base.php?page=change_password&id=<?= $user['ID'] ?>'">🔑</button>
+                        <button title="Delete" class="btn btn-sm btn-danger" onclick="confirmDelete(<?= $user['ID'] ?>)">🗑️</button>
+                    <?php endif; ?>
                 </td>
             </tr>
             <?php endforeach; ?>

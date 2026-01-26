@@ -22,6 +22,7 @@ $allowed_pages = [
     'dashboard'      => '../admin/dashboard.php',
     'home'           => '../home.php',
     'add_user'       => '../admin/add_user.php',
+    'change_password'       => '../admin/change_password.php',
     'users'     => '../admin/users.php',
     'add_visit'      => '../admin/add_visit.php',
     'view_visits'    => '../admin/view_visits.php',
@@ -32,7 +33,7 @@ $allowed_pages = [
 ];
 
 // Admin-only pages
-$admin_pages = ['dashboard','add_user','users','add_visit','view_visits','daily_report','monthly_report','annual_report','settings'];
+$admin_pages = ['dashboard','add_user','change_password','users','add_visit','view_visits','daily_report','monthly_report','annual_report','settings'];
 
 // Redirect non-admins trying to access admin pages
 if (!in_array($role_id, [1,2]) && in_array($page, $admin_pages)) {

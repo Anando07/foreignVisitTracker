@@ -3,6 +3,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 session_start();
 include("../config.php");
 
+$user_id        = $_SESSION['login_user_id'] ?? '';
 $username       = $_SESSION['login_user'] ?? '';
 $user_fullname  = $_SESSION['user_name'] ?? 'User';
 $designation    = $_SESSION['user_designation'] ?? 'N/A';

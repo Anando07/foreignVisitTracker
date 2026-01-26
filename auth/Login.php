@@ -17,7 +17,7 @@ $error_type = "";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $loginInput = mysqli_real_escape_string($db, $_POST['username']); 
-    $mypassword = mysqli_real_escape_string($db, $_POST['password']);
+    $mypassword = $_POST['password']; // DO NOT escape password
 
     // Check if user exists
     $sql_user = "SELECT * FROM Admin WHERE UserName='$loginInput' OR Email='$loginInput'";
@@ -26,8 +26,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result_user && mysqli_num_rows($result_user) == 1) {
         $user = mysqli_fetch_assoc($result_user);
 
-        // Validate password
-        if ($user['Passcode'] !== $mypassword) {
+        // ✅ Validate password using password_verify
+        if (!password_verify($mypassword, $user['Passcode'])) {
             $error = "Incorrect password.";
             $error_type = "danger"; // red
         } elseif ($user['Status'] != 1) {
@@ -35,18 +35,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $error_type = "warning"; // yellow
         } else {
             // Fetch role info
-            $sql_role = "SELECT Role AS role_name FROM Role WHERE SL=".$user['Role'];
+            $sql_role = "SELECT Role AS role_name FROM Role WHERE SL=".$user['Role_ID'];
             $result_role = mysqli_query($db, $sql_role);
             $role = mysqli_fetch_assoc($result_role);
 
             // Set session
-            $_SESSION['login_user'] = $user['UserName'];
-            $_SESSION['user_name']  = $user['Name'];
-            $_SESSION['user_designation']  = $user['Designation'];
-            $_SESSION['role_id']   = $user['Role'];
-            $_SESSION['role_name'] = $role['role_name'];
+            $_SESSION['login_user_id']   = $user['ID'];
+            $_SESSION['login_user']      = $user['UserName'];
+            $_SESSION['user_name']       = $user['Name'];
+            $_SESSION['user_designation']= $user['Designation'];
+            $_SESSION['role_id']         = $user['Role_ID'];
+            $_SESSION['role_name']       = $role['role_name'];
 
-            // Redirect to single dashboard (template folder)
+            // Redirect to dashboard
             header("Location: ../template/base.php");
             exit();
         }
@@ -57,7 +58,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
