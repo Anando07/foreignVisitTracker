@@ -1,0 +1,37 @@
+<html>
+<head>
+  <script type="text/javascript">
+var mealsByCategory = {
+    A: ["Soup1", "Juice1", "Tea1", "Others1"],
+    B: ["Soup2", "Juice2", "Water2", "Others2"],
+    C: ["Soup3", "Juice3", "Coffee3", "Tea3", "Others3"]
+}
+
+    function changecat(value) { 
+        if (value.length == 0) document.getElementById("category").innerHTML = "<option></option>";
+        else {
+            var catOptions = "";
+            for (categoryId in mealsByCategory[value]) {
+                catOptions += "<option>" + mealsByCategory[value][categoryId] + "</option>";
+            }
+            document.getElementById("category").innerHTML = catOptions;
+        }
+    } 
+    </script>  
+</head>
+ 
+<body>
+
+<select name="meal" id="meal" onChange="changecat(this.value);">
+    <option value="" disabled selected>Select</option>
+    <option value="A">A</option>
+    <option value="B">B</option>
+    <option value="C">C</option>
+</select>
+<select name="category" id="category">
+    <option value="" disabled selected>Select</option>
+</select>
+
+</body>
+
+</html>
