@@ -1,0 +1,156 @@
+<?php
+error_reporting(E_ALL ^ E_NOTICE);
+session_start();
+include("../config.php");
+
+// Fetch all users
+$sql = "SELECT * FROM Admin ORDER BY ID ASC";
+$users = mysqli_query($db, $sql);
+$allUsers = mysqli_fetch_all($users, MYSQLI_ASSOC);
+?>
+
+<div class="fvt-card" id="usersSection">
+    <h3>User List</h3>
+
+    <!-- Search and Print -->
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <input type="text" class="table-search fvt-input" placeholder="Search users..." data-table="userTable" style="width:48%;">
+        <button class="btn btn-primary" onclick="printTable('userTable')">🖨️ Print Users</button>
+    </div>
+
+    <table class="fvt-table" id="userTable">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Designation</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Contact</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($allUsers as $i => $user): ?>
+            <tr>
+                <td><?= $i + 1 ?></td>
+                <td><?= htmlspecialchars($user['Name']) ?></td>
+                <td><?= htmlspecialchars($user['Designation']) ?></td>
+                <td><?= htmlspecialchars($user['UserName']) ?></td>
+                <td><?= htmlspecialchars($user['Email']) ?></td>
+                <td><?= htmlspecialchars($user['Contact']) ?></td>
+                <td>
+                    <?= $user['Status'] == 1 
+                        ? "<span class='badge badge-success'>Active</span>" 
+                        : "<span class='badge badge-danger'>Inactive</span>" ?>
+                </td>
+                <td>
+                    <button title="Edit" class="btn btn-sm btn-warning" onclick="window.location.href='base.php?page=add_user&id=<?= $user['ID'] ?>'">✏️</button>
+                    <button title="Change Password" class="btn btn-sm btn-info" onclick="window.location.href='base.php?page=change_password&id=<?= $user['ID'] ?>'">🔑</button>
+                    <button title="Delete" class="btn btn-sm btn-danger" onclick="confirmDelete(<?= $user['ID'] ?>)">🗑️</button>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+
+    <!-- Pagination container for global JS -->
+    <div class="table-pagination" data-table="userTable" style="margin-top:10px; text-align:center;"></div>
+</div>
+
+<script>
+// Delete confirmation (global)
+function confirmDelete(userId) {
+    if (confirm("Are you sure you want to delete this user?")) {
+        window.location.href = "base.php?page=delete_user&id=" + userId;
+    }
+}
+
+</script>
+
+<script>
+function printTable() {
+
+    const users = <?php echo json_encode($allUsers); ?>;
+
+    const logoUrl = "http://localhost/foreignVisitTracker/assets/images/Logo.png";
+
+    const header = `
+        <div style="text-align:center; margin-bottom:20px;">
+            <img id="printLogo" src="${logoUrl}" style="height:80px; margin-bottom:10px;">
+            <h2 style="margin:0;">Government's People Republic of Bangladesh</h2>
+            <h2 style="margin:0;">Internal Resources Division</h2>
+            <h3 style="margin:0;">Ministry of Finance</h3>
+            <h2 style="margin:0;">Bangladesh Secretariat, Dhaka-1000</h2>
+            <h4 style="margin:10px 0;">All Users List of FVT</h4>
+        </div>
+    `;
+
+    let html = `
+        <table style="width:100%; border-collapse:collapse;" border="1" cellpadding="5">
+            <thead>
+                <tr style="background:#f2f2f2;">
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Designation</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Contact</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
+    users.forEach((user, i) => {
+        html += `
+            <tr>
+                <td>${i + 1}</td>
+                <td>${user.Name}</td>
+                <td>${user.Designation}</td>
+                <td>${user.UserName}</td>
+                <td>${user.Email}</td>
+                <td>${user.Contact}</td>
+                <td>${user.Status == 1 ? 'Active' : 'Inactive'}</td>
+            </tr>
+        `;
+    });
+
+    html += `</tbody></table>`;
+
+    const newWin = window.open("", "_blank");
+
+    newWin.document.open();
+    newWin.document.write(`
+        <html>
+        <head>
+            <title>All Users List</title>
+            <style>
+                body { font-family: Arial, sans-serif; }
+                table, th, td {
+                    border: 1px solid #000;
+                    border-collapse: collapse;
+                    padding: 5px;
+                }
+                th { background-color: #f2f2f2; }
+                img { display: block; margin: auto; }
+            </style>
+        </head>
+        <body>
+            ${header}
+            ${html}
+        </body>
+        </html>
+    `);
+    newWin.document.close();
+
+    /*  THIS IS THE MAGIC */
+    newWin.onload = function () {
+        newWin.focus();
+        newWin.print();
+        newWin.close();
+    };
+}
+</script>
+

@@ -14,7 +14,7 @@
             <?php if (in_array($role_id, [1,2])): ?>
             <a href="base.php?page=add_user">Add User</a>
             <?php endif; ?>
-            <a href="base.php?page=view_users">View Users</a>
+            <a href="base.php?page=users">View Users</a>
         </div>
         <?php endif; ?>
 
