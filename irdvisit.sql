@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 26, 2026 at 12:11 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 7.2.25
+-- Generation Time: Jan 26, 2026 at 08:36 PM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 7.2.24
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -34,8 +34,8 @@ CREATE TABLE `admin` (
   `Email` varchar(255) NOT NULL,
   `Contact` varchar(11) NOT NULL,
   `UserName` varchar(50) NOT NULL,
-  `Passcode` varchar(50) NOT NULL,
-  `Role` varchar(20) NOT NULL,
+  `Passcode` varchar(255) NOT NULL,
+  `Role_ID` int(20) NOT NULL,
   `Status` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
@@ -43,25 +43,29 @@ CREATE TABLE `admin` (
 -- Dumping data for table `admin`
 --
 
-INSERT INTO `admin` (`ID`, `Name`, `Designation`, `Email`, `Contact`, `UserName`, `Passcode`, `Role`, `Status`) VALUES
-(2, 'Sami Kabir', 'Programmer', '', '', 'sami.kabir', 'PhDLTUNobel1', '1', 1),
-(3, 'Farhad Khan Pathan', 'Assistant Programmer', '', '', 'farhad.pathan', 'FPird1#', '', 0),
-(4, 'Md. Moinul Alam', 'Assistant Programmer', '', '', 'moinul.alam', 'MAKUET07eee!ird2#', '', 0),
-(5, 'Anando Kumar Biswas', 'Assistant Programmer', 'abku07@gmail.com', '01790012288', 'anando.biswas', 'Ab@12288', '1', 1),
-(6, 'Visitor', 'Visitor', '', '', 'visitor', '123456', '4', 1),
-(7, 'S.M. Abdul Kader', 'Deputy Secretary', '', '', 'sm.abdulkader', 'SMAKbuet93@admin20!', '', 0),
-(8, 'Md. Shafiqur Rahman', 'Joint Secretary', '', '', 'shafiqur.rahman', 'srrueco@admin9@#', '', 0),
-(9, 'Suraiya Pervin Shelley\r\n', 'Joint Secretary', '', '', 'sp.shelley', 'DULingui@admin18_#!', '', 0),
-(10, 'Md. Abdul Gafur', 'Joint Secretary', '', '', 'abdul.gafur', 'DUeco@tax15*&%', '', 0),
-(11, 'Nusrat Jahan Nisu', 'Senior Assistant Secretary', '', '', 'nusrat.jahan', 'BMCeco*30_admin*(%@', '', 0),
-(12, 'Md. Ahsan Habib', 'Deputy Secretary', '', '', 'ahsan.habib', 'RUsoc#admin24_$*^', '', 0),
-(13, 'Dipak Kumar Biswas', 'Deputy Secretary', '', '', 'prof.dipakkumar', 'DUAct&edu16_%$', '', 0),
-(14, 'Md. Shameem Ahsan', 'Assistant Secretary', '', '', 'shameem.ahsan', 'JnUeco&ec#!', '', 0),
-(15, 'Mohammad Nairuzzaman', 'Personal Secretary to Senior Secretary', '', '', 'm.nairuzzaman', 'JUeco@%25admin*$', '', 0),
-(16, 'Kanai Lal Shil', 'Senior Assistant Secretary', '', '', 'kanai.lal', 'BMnu@53!%', '', 0),
-(17, 'Md. Abdul Jabbar', 'Senior Assistant Secretary', '', '', 'abdul.jabbar', 'aj^%@#22263', '', 0),
-(18, 'Muhammad Firoz Reza', 'Accounts Officer', '', '', 'firoz.reza', 'fzaIrdactfin$@', '', 0),
-(19, 'Abu Hena Md. Rahmatul Muneem\r\n', 'Senior Secretary', '', '', 'sr_secy', 'srsecy@IrdMoF1', '', 0);
+INSERT INTO `admin` (`ID`, `Name`, `Designation`, `Email`, `Contact`, `UserName`, `Passcode`, `Role_ID`, `Status`) VALUES
+(2, 'Sami Kabir', 'Programmer', '', '', 'sami.kabir', '$2y$10$SDH2LfJNSfLYcKQxxTdBsOJaIFeSAezhiN27eHKBu82EWK6ljvHV2', 1, 1),
+(3, 'Farhad Khan Pathan', 'Assistant Programmer', '', '', 'farhad.pathan', 'FPird1#', 0, 0),
+(4, 'Md. Moinul Alam', 'Assistant Programmer', '', '', 'moinul.alam', 'MAKUET07eee!ird2#', 0, 0),
+(5, 'Anando Kumar Biswas', 'Assistant Programmer', 'abku07@gmail.com', '01790012288', 'anando.biswas', '123456', 1, 1),
+(6, 'Visitor', 'Visitor', '', '', 'visitor', '123456', 4, 1),
+(7, 'S.M. Abdul Kader', 'Deputy Secretary', '', '', 'sm.abdulkader', 'SMAKbuet93@admin20!', 0, 0),
+(8, 'Md. Shafiqur Rahman', 'Joint Secretary', '', '', 'shafiqur.rahman', 'srrueco@admin9@#', 0, 0),
+(9, 'Suraiya Pervin Shelley\r\n', 'Joint Secretary', '', '', 'sp.shelley', 'DULingui@admin18_#!', 0, 0),
+(10, 'Md. Abdul Gafur', 'Joint Secretary', '', '', 'abdul.gafur', 'DUeco@tax15*&%', 0, 0),
+(11, 'Nusrat Jahan Nisu', 'Senior Assistant Secretary', '', '', 'nusrat.jahan', 'BMCeco*30_admin*(%@', 0, 0),
+(12, 'Md. Ahsan Habib', 'Deputy Secretary', '', '', 'ahsan.habib', 'RUsoc#admin24_$*^', 0, 0),
+(13, 'Dipak Kumar Biswas', 'Deputy Secretary', '', '', 'prof.dipakkumar', 'DUAct&edu16_%$', 0, 0),
+(14, 'Md. Shameem Ahsan', 'Assistant Secretary', '', '', 'shameem.ahsan', 'JnUeco&ec#!', 0, 0),
+(15, 'Mohammad Nairuzzaman', 'Personal Secretary to Senior Secretary', '', '', 'm.nairuzzaman', 'JUeco@%25admin*$', 0, 0),
+(16, 'Kanai Lal Shil', 'Senior Assistant Secretary', '', '', 'kanai.lal', 'BMnu@53!%', 0, 0),
+(17, 'Md. Abdul Jabbar', 'Senior Assistant Secretary', '', '', 'abdul.jabbar', 'aj^%@#22263', 0, 0),
+(18, 'Muhammad Firoz Reza', 'Accounts Officer', '', '', 'firoz.reza', 'fzaIrdactfin$@', 0, 0),
+(19, 'Abu Hena Md. Rahmatul Muneem\r\n', 'Senior Secretary', '', '', 'sr_secy', 'srsecy@IrdMoF1', 0, 0),
+(20, 'আবদুল্লাহ আল মামুন', 'Secretary', 'abku077@gmail.com', '01915515980', 'Mamun', '$2y$10$c/vw9rqPFuRh0vFT7fZh2Ou7uttpEefg/0MdIRU09Sk', 4, 0),
+(21, 'ANVVcdcadcasdc', 'Additional Secretary', 'abku0007@gmail.com', '01915515280', 'Anando07', '$2y$10$ovFDiyABsNaoTnF7rR1PtuvmqQrr/drDO9UOjLAbUXg', 3, 0),
+(22, 'Anando Kumar ', 'Senior Secretary', 'abku07@gmaissssl.com', '01915515980', 'decsaca', '$2y$10$U1R7hOWYtbnL1QbQogEjDu3cM5QPDFDEBtUJeLry1oa', 1, 1),
+(23, 'Anando Kumar ', 'Senior Secretary', 'abk111u07@gmail.com', '01915515980', 'Anando', '$2y$10$RcnazDnHxH7CoQkRZN4lQ.xnH.bbYl5PwXLr65xNCQX', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -834,7 +838,7 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `ID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `ID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `foreignvisit`
