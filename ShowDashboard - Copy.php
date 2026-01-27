@@ -48,6 +48,7 @@ td {
 <body>
 <table>
 <tr>
+<th>Sl. No.</th>
 <th>ID</th>
 <th>Name</th>
 <th>Designation</th>
@@ -76,6 +77,7 @@ if($dashReq == ""){
 //$sql1 = "SELECT * from ForeignVisit ORDER BY StartDate desc LIMIT " . $dashReq;
 $sql1 = "SELECT * from ForeignVisit ORDER BY ID desc LIMIT " . $dashReq;
 $result = mysqli_query($db,$sql1);
+$sl = 0;
 
 if ($result->num_rows > 0) {
     // output data of each row  
@@ -84,8 +86,9 @@ if ($result->num_rows > 0) {
     echo "IO = International Organisation, FS = Foreign Scholarship, BS = Bangladeshi Scholarship, EBL = Ex-Bangladesh Leave, EL = Extraordinary Leave <br> <br>";
     while($row = $result->fetch_assoc()) {
 	  $sql2 = "SELECT * from RevisedGO WHERE ID = " . $row["ID"]; 
-          $result2 = mysqli_query($db,$sql2); 
-          echo "<tr><td>" . $row["ServiceID"]. "<br>(" . $row["Cadre"]. ")" . "</td><td>" . $row["Name"]. "</td><td>" . $row["Designation"] . "<br>(Grade-" . $row["Grade"] . ") " . "</td><td>" . $row["Workplace"] . ", " . $row["Office"] . "</td><td>" . $row["DestinationCountry"] . "</td><td>" . $row["FundingSource"] . "</td><td>" . $row["Purpose"] . "</td><td>" . $row["StartDate"]. "<br>(";
+          $result2 = mysqli_query($db,$sql2);
+	  $sl += 1; 
+          echo "<tr><td>$sl</td><td>" . $row["ServiceID"]. "<br>(" . $row["Cadre"]. ")" . "</td><td>" . $row["Name"]. "</td><td>" . $row["Designation"] . "<br>(Grade-" . $row["Grade"] . ") " . "</td><td>" . $row["Workplace"] . ", " . $row["Office"] . "</td><td>" . $row["DestinationCountry"] . "</td><td>" . $row["FundingSource"] . "</td><td>" . $row["Purpose"] . "</td><td>" . $row["StartDate"]. "<br>(";
 
           if ($row["ActualDeparture"] == "0000-00-00") {
             echo "Unreported)" . "</td><td>" . $row["EndDate"] . "<br>(";

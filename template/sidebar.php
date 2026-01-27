@@ -23,7 +23,7 @@
         <a class="has-submenu">✈ Foreign Visits</a>
         <div class="submenu">
             <?php if (in_array($role_id, [1,2,3,4,5])): ?>
-            <a href="base.php?page=add_visit">Add Visit</a>
+            <a href="base.php?page=NewEntry">Add Visit</a>
             <?php endif; ?>
             <a href="base.php?page=view_visits">View Visits</a>
         </div>

@@ -1,4 +1,5 @@
 <?php
+error_reporting (E_ALL ^ E_NOTICE);
 include("config.php");
 session_start();
 if(isset($_SESSION['login_user'])) {
@@ -6,6 +7,10 @@ if(isset($_SESSION['login_user'])) {
     //echo "Welcome, " . $word; 
 } else {
     die("<br><br><center>You are presently logged out. Please log in to access this page. <br> <br> <a href = ./Login.php> Click here to log in </a></center>");
+}
+
+if (($word != "irdmof") && ($word != "sami.kabir") && ($word != "farhad.pathan") && ($word != "moinul.alam") && ($word != "anando.biswas")) {
+	die("<br><br><br><center> Sorry! You are not authorized to view this page </center>");	
 }
 
 $update = false; 
@@ -24,8 +29,20 @@ if (isset($_GET['edit'])) {
 <!DOCTYPE html>
 <html>
 <head>
-
-<style> 
+<title> New Entry </title>
+<link rel = "shortcut icon" type = "image/jpeg" href = "./VisitIcon.jpeg">
+<style>
+.button2 {
+  	background-color: #4CAF50;
+  	color: white;
+  	padding: 4px 4px;
+  	text-align: center;
+  	text-decoration: none;
+  	display: inline-block;
+  	font-size: 16px;
+  	margin: 1px 1px;
+  	cursor: pointer;
+  	}   
 img {
   display: block;
   margin-left: auto;
@@ -40,9 +57,17 @@ img {
 	font-style: italic;
 }
 
+footer {
+  text-align: center;
+  padding: 3px;
+  background-color: DarkSalmon;
+  color: black;
+}
+</style>
+
 </style>  
 <br>
-<img src="Logo.jpeg" alt="Logo" width="150" height="150" >
+<img src="Logo.png" alt="Logo" width="150" height="150" >
 <h1 align = "center"> Internal Resources Division (IRD) </h1>  
 <h2 align="center"> New Foreign Visit Entry Form </h2>
 <h4 align="right"> <a href = "ActionType.php"> Home</a> &nbsp; &nbsp; &nbsp; <a href = "Logout.php">Sign Out</a> </h4>
@@ -97,11 +122,12 @@ function validateForm() {
 }
 
 var mealsByCategory = {
-    Administration: ["Senior Secretary", "Secretary", "Additional Secretary", "Director General", "Chairman", "Joint Secretary", "Director", "Deputy Secretary", "First Secretary", "Sr. Asssistant Secretary", "Second Secretary", "Assistant Secretary", "Others"],  
-    Tax: ["Member", "President", "Commissioner of Taxes", "Additional Commissioner of Taxes", "Joint Commissioner of Taxes", "First Secretary", "Deputy Commissioner of Taxes", "Second Secretary", "Assistant Commissioner of Taxes", "Others"], 
-    Customs: ["Member", "President", "Commissioner", "Additional Commissioner", "Joint Commissioner", "First Secretary", "Deputy Commissioner", "Second Secretary", "Assistant Commissioner", "Others"],
-    "Non Cadre": ["Director", "System Analyst", "Deputy Secretary", "Programmer", "Registrar", "Deputy Director", "Sr. Assistant Secretary", "Assistant Director", "Assistant Programmer", "Assistant Maintenance Engineer", "Assistant Registrar", "Accounts Officer", "Assistant Secretary", "Others"],
-    "Not Applicable": ["Administrative Officer", "Personal Officer", "Assistant Accounts Officer", "Computer Operator", "Accountant", "Supervisor", "UDA", "DEO", "Office Assistant", "Office Sohayak", "Others"]  
+    MoF: ["Minister", "State Minister", "PS to Minister", "PS to State Minister", "Sr. Assistant Secretary", "Public Relations Officer", "APS to Minister", "APS to State Minister", "Administrative Officer","Others"],  
+    IRD: ["Senior Secretary", "Secretary", "Additional Secretary", "Joint Secretary", "Deputy Secretary", "Private Secretary", "System Analyst", "Sr. Asssistant Secretary", "Programmer", "Assistant Secretary", "Assistant Programmer", "Assistant Maintenance Engineer", "Administrative Officer", "Personal Officer", "Assistant Accounts Officer", "Computer Operator", "Accountant", "Supervisor", "UDA", "DEO", "Office Assistant", "Office Sohayak", "Others"],  
+    NBR: ["Chairman", "Member", "Commissioner of Taxes", "Commissioner", "Director General", "System Manager", "Additional Commissioner of Taxes", "Additional Commissioner", "Senior System Analyst", "Senior Maintenance Engineer", "Joint Commissioner of Taxes", "Joint Commissioner", "First Secretary", "Director", "System Analyst", "Deputy Commissioner of Taxes", "Deputy Commissioner", "Second Secretary", "Programmer", "Maintenance Engineer", "Assistant Director", "Assistant Commissioner of Taxes", "Assistant Commissioner", "Assistant Programmer", "Assistant Maintenance Engineer", "Statistical Officer", "Revenue Officer", "Assistant Revenue Officer", "Others"], 
+    NSD: ["Director General", "Director", "System Analyst", "Deputy Director", "Programmer", "Assistant Director", "Savings Officer", "Others"],
+    TAT: ["President", "Member", "Registrar", "Assistant Registrar", "Others"],
+    CEVT: ["President", "Member", "Registrar", "Assistant Registrar", "Revenue Officer", "Assistant Revenue Officer", "Others"]  
 }   
 
     function changedesig(value) { 
@@ -118,7 +144,7 @@ var mealsByCategory = {
 </script>
 
 </head>
-<body>   
+<body style="background-color:powderblue;">   
 <br>
 Please fill up the following fields according to Government Order (GO), upload the GO in pdf/jpg format, and click "Submit":
 <br>
@@ -131,30 +157,37 @@ Please fill up the following fields according to Government Order (GO), upload t
   <br>
   Service ID:<span class="red-star">* </span> &nbsp; <input type="number" name="serviceID" value = "<?php echo $n['ServiceID']; ?>" size="20" maxlength="20"> 
   &nbsp; &nbsp; Cadre:<span class="red-star">* </span> &nbsp;  
+<?php if ($update == true): ?> 
+  <input type="text" name="cadreEdit" id = "cadreEdit" value = "<?php echo $n['Cadre']; ?>" size="40" maxlength="40">
+<?php endif ?> 
 
-  <select name="cadreName" id="cadreName" onchange="changedesig(this.value);" text-align:center>   
-    <option value="" ></option>  
+<?php if ($update == false): ?> 
+  <select name="cadreName" id="cadreName" onchange='CheckCadre(this.value);' text-align:center> 
+    <option value="" ></option>   
     <option value="Administration" <?php if($n['Cadre']=="Administration") echo 'selected="selected"'; ?>>BCS (Administration)</option>  
     <option value="Tax" <?php if($n['Cadre']=="Tax") echo 'selected="selected"'; ?>>BCS (Tax)</option>  
     <option value="Customs" <?php if($n['Cadre']=="Customs") echo 'selected="selected"'; ?>>BCS (Customs)</option>
     <option value="Non Cadre" <?php if($n['Cadre']=="Non Cadre") echo 'selected="selected"'; ?>>Non Cadre</option>   
     <option value="Not Applicable" <?php if($n['Cadre']=="Not Applicable") echo 'selected="selected"'; ?>>Not Applicable</option>  
-
+    <option value="Other Cadres" <?php if($n['Cadre']=="Other Cadres") echo 'selected="selected"'; ?>>Other Cadres</option>  
   </select>  
+  <br><br> <input type="text" name="cadreOthers" id="cadreOthers" style='display:none;' />
+  <?php endif ?> 
 
-  &nbsp; &nbsp; Office:<span class="red-star">* </span> &nbsp;  
-  <select name="office" onchange='CheckPlace(this.value); ' text-align:center>  
-  	<option value="IRD" <?php if($n['Office']=="IRD") echo 'selected="selected"'; ?>>Internal Resources Division (IRD)</option>  
+  <br><br>Office:<span class="red-star">* </span> &nbsp;  
+  <select name="office" id="office" onchange="changedesig(this.value);" text-align:center>  
+  	<option value="" ></option>  
+    <option value="MoF" <?php if($n['Office']=="MoF") echo 'selected="selected"'; ?>>Ministry of Finance</option>  
+    <option value="IRD" <?php if($n['Office']=="IRD") echo 'selected="selected"'; ?>>Internal Resources Division (IRD)</option>  
     <option value="NBR" <?php if($n['Office']=="NBR") echo 'selected="selected"'; ?>>National Board of Revenue (NBR)</option>  
     <option value="NSD" <?php if($n['Office']=="NSD") echo 'selected="selected"'; ?>>National Savings Department (NSD)</option>  
     <option value="TAT" <?php if($n['Office']=="TAT") echo 'selected="selected"'; ?>>Taxes Appellate Tribunal (TAT)</option>  
     <option value="CEVT" <?php if($n['Office']=="CEVT") echo 'selected="selected"'; ?>>Customs, Excise and VAT Appellate Tribunal (CEVT)</option>
-    <option value="Others" <?php if($n['Office']=="Others") echo 'selected="selected"'; ?>>Others</option>   
 
   </select>    
 
   <br> <br>
-  Name:<span class="red-star">* </span> &nbsp; <input type="text" name="name" value = "<?php echo $n['Name']; ?>" size="23" maxlength="23"><br> <br>
+  Name:<span class="red-star">* </span> &nbsp; <input type="text" name="name" value = "<?php echo $n['Name']; ?>" size="40" maxlength="40"><br> <br>
   Designation:<span class="red-star">* </span> &nbsp; 
 <?php if ($update == true): ?> 
   <input type="text" name="designation" id = "designation" value = "<?php echo $n['Designation']; ?>" size="40" maxlength="40">
@@ -169,7 +202,8 @@ Please fill up the following fields according to Government Order (GO), upload t
  <?php endif ?> 
 
   <br> <br> Grade:<span class="red-star">* </span> &nbsp; &nbsp; <select name="grade" onchange='CheckPlace(this.value); ' text-align:center> 
-    <option value="" ></option>
+    <option value="" ></option> 
+    <option value= 0 <?php if($n['Grade']== 0 ) echo 'selected="selected"'; ?>> 0 </option>  
     <option value= 1 <?php if($n['Grade']== 1 ) echo 'selected="selected"'; ?>> 1 </option>  
     <option value= 2 <?php if($n['Grade']== 2 ) echo 'selected="selected"'; ?>> 2 </option>  
     <option value= 3 <?php if($n['Grade']== 3 ) echo 'selected="selected"'; ?>> 3 </option>  
@@ -191,7 +225,7 @@ Please fill up the following fields according to Government Order (GO), upload t
     <option value= 19 <?php if($n['Grade']== 19 ) echo 'selected="selected"'; ?>> 19 </option>  
     <option value= 20 <?php if($n['Grade']== 20 ) echo 'selected="selected"'; ?>> 20 </option>  
   </select>  
-  &nbsp; &nbsp; Workplace:<span class="red-star">* </span> &nbsp; <input type="text" name="workplace" value = "<?php echo $n['Workplace']; ?>" size="33" maxlength="33"><br> <br>
+  &nbsp; &nbsp; Workplace:<span class="red-star">* </span> &nbsp; <input type="text" name="workplace" value = "<?php echo $n['Workplace']; ?>" size="40" maxlength="60"><br> <br>
   
   Destination Country:<span class="red-star">* </span>
   <select name="destCountry" onchange='CheckPlace(this.value); ' text-align:center>
@@ -212,6 +246,7 @@ Please fill up the following fields according to Government Order (GO), upload t
    <option value="Azerbaijan" <?php if($n['DestinationCountry']=="Azerbaijan") echo 'selected="selected"'; ?>>Azerbaijan</option>
    <option value="Bahamas" <?php if($n['DestinationCountry']=="Bahamas") echo 'selected="selected"'; ?>>Bahamas</option>
    <option value="Bahrain" <?php if($n['DestinationCountry']=="Bahrain") echo 'selected="selected"'; ?>>Bahrain</option> 
+   <option value="Bangladesh" <?php if($n['DestinationCountry']=="Bangladesh") echo 'selected="selected"'; ?>>Bangladesh</option>
    <option value="Barbados" <?php if($n['DestinationCountry']=="Barbados") echo 'selected="selected"'; ?>>Barbados</option>
    <option value="Belarus" <?php if($n['DestinationCountry']=="Belarus") echo 'selected="selected"'; ?>>Belarus</option>
    <option value="Belgium" <?php if($n['DestinationCountry']=="Belgium") echo 'selected="selected"'; ?>>Belgium</option>
@@ -453,6 +488,7 @@ Please fill up the following fields according to Government Order (GO), upload t
  Purpose of visit:<span class="red-star">* </span>    
 
  <select name="Purpose" onchange='CheckPlace(this.value); ' text-align:center>
+    <option value="" ></option> 
     <option value="Official Trip" <?php if($n['Purpose']=="Official Trip") echo 'selected="selected"'; ?>>Official Trip</option>
     <option value="EBL" <?php if($n['Purpose']=="EBL") echo 'selected="selected"'; ?>>Ex-Bangladesh leave (Religious/Medical/Family Visit/Tourism etc.)</option>
      <option value="Deputation" <?php if($n['Purpose']=="Deputation") echo 'selected="selected"'; ?>>Deputation</option>
@@ -463,10 +499,12 @@ Please fill up the following fields according to Government Order (GO), upload t
  </select> 
  &nbsp; &nbsp; Funding Source:<span class="red-star">* </span>
  <select name="FundingSource" onchange='CheckPlace(this.value); ' text-align:center>
+    <option value="" ></option> 
     <option value="Self" <?php if($n['FundingSource']=="Self") echo 'selected="selected"'; ?>>Self</option>
     <option value="GoB" <?php if($n['FundingSource']=="GoB") echo 'selected="selected"'; ?>>GoB</option>
     <option value="Project" <?php if($n['FundingSource']=="Project") echo 'selected="selected"'; ?>>Project</option>
-    <option value="IO" <?php if($n['FundingSource']=="IO") echo 'selected="selected"'; ?>>International Organisations</option>
+    <option value="BO" <?php if($n['FundingSource']=="BO") echo 'selected="selected"'; ?>>Bangladeshi Organisation</option>
+    <option value="IO" <?php if($n['FundingSource']=="IO") echo 'selected="selected"'; ?>>International Organisation</option>
     <option value="FS" <?php if($n['FundingSource']=="FS") echo 'selected="selected"'; ?>>Foreign Scholarship</option> 
     <option value="BS" <?php if($n['FundingSource']=="BS") echo 'selected="selected"'; ?>>Bangladeshi Scholarship</option> 
     <option value="University" <?php if($n['FundingSource']=="University") echo 'selected="selected"'; ?>>University</option> 
@@ -477,9 +515,9 @@ Please fill up the following fields according to Government Order (GO), upload t
  Upload the GO (pdf/jpg):<span class="red-star">* </span> <input type="file" id="file" name="file"><br><br>
 
 <?php if ($update == true): ?>
-   <input type="button" onclick="myFunction()" value="Update">
+   <input type="button" class="button2" onclick="myFunction()" value="Update">
 <?php else: ?>
-   <input type="button" onclick="myFunction()" value="Submit">
+   <input type="button" class="button2" onclick="myFunction()" value="Submit">
 <?php endif ?> 
 &nbsp; &nbsp; 
 
@@ -493,6 +531,14 @@ function CheckPlace(val){
    element.style.display='block';
  else  
    element.style.display='none';
+}  
+
+function CheckCadre(val){
+ var element3=document.getElementById('cadreOthers');
+ if(val=="Other Cadres")
+   element3.style.display='block';
+ else  
+   element3.style.display='none';
 }   
 
 function CheckDesig2(val){
@@ -508,12 +554,24 @@ function myFunction() {
   if (x == "") {
     alert("Service ID must be filled out.");
     return false;
-  }
+  }//"cadreEdit" 
+  
+ <?php if ($update == false): ?>
   let x2 = document.forms["frm1"]["cadreName"].value;
   if (x2 == "") {
     alert("Cadre must be selected.");
     return false;
   } 
+  <?php endif ?>
+
+  <?php if ($update == true): ?>
+  let x2 = document.forms["frm1"]["cadreEdit"].value;
+  if (x2 == "") {
+    alert("Cadre must be selected.");
+    return false;
+  } 
+  <?php endif ?>
+
   let x3 = document.forms["frm1"]["office"].value; 
   if (x3 == "") {
     alert("Office must be selected.");
@@ -527,7 +585,7 @@ function myFunction() {
   <?php if ($update == true): ?>
   let z = document.forms["frm1"]["designation"].value; 
   if (z == "") { 
-    alert("Designation must be selected.");
+    alert("Designation must be written.");
     return false; 
   }
   if ((z == "Others")) { 
@@ -602,7 +660,11 @@ function myFunction() {
   
 }
 </script>
-
+<br>
+<footer>
+  <p> <b> Developed by: ICT Cell, IRD. </b><br> <br>
+  <a href="mailto:info@ird.gov.bd">info@ird.gov.bd</a>, +880 1817102041, <a href=http://www.ird.gov.bd>www.ird.gov.bd</a> </p>
+</footer>
 </body>
 </html>
  

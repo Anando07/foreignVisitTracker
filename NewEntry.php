@@ -26,10 +26,6 @@ if (isset($_GET['edit'])) {
     }
  }
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-<title> New Entry </title>
 <link rel = "shortcut icon" type = "image/jpeg" href = "./VisitIcon.jpeg">
 <style>
 .button2 {
@@ -67,10 +63,7 @@ footer {
 
 </style>  
 <br>
-<img src="Logo.png" alt="Logo" width="150" height="150" >
-<h1 align = "center"> Internal Resources Division (IRD) </h1>  
 <h2 align="center"> New Foreign Visit Entry Form </h2>
-<h4 align="right"> <a href = "ActionType.php"> Home</a> &nbsp; &nbsp; &nbsp; <a href = "Logout.php">Sign Out</a> </h4>
 
 <script>
 function validateForm() { 
@@ -660,11 +653,5 @@ function myFunction() {
   
 }
 </script>
-<br>
-<footer>
-  <p> <b> Developed by: ICT Cell, IRD. </b><br> <br>
-  <a href="mailto:info@ird.gov.bd">info@ird.gov.bd</a>, +880 1817102041, <a href=http://www.ird.gov.bd>www.ird.gov.bd</a> </p>
-</footer>
-</body>
-</html>
+
  
