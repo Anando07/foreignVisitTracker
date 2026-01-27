@@ -55,6 +55,39 @@ while($row = mysqli_fetch_assoc($purposeCounts)){
     $purposeLabels[] = $row['Purpose'];
     $purposeData[]   = (int)$row['total'];
 }
+// ======= Designation Chart Data =======
+$designationCounts = mysqli_query($db, "SELECT Designation, COUNT(*) AS total FROM ForeignVisit GROUP BY Designation ORDER BY total DESC");
+$designationLabels = [];
+$designationData   = [];
+while($row = mysqli_fetch_assoc($designationCounts)){
+    $designationLabels[] = $row['Designation'];
+    $designationData[]   = (int)$row['total'];
+}
+// ======= Funding Chart Data =======
+$fundingCounts = mysqli_query($db, "SELECT FundingSource, COUNT(*) AS total FROM ForeignVisit GROUP BY FundingSource ORDER BY total DESC");
+$fundingLabels = [];
+$fundingData   = [];
+while($row = mysqli_fetch_assoc($fundingCounts)){
+    $fundingLabels[] = $row['FundingSource'];
+    $fundingData[]   = (int)$row['total'];
+}
+// ======= Office Chart Data =======
+$officeCounts = mysqli_query($db, "SELECT Office, COUNT(*) AS total FROM ForeignVisit GROUP BY Office ORDER BY total DESC");
+$officeLabels = [];
+$officeData   = [];
+while($row = mysqli_fetch_assoc($officeCounts)){
+    $officeLabels[] = $row['Office'];
+    $officeData[]   = (int)$row['total'];
+}
+// ======= Cadre Chart Data =======
+$cadreCounts = mysqli_query($db, "SELECT Cadre, COUNT(*) AS total FROM ForeignVisit GROUP BY Cadre ORDER BY total DESC");
+$cadreLabels = [];
+$cadreData   = [];
+while($row = mysqli_fetch_assoc($cadreCounts)){
+    $cadreLabels[] = $row['Cadre'];
+    $cadreData[]   = (int)$row['total'];
+}
+
 
 ?>
 
@@ -78,16 +111,27 @@ while($row = mysqli_fetch_assoc($purposeCounts)){
         <h3>Foreign Visits by Country</h3>
         <canvas id="countryPieChart"></canvas>
     </div>
+</div>
+<div class="fvt-card" style="display:flex; justify-content:space-around; flex-wrap:wrap; gap:20px; text-align:center;">
     <div style="flex:1 1 400px; max-width:500px;">
-        <h3>Foreign Visits by Country</h3>
-        <canvas id="countryPieChart"></canvas>
+        <h3>Designated Foreign Visits</h3>
+        <canvas id="designationPieChart"></canvas>
     </div>
     <div style="flex:1 1 400px; max-width:500px;">
-        <h3>Foreign Visits by Country</h3>
-        <canvas id="countryPieChart"></canvas>
+        <h3>Foreign Visits by Funding Source</h3>
+        <canvas id="fundingPieChart"></canvas>
     </div>
 </div>
-
+<div class="fvt-card" style="display:flex; justify-content:space-around; flex-wrap:wrap; gap:20px; text-align:center;">
+    <div style="flex:1 1 400px; max-width:500px;">
+        <h3>Office Foreign Visits</h3>
+        <canvas id="officePieChart"></canvas>
+    </div>
+    <div style="flex:1 1 400px; max-width:500px;">
+        <h3>Foreign Visits by Cadre</h3>
+        <canvas id="cadrePieChart"></canvas>
+    </div>
+</div>
 <!-- ======================
      STATS BOXES
 ====================== -->
@@ -210,7 +254,11 @@ while($row = mysqli_fetch_assoc($purposeCounts)){
 <!-- ======================
      SCRIPTS
 ====================== -->
+<!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Chart.js Data Labels plugin -->
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 <script>
 /* Show Sections */
 function showSection(id){
@@ -294,5 +342,96 @@ const purposePieChart = new Chart(ctxPurpose, {
         }
     }
 });
-
+// ===== Designation Pie Chart =====
+const ctxDesignation = document.getElementById('designationPieChart').getContext('2d');
+const designationPieChart = new Chart(ctxDesignation, {
+    type: 'pie',
+    data: {
+        labels: <?= json_encode($designationLabels); ?>,
+        datasets: [{
+            data: <?= json_encode($designationData); ?>,
+            backgroundColor: [
+                '#FF6384','#36A2EB','#FFCE56','#4BC0C0','#9966FF','#FF9F40',
+                '#8AFF33','#FF33F6','#33FFF2','#F633FF','#FF3333','#33FF57'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { position:'bottom', align:'center', labels:{ boxWidth:20 } },
+            title: { display:true, text:'Foreign Visits by Designation' }
+        }
+    }
+});
+// ===== Funding Pie Chart =====
+const ctxFunding = document.getElementById('fundingPieChart').getContext('2d');
+const fundingPieChart = new Chart(ctxFunding, {
+    type: 'pie',
+    data: {
+        labels: <?= json_encode($fundingLabels); ?>,
+        datasets: [{
+            data: <?= json_encode($fundingData); ?>,
+            backgroundColor: [
+                '#FF6384','#36A2EB','#FFCE56','#4BC0C0','#9966FF','#FF9F40',
+                '#8AFF33','#FF33F6','#33FFF2','#F633FF','#FF3333','#33FF57'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { position:'bottom', align:'center', labels:{ boxWidth:20 } },
+            title: { display:true, text:'Foreign Visits by Funding Source' }
+        }
+    }
+});
+// ===== Office Pie Chart =====
+const ctxOffice = document.getElementById('officePieChart').getContext('2d');
+const officePieChart = new Chart(ctxOffice, {
+    type: 'pie',
+    data: {
+        labels: <?= json_encode($officeLabels); ?>,
+        datasets: [{
+            data: <?= json_encode($officeData); ?>,
+            backgroundColor: [
+                '#FF6384','#36A2EB','#FFCE56','#4BC0C0','#9966FF','#FF9F40',
+                '#8AFF33','#FF33F6','#33FFF2','#F633FF','#FF3333','#33FF57'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { position:'bottom', align:'center', labels:{ boxWidth:20 } },
+            title: { display:true, text:'Foreign Visits by Office' }
+        }
+    }
+});
+// ===== Cadre Pie Chart =====
+const ctxCadre = document.getElementById('cadrePieChart').getContext('2d');
+const cadrePieChart = new Chart(ctxCadre, {
+    type: 'pie',
+    data: {
+        labels: <?= json_encode($cadreLabels); ?>,
+        datasets: [{
+            data: <?= json_encode($cadreData); ?>,
+            backgroundColor: [
+                '#FF6384','#36A2EB','#FFCE56','#4BC0C0','#9966FF','#FF9F40',
+                '#8AFF33','#FF33F6','#33FFF2','#F633FF','#FF3333','#33FF57'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { position:'bottom', align:'center', labels:{ boxWidth:20 } },
+            title: { display:true, text:'Foreign Visits by Cadre' }
+        }
+    }
+});
 </script>
