@@ -8,6 +8,7 @@ if (!isset($_SESSION['role_id'])) {
 }
 
 // User info from session
+$user_id        = $_SESSION['login_user_id'];
 $username       = $_SESSION['login_user'];
 $user_fullname  = $_SESSION['user_name'];
 $role_name      = $_SESSION['role_name'];
@@ -19,17 +20,19 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
 
 // Map pages to actual file paths (relative to template/)
 $allowed_pages = [
-    'dashboard'      => '../admin/dashboard.php',
-    'home'           => '../home.php',
-    'add_user'       => '../admin/add_user.php',
+    'dashboard'             => '../admin/dashboard.php',
+    'home'                  => '../user/home.php',
+    'add_user'              => '../admin/add_user.php',
     'change_password'       => '../admin/change_password.php',
-    'users'     => '../admin/users.php',
-    'add_visit'      => '../admin/add_visit.php',
-    'view_visits'    => '../admin/view_visits.php',
-    'daily_report'   => '../admin/daily_report.php',
-    'monthly_report' => '../admin/monthly_report.php',
-    'annual_report'  => '../admin/annual_report.php',
-    'settings'       => '../admin/settings.php'
+    'password_change'       => '../auth/password_change.php',
+    'change_profile'        => '../auth/change_profile.php',
+    'users'                 => '../admin/users.php',
+    'add_visit'             => '../admin/add_visit.php',
+    'view_visits'           => '../admin/view_visits.php',
+    'daily_report'          => '../admin/daily_report.php',
+    'monthly_report'        => '../admin/monthly_report.php',
+    'annual_report'         => '../admin/annual_report.php',
+    'settings'              => '../admin/settings.php'
 ];
 
 // Admin-only pages

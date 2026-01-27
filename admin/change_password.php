@@ -30,6 +30,7 @@ if (!$user) {
 
 /* ==========================
    HANDLE FORM SUBMIT
+   POST → REDIRECT → GET
 ========================== */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -37,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $confirm  = $_POST['confirm'] ?? '';
     $error = '';
 
-    // Server-side validation for strong password
+    // Validation
     if ($password !== $confirm) {
         $error = "Passwords do not match!";
     } elseif (strlen($password) < 8) {
@@ -54,17 +55,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($error === '') {
         $password_hashed = password_hash($password, PASSWORD_DEFAULT);
-
         mysqli_query($db, "UPDATE Admin SET Passcode='$password_hashed' WHERE ID=$id");
 
         $_SESSION['msg'] = "✅ Password changed successfully!";
         $_SESSION['msg_type'] = "success";
-        // header("Location: base.php?page=change_password");
-        // exit;
     } else {
         $_SESSION['msg'] = "❌ $error";
         $_SESSION['msg_type'] = "error";
     }
+
+    // Redirect to same page to prevent resubmission
+    header("Location: base.php?page=change_password&id=$id");
+    exit();
 }
 ?>
 
@@ -78,8 +80,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 .actions{display:flex;justify-content:center;gap:10px;margin-top:20px;}
 .btn{padding:10px 18px;border-radius:6px;font-weight:600;border:none;cursor:pointer;}
 .btn-success{background:#28a745;color:#fff;}
-.btn-secondary{background:#6c757d;color:#fff;text-decoration:none;}
-.alert{padding:10px;border-radius:6px;margin-bottom:15px;}
+.btn-secondary{background:#6c757d;color:#fff;text-decoration:none;text-align:center;}
+.alert{padding:10px;border-radius:6px;margin-bottom:15px;text-align:center;}
 .badge{padding:3px 8px;border-radius:4px;font-size:12px;}
 .badge-weak{background:#f87171;color:#fff;}
 .badge-medium{background:#facc15;color:#000;}
@@ -95,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     <?php endif; ?>
 
-    <form method="post">
+    <form method="post" autocomplete="off">
         <div class="form-group">
             <label>New Password</label>
             <input type="password" name="password" id="password" class="fvt-input" required>
@@ -154,4 +156,9 @@ document.querySelectorAll('.toggle-password').forEach(el => {
         else { input.type='password'; el.textContent='👁️'; }
     });
 });
+
+// ✅ Optional: Auto redirect after success
+<?php if(isset($_SESSION['msg_type']) && $_SESSION['msg_type']=='success'): ?>
+setTimeout(() => { window.location.href='base.php?page=users'; }, 3000); // 3 sec
+<?php endif; ?>
 </script>
