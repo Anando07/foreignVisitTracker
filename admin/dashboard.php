@@ -37,14 +37,25 @@ $visits = mysqli_query($db, "SELECT ID, Name, Designation, Office, ServiceID, Ca
 // Countries for table
 $countries = mysqli_query($db, "SELECT DISTINCT DestinationCountry FROM ForeignVisit ORDER BY DestinationCountry ASC");
 
-// Data for Pie Chart
+
+// ======= Country Chart Data =======
 $countryCounts = mysqli_query($db, "SELECT DestinationCountry, COUNT(*) AS total FROM ForeignVisit GROUP BY DestinationCountry ORDER BY total DESC");
-$chartLabels = [];
-$chartData = [];
+$countryLabels = [];
+$countryData   = [];
 while($row = mysqli_fetch_assoc($countryCounts)){
-    $chartLabels[] = $row['DestinationCountry'];
-    $chartData[] = (int)$row['total'];
+    $countryLabels[] = $row['DestinationCountry'];
+    $countryData[]   = (int)$row['total'];
 }
+
+// ======= Purpose Chart Data =======
+$purposeCounts = mysqli_query($db, "SELECT Purpose, COUNT(*) AS total FROM ForeignVisit GROUP BY Purpose ORDER BY total DESC");
+$purposeLabels = [];
+$purposeData   = [];
+while($row = mysqli_fetch_assoc($purposeCounts)){
+    $purposeLabels[] = $row['Purpose'];
+    $purposeData[]   = (int)$row['total'];
+}
+
 ?>
 
 <!-- ======================
@@ -54,13 +65,26 @@ while($row = mysqli_fetch_assoc($countryCounts)){
     <h3>Welcome Back, <?= htmlspecialchars($user_fullname); ?> 👋</h3>
     <p><?= htmlspecialchars($designation); ?> | Manage your tasks according to your role permissions.</p>
 </div>
+
 <!-- ======================
-     PIE CHART
+     PIE CHARTS SIDE BY SIDE
 ====================== -->
-<div class="fvt-card" style="text-align:center;">
-    <h3>Foreign Visits by Country</h3>
-    <div style="width:100%; max-width:500px; margin:0 auto;">
-        <canvas id="countryPieChart" style="width:100%; height:400px;"></canvas>
+<div class="fvt-card" style="display:flex; justify-content:space-around; flex-wrap:wrap; gap:20px; text-align:center;">
+    <div style="flex:1 1 400px; max-width:500px;">
+        <h3>Foreign Visits by Purpose</h3>
+        <canvas id="purposePieChart"></canvas>
+    </div>
+    <div style="flex:1 1 400px; max-width:500px;">
+        <h3>Foreign Visits by Country</h3>
+        <canvas id="countryPieChart"></canvas>
+    </div>
+    <div style="flex:1 1 400px; max-width:500px;">
+        <h3>Foreign Visits by Country</h3>
+        <canvas id="countryPieChart"></canvas>
+    </div>
+    <div style="flex:1 1 400px; max-width:500px;">
+        <h3>Foreign Visits by Country</h3>
+        <canvas id="countryPieChart"></canvas>
     </div>
 </div>
 
@@ -223,14 +247,14 @@ function printTable(tableId){
     newWin.print();
 }
 
-/* Pie Chart */
-const ctx = document.getElementById('countryPieChart').getContext('2d');
-const countryPieChart = new Chart(ctx, {
+// ===== Country Pie Chart =====
+const ctxCountry = document.getElementById('countryPieChart').getContext('2d');
+const countryPieChart = new Chart(ctxCountry, {
     type: 'pie',
     data: {
-        labels: <?= json_encode($chartLabels); ?>,
+        labels: <?= json_encode($countryLabels); ?>,
         datasets: [{
-            data: <?= json_encode($chartData); ?>,
+            data: <?= json_encode($countryData); ?>,
             backgroundColor: [
                 '#FF6384','#36A2EB','#FFCE56','#4BC0C0','#9966FF','#FF9F40',
                 '#8AFF33','#FF33F6','#33FFF2','#F633FF','#FF3333','#33FF57'
@@ -241,15 +265,32 @@ const countryPieChart = new Chart(ctx, {
     options: {
         responsive: true,
         plugins: {
-            legend: {
-                position: 'bottom',  // moves legend below
-                align: 'center',     // horizontal alignment
-                labels: { boxWidth: 20 } // optional: size of legend color box
-            },
-            title: {
-                display: true,
-                text: 'Foreign Visits by Destination Country'
-            }
+            legend: { position:'bottom', align:'center', labels:{ boxWidth:20 } },
+            title: { display:true, text:'Foreign Visits by Destination Country' }
+        }
+    }
+});
+
+// ===== Purpose Pie Chart =====
+const ctxPurpose = document.getElementById('purposePieChart').getContext('2d');
+const purposePieChart = new Chart(ctxPurpose, {
+    type: 'pie',
+    data: {
+        labels: <?= json_encode($purposeLabels); ?>,
+        datasets: [{
+            data: <?= json_encode($purposeData); ?>,
+            backgroundColor: [
+                '#FF6384','#36A2EB','#FFCE56','#4BC0C0','#9966FF','#FF9F40',
+                '#8AFF33','#FF33F6','#33FFF2','#F633FF','#FF3333','#33FF57'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { position:'bottom', align:'center', labels:{ boxWidth:20 } },
+            title: { display:true, text:'Foreign Visits by Purpose' }
         }
     }
 });
