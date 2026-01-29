@@ -48,7 +48,7 @@ $allVisits = mysqli_fetch_all($visits, MYSQLI_ASSOC);
                 $result2 = mysqli_query($db, "SELECT * FROM RevisedGO WHERE ID = " . $visit["ID"]);
                 if($result2->num_rows > 0){
                     while($row2 = $result2->fetch_assoc()){
-                        $rev_go_links .= "<br><a href='./uploads/".$row2["RevGO"]."' target='_blank'>Click</a>";
+                        $rev_go_links .= "<br><a href='../uploads/".$row2["RevGO"]."' target='_blank'>Click</a>";
                     }
                 }
             ?>
@@ -65,13 +65,13 @@ $allVisits = mysqli_fetch_all($visits, MYSQLI_ASSOC);
                 <td><?= $visit["EndDate"] ?><br>(<?= $actualArrival ?>)</td>
                 <td><?= $visit["Days"] ?></td>
                 <td>
-                    <a href='./uploads/<?= $visit["GO"] ?>' target='_blank'>Click</a>
+                    <a href='../uploads/<?= $visit["GO"] ?>' target='_blank'>Click</a>
                     <?= $rev_go_links ?>
                 </td>
                 <td><?= htmlspecialchars($visit["Uploader"]) ?></td>
                 <td>
                     <button title="View" class="btn btn-sm btn-info" onclick="window.location.href='base.php?page=view_visit&id=<?= $visit['ID'] ?>'">👁️</button>
-                    <button title="Edit" class="btn btn-sm btn-warning" onclick="window.location.href='base.php?page=edit_visit&id=<?= $visit['ID'] ?>'">✏️</button>
+                    <button title="Edit" class="btn btn-sm btn-warning" onclick="window.location.href='base.php?page=NewEntry&id=<?= $visit['ID'] ?>'">✏️</button>
                     <button title="Delete" class="btn btn-sm btn-danger" onclick="confirmDeleteVisit(<?= $visit['ID'] ?>)">🗑️</button>
                 </td>
             </tr>

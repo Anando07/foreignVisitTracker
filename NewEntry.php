@@ -1,31 +1,36 @@
 <?php
-error_reporting (E_ALL ^ E_NOTICE);
+error_reporting(E_ALL ^ E_NOTICE);
 include("config.php");
 session_start();
-if(isset($_SESSION['login_user'])) {
+
+if (isset($_SESSION['login_user'])) {
     $word = $_SESSION['login_user'];
-    //echo "Welcome, " . $word; 
 } else {
-    die("<br><br><center>You are presently logged out. Please log in to access this page. <br> <br> <a href = ./Login.php> Click here to log in </a></center>");
+    die("<br><br><center>You are presently logged out. Please log in. <br><br>
+    <a href='./Login.php'>Click here to log in</a></center>");
 }
 
-if (($word != "irdmof") && ($word != "sami.kabir") && ($word != "farhad.pathan") && ($word != "moinul.alam") && ($word != "anando.biswas")) {
-	die("<br><br><br><center> Sorry! You are not authorized to view this page </center>");	
+$allowedUsers = ["irdmof","sami.kabir","farhad.pathan","moinul.alam","anando.biswas"];
+if (!in_array($word, $allowedUsers)) {
+    die("<br><br><center>Sorry! You are not authorized to view this page</center>");
 }
 
-$update = false; 
-$track = 0;
+$update = false;
+$n = [];
 
-if (isset($_GET['edit'])) { 
-     $id = $_GET['edit'];  
-     $update = true;  
-     $record = mysqli_query($db, "SELECT * FROM ForeignVisit WHERE ID = $id");  
+if (isset($_GET['edit'])) {
+    $id = (int) $_GET['edit'];
+    $update = true;
 
-     if (count($record) == 1 ) {
-        $n = mysqli_fetch_array($record);
+    $record = mysqli_query($db, "SELECT * FROM ForeignVisit WHERE ID = $id LIMIT 1");
+    if ($record && mysqli_num_rows($record) == 1) {
+        $n = mysqli_fetch_assoc($record); // $n contains the row data
+    } else {
+        die("<center>Record not found.</center>");
     }
- }
+}
 ?>
+
 <link rel = "shortcut icon" type = "image/jpeg" href = "./VisitIcon.jpeg">
 <style>
 .button2 {
@@ -60,8 +65,7 @@ footer {
   color: black;
 }
 </style>
-
-</style>  
+ 
 <br>
 <h2 align="center"> New Foreign Visit Entry Form </h2>
 
@@ -143,7 +147,7 @@ Please fill up the following fields according to Government Order (GO), upload t
 <br>
 <span class="red-star"> (Fields with * are mandatory) </span>
 
-<form id="frm1" method="POST" action="action_page.php" enctype="multipart/form-data" onsubmit="return validateForm()"> 
+<form id="frm1" method="POST" action="../action_page.php" enctype="multipart/form-data" onsubmit="return validateForm()"> 
 
   <input type="hidden" name="id" value= "<?php echo $id; ?>" > 
   <input type="hidden" name="update" value = "<?php echo $update; ?>" >  
