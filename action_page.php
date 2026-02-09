@@ -80,7 +80,7 @@ if (isset($_GET['delete'])) {
     successBox(
         "Deleted Successfully",
         "Record and all related files were removed.",
-        "base.php?page=ShowDashboard"
+        "template/base.php?page=view_visits"
     );
     exit;
 }
@@ -161,7 +161,7 @@ if ($update) {
         successBox(
             "Update Successful",
             "Foreign visit information updated successfully.",
-            "base.php?page=ShowDashboard"
+            "template/base.php?page=view_visits"
         );
     } else {
         echo $stmt->error;
@@ -191,7 +191,7 @@ if ($update) {
         successBox(
             "Entry Successful",
             "New foreign visit record added successfully.",
-            "base.php?page=NewEntry"
+            "template/base.php?page=NewEntry"
         );
     } else {
         echo $stmt->error;
