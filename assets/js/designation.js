@@ -4,17 +4,25 @@ document.addEventListener('DOMContentLoaded', function() {
     const office = document.getElementById('office');
     const designation = document.getElementById('designation');
     const form = document.getElementById('foreignVisitForm');
+
+    // The selected designation for edit mode (empty for new entries)
     const selectedDesignation = designation.dataset.selected || "";
 
-    // Load Designation dynamically based on selected office
+    /**
+     * Load designation options based on selected office
+     */
     function loadDesignation() {
         if (!office.value) {
             designation.innerHTML = '<option value="">Select Office First</option>';
             return;
         }
 
+        // Fetch the designations from the corresponding office file
         fetch(`../data/designation/${office.value}.txt`)
-            .then(response => response.text())
+            .then(response => {
+                if (!response.ok) throw new Error("Network response was not ok");
+                return response.text();
+            })
             .then(text => {
                 designation.innerHTML = '<option value="">Select</option>';
                 text.split('\n').forEach(d => {
@@ -23,6 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         const option = document.createElement('option');
                         option.value = d;
                         option.textContent = d;
+                        // Pre-select if editing
                         if (d === selectedDesignation) option.selected = true;
                         designation.appendChild(option);
                     }
@@ -31,15 +40,17 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(err => console.error("Failed to load designations:", err));
     }
 
-    // Event listener for office change
+    // Load designations whenever office changes
     office.addEventListener('change', loadDesignation);
 
-    // If editing, load designation initially
+    // Load designations on page load if in edit mode
     if (selectedDesignation) {
         loadDesignation();
     }
 
-    // Front-end validation for required fields
+    /**
+     * Front-end validation for required fields
+     */
     form.addEventListener('submit', function(e) {
         let valid = true;
         let firstInvalid = null;

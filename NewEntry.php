@@ -18,16 +18,19 @@ if (!in_array((int)$_SESSION['role_id'], [1,2,5], true)) {
 $update = false;
 $data = [];
 
-if (!empty($_GET['edit'])) {
+if (!empty($_GET['edit']) || !empty($_GET['id'])) {
+
     $update = true;
-    $id = (int)$_GET['edit'];
+    $id = isset($_GET['edit']) ? (int)$_GET['edit'] : (int)$_GET['id'];
 
     $stmt = $db->prepare("SELECT * FROM ForeignVisit WHERE ID=?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
     $data = $stmt->get_result()->fetch_assoc();
 
-    if (!$data) exit("Record not found");
+    if (!$data) {
+        exit("Record not found");
+    }
 }
 ?>
 
@@ -146,7 +149,7 @@ foreach(file("../data/countries.txt", FILE_IGNORE_NEW_LINES) as $c){
 <option value="">Select</option>
 <?php
 foreach(file("../data/fund.txt", FILE_IGNORE_NEW_LINES) as $f){
-    $sel = (($data['Fund']??'')==$f)?'selected':'';
+    $sel = (($data['FundingSource']??'')==$f)?'selected':'';
     echo "<option $sel>$f</option>";
 }
 ?>
@@ -156,12 +159,12 @@ foreach(file("../data/fund.txt", FILE_IGNORE_NEW_LINES) as $f){
 <!-- Dates -->
 <div class="fvt-group">
 <label>From Date <span class="required">*</span></label>
-<input type="date" name="from_date" class="fvt-input" required value="<?= $data['FromDate'] ?? '' ?>">
+<input type="date" name="from_date" class="fvt-input" required value="<?= $data['StartDate'] ?? '' ?>">
 </div>
 
 <div class="fvt-group">
 <label>To Date <span class="required">*</span></label>
-<input type="date" name="to_date" class="fvt-input" required value="<?= $data['ToDate'] ?? '' ?>">
+<input type="date" name="to_date" class="fvt-input" required value="<?= $data['EndDate'] ?? '' ?>">
 </div>
 
 <div class="fvt-group">

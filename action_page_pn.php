@@ -1,106 +1,203 @@
-<?php 
-// Include the database configuration file  
-include("config.php");  
+<?php
 session_start();
-if(isset($_SESSION['login_user'])) {
-    $word = $_SESSION['login_user'];
-    //echo "Welcome, " . $word; 
-} else {
-    die("<br><br><center>You are presently logged out. Please log in to access this page. <br> <br> <a href = ./Login.php> Click here to log in </a></center>");
+require_once "config.php";
+
+/* =========================
+   AUTHORIZATION
+========================= */
+if (!isset($_SESSION['role_id'])) {
+    header("Location: auth/login.php");
+    exit;
 }
 
-$serviceID = $_POST['serviceID'];
-$office = $_POST['office'];
-$name = $_POST['name'];
-
-if ($_POST['update'] == true){   
-    $designation = $_POST['designation'];
-}
-if ($_POST['update'] == false){   
-    $designation2 = $_POST['designation2']; 
-}  
-
-if ($_POST['update'] == true){   
-    $cadre = $_POST['cadreEdit'];
-}
-if ($_POST['update'] == false){   
-    $cadre = $_POST['cadreName']; 
-}  
-
-$grade = $_POST['grade'];
-$passport = $_POST['passport'];
-$expiryDate = $_POST['expiryDate'];
-$nidnum = $_POST['nidnum']; 
-
-if($serviceID==""){
-    die("<br><br><center>Sorry. <b> The Service ID field cannot be left empty. </b> Please resubmit with valid input. <br> <br> <a href = ./NewEntry.php> Click here to retry </a></center>");
-}
-if($cadre==""){
-    die("<br><br><center>Sorry. <b> The Cadre field cannot be left empty. </b> Please resubmit with valid input. <br> <br> <a href = ./NewEntry.php> Click here to retry </a></center>");
-}
-if($name==""){
-    die("<br><br><center>Sorry. <b>The Name field cannot be left empty. </b> Please resubmit with valid input. <br> <br> <a href = ./NewEntry.php> Click here to retry </a></center>");
-}
-if ($_POST['update'] == true){   
-    if($designation==""){
-        die("<br><br><center>Sorry. <b>The Designation field cannot be left empty. </b> Please resubmit with valid input. <br> <br> <a href = ./NewEntry.php> Click here to retry </a></center>");
-    }
-}
-if ($_POST['update'] == false){   
-    if($designation2==""){
-        die("<br><br><center>Sorry. <b>The Designation field cannot be left empty. </b> Please resubmit with valid input. <br> <br> <a href = ./NewEntry.php> Click here to retry </a></center>"); 
-    } 
+if (!in_array((int)$_SESSION['role_id'], [1,2,5], true)) {
+    die("Unauthorized access.");
 }
 
-if (!preg_match("/^[a-zA-Z. ]*$/",$name)) { 
-  //$nameErr = "Only letters and white space allowed";
-    die("<br><br><center>Sorry. <b>Only letters and white space are allowed in the Name field.</b> Please resubmit with valid input. <br> <br> <a href = ./NewEntry.php> Click here to retry </a></center>");
-} 
-if ($_POST['update'] == true){   
-    $id = $_POST['id'];  
-      
-    $record = "UPDATE PassNID SET ServiceID ='$serviceID', Cadre = '$cadre', Office = '$office', Name = '$name', Designation = '$designation', Grade = '$grade', Passport = '$passport', ExpiryDate = '$expiryDate', NID_Num = '$nidnum', Uploader = '$word' WHERE ID = '$id' ";    
-    //echo "Edit Successful.";  
-    $_SESSION['message'] = "Address updated!";      
-    //GO = '$fileName' 
-
-    if ($db->query($record) === TRUE) { 
-        echo "<br><br><br><br><center> Thank you for updating the Passport/NID information. <br> <br>";
-        //echo "<br> <br> Dropdown Workplace is ".$wkplc."<br>"; 
-        echo "<a href= ./ActionType.php>Click here to go back to home page</a> </center>";
-    
-    } else {
-        echo "Error: " . $record . "<br>" . $conn->error;
-    }  
-} 
-
-if ($_POST['update'] == false) { 
-
-    $check_sql = "SELECT * from PassNID WHERE ServiceID = " . $serviceID . " AND Cadre = '" . $cadre . "'";
-    $check_result = mysqli_query($db,$check_sql);
-    $check_count = mysqli_num_rows($check_result);
-
-    if ($check_count == 0) {
-
-        $sql = "INSERT INTO PassNID (ServiceID, Cadre, Office, Name, Designation, Grade, Passport, ExpiryDate, NID_Num, Uploader) VALUES ('".$serviceID."','".$cadre."','".$office."','".$name."','".$designation2."','".$grade."','".$passport."','".$expiryDate."','".$nidnum."','".$word."')"; 
-
-        if ($db->query($sql) === TRUE) {  
-            echo "<br><br><br><br><center> Thank you for entering Passport/NID information. <br> <br>";
+/* =========================
+   SUCCESS MESSAGE FUNCTION
+========================= */
+function successBox($title, $message, $link) {
+    echo "
+    <div style='
+        max-width:520px;
+        margin:70px auto;
+        padding:35px;
+        text-align:center;
+        border-radius:8px;
+        background:#f4fff6;
+        border:1px solid #28a745;
+        font-family:Arial'>
         
-            echo "<a href= ./ActionType.php>Click here to go back to home page</a> </center>";
+        <img src='SuccessIcon.png' width='120'><br><br>
+        <h3 style='color:#28a745;'>$title</h3>
+        <p>$message</p><br>
+        <a href='$link' style='
+            padding:10px 25px;
+            background:#28a745;
+            color:#fff;
+            text-decoration:none;
+            border-radius:5px;'>Go Back</a>
+    </div>";
+}
 
-        }
+/* =========================
+   DELETE RECORD + FILES
+========================= */
+if (isset($_GET['delete'])) {
 
-        else {
-            echo "Error: " . $sql . "<br>" . $conn->error;    
-        }
+    $id = (int)$_GET['delete'];
+
+    // 1️⃣ Get main GO file
+    $stmt = $db->prepare("SELECT GO FROM ForeignVisit WHERE ID=?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $res = $stmt->get_result()->fetch_assoc();
+
+    if (!$res) die("Record not found.");
+
+    // Delete main GO file
+    if (!empty($res['GO'])) {
+        $file = "uploads/" . $res['GO'];
+        if (file_exists($file)) unlink($file);
     }
 
-    else if ($check_count > 0) {
-        echo "<br><br><br><br><center> Sorry. Passport/NID information of <b> Service ID: " . $serviceID . " of " . $cadre . " cadre </b> have already been entered. <br> <br>";
-        echo "Please <a href= ./PN_ReportType.php>Click here</a> to edit this person's Passport/NID information. </center>";
-    }    
-} 
+    // 2️⃣ Delete Revised GO files
+    $stmt = $db->prepare("SELECT RevGO FROM RevisedGO WHERE ID=?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $r = $stmt->get_result();
+    while ($row = $r->fetch_assoc()) {
+        $f = "uploads/" . $row['RevGO'];
+        if (file_exists($f)) unlink($f);
+    }
 
-$db->close(); 
-?> 
+    // 3️⃣ Delete DB records
+    $db->query("DELETE FROM RevisedGO WHERE ID=$id");
+    $db->query("DELETE FROM ForeignVisit WHERE ID=$id");
+
+    // 4️⃣ Show success message
+    successBox(
+        "Deleted Successfully",
+        "Record and all related files were removed.",
+        "base.php?page=ShowDashboard"
+    );
+
+    exit;
+}
+
+/* =========================
+   GET POST DATA
+========================= */
+$update = isset($_POST['update']) && $_POST['update'] == 1;
+$id     = (int)($_POST['id'] ?? 0);
+
+$serviceID   = (int)($_POST['serviceID'] ?? 0);
+$cadre       = $_POST['cadreName'] ?? '';
+$office      = $_POST['office'] ?? '';
+$name        = $_POST['name'] ?? '';
+$designation = $_POST['designation'] ?? '';
+$grade       = $_POST['grade'] ?? '';
+$workplace   = $_POST['workplace'] ?? '';
+$destCountry = $_POST['destination_country'] ?? '';
+$funding     = $_POST['fund'] ?? '';
+$purpose     = $_POST['purpose'] ?? '';
+$startDate   = $_POST['from_date'] ?? '';
+$endDate     = $_POST['to_date'] ?? '';
+$actualDep   = $_POST['actual_departure'] ?? '';
+$actualArr   = $_POST['actual_arrival'] ?? '';
+$uploader    = $_SESSION['login_user'] ?? '';
+
+/* =========================
+   BASIC VALIDATION
+========================= */
+if ($serviceID <= 0 || empty($name) || empty($designation) || empty($startDate) || empty($endDate)) {
+    die("Required fields missing.");
+}
+
+$dateS = strtotime($startDate);
+$dateE = strtotime($endDate);
+$days  = (int)(($dateE - $dateS) / 86400) + 1;
+if ($days <= 0) die("Invalid date range.");
+
+/* =========================
+   FILE UPLOAD
+========================= */
+$fileName = '';
+if (!empty($_FILES['go_file']['name'])) {
+    $fileName = time() . "_" . basename($_FILES['go_file']['name']);
+    if (!move_uploaded_file($_FILES['go_file']['tmp_name'], "uploads/" . $fileName)) {
+        die("File upload failed.");
+    }
+}
+
+/* =========================
+   UPDATE
+========================= */
+if ($update) {
+
+    $stmt = $db->prepare("
+        UPDATE ForeignVisit SET
+        ServiceID=?, Cadre=?, Office=?, Name=?, Designation=?, Grade=?, Workplace=?,
+        DestinationCountry=?, FundingSource=?, Purpose=?, StartDate=?, EndDate=?,
+        ActualDeparture=?, ActualArrival=?, Days=?, Uploader=?
+        WHERE ID=?
+    ");
+
+    $stmt->bind_param(
+        "isssssssssssssssi",
+        $serviceID, $cadre, $office, $name, $designation, $grade, $workplace,
+        $destCountry, $funding, $purpose, $startDate, $endDate,
+        $actualDep, $actualArr, $days, $uploader, $id
+    );
+
+    if ($stmt->execute()) {
+
+        if ($fileName) {
+            $stmt2 = $db->prepare("INSERT INTO RevisedGO (ID, RevGO) VALUES (?,?)");
+            $stmt2->bind_param("is", $id, $fileName);
+            $stmt2->execute();
+        }
+
+        successBox(
+            "Update Successful",
+            "Foreign visit information updated successfully.",
+            "base.php?page=ShowDashboard"
+        );
+    } else {
+        echo $stmt->error;
+    }
+
+/* =========================
+   INSERT
+========================= */
+} else {
+
+    $stmt = $db->prepare("
+        INSERT INTO ForeignVisit
+        (ServiceID, Cadre, Office, Name, Designation, Grade, Workplace,
+        DestinationCountry, FundingSource, Purpose, StartDate, EndDate,
+        ActualDeparture, ActualArrival, Days, GO, Uploader)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+    ");
+
+    $stmt->bind_param(
+        "issssissssssssiss",
+        $serviceID, $cadre, $office, $name, $designation, $grade, $workplace,
+        $destCountry, $funding, $purpose, $startDate, $endDate,
+        $actualDep, $actualArr, $days, $fileName, $uploader
+    );
+
+    if ($stmt->execute()) {
+        successBox(
+            "Entry Successful",
+            "New foreign visit record added successfully.",
+            "base.php?page=NewEntry"
+        );
+    } else {
+        echo $stmt->error;
+    }
+}
+
+$db->close();
+?>

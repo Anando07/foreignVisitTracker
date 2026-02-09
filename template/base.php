@@ -1,5 +1,7 @@
 <?php
+error_reporting(E_ALL ^ E_NOTICE);
 session_start();
+include("../config.php");
 
 // Redirect to login if not logged in
 if (!isset($_SESSION['role_id'])) {

@@ -1,8 +1,4 @@
 <?php
-error_reporting(E_ALL ^ E_NOTICE);
-session_start();
-include("../config.php");
-
 // Fetch all visits
 $sql = "SELECT * FROM ForeignVisit ORDER BY ID DESC";
 $visits = mysqli_query($db, $sql);
@@ -71,7 +67,10 @@ $allVisits = mysqli_fetch_all($visits, MYSQLI_ASSOC);
                 <td><?= htmlspecialchars($visit["Uploader"]) ?></td>
                 <td>
                     <button title="View" class="btn btn-sm btn-info" onclick="window.location.href='base.php?page=view_visit&id=<?= $visit['ID'] ?>'">👁️</button>
-                    <button title="Edit" class="btn btn-sm btn-warning" onclick="window.location.href='base.php?page=NewEntry&id=<?= $visit['ID'] ?>'">✏️</button>
+                    <button title="Edit" class="btn btn-sm btn-warning"
+                        onclick="window.location.href='base.php?page=NewEntry&edit=<?= $visit['ID'] ?>'">
+                        ✏️
+                    </button>
                     <button title="Delete" class="btn btn-sm btn-danger" onclick="confirmDeleteVisit(<?= $visit['ID'] ?>)">🗑️</button>
                 </td>
             </tr>
