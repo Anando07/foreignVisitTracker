@@ -1,6 +1,22 @@
+Senior Secretary
 Secretary
 Additional Secretary
 Joint Secretary
 Deputy Secretary
-Senior Assistant Secretary
+System Analyst
+Sr. Asssistant Secretary
+Programmer
 Assistant Secretary
+Assistant Programmer
+Assistant Maintenance Engineer
+Administrative Officer
+Personal Officer
+Assistant Accounts Officer
+Computer Operator
+Accountant
+Supervisor
+UDA
+DEO
+Office Assistant
+Office Sohayak
+Others

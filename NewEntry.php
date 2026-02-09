@@ -96,10 +96,10 @@ foreach($offices as $k=>$v){
 <div class="fvt-group">
 <label>Grade <span class="required">*</span></label>
 <select name="grade" class="fvt-input" required>
-<option value="">Select</option>
-<?php for($i=1;$i<=20;$i++): ?>
-<option value="<?= $i ?>" <?= (($data['Grade']??'')==$i)?'selected':'' ?>><?= $i ?></option>
-<?php endfor; ?>
+    <option value="">Select</option>
+    <?php for($i=1; $i<=20; $i++): ?>
+        <option value="<?= $i ?>" <?= (($data['Grade']??'')==$i)?'selected':'' ?>>Grade-<?= $i ?></option>
+    <?php endfor; ?>
 </select>
 </div>
 
@@ -127,14 +127,16 @@ foreach(file("../data/countries.txt", FILE_IGNORE_NEW_LINES) as $c){
 <div class="fvt-group">
 <label>Purpose <span class="required">*</span></label>
 <select name="purpose" class="fvt-input" required>
-<option value="">Select</option>
-<?php
-foreach(file("../data/visit_purpose.txt", FILE_IGNORE_NEW_LINES) as $p){
-    $sel = (($data['Purpose']??'')==$p)?'selected':'';
-    echo "<option $sel>$p</option>";
-}
-?>
+    <option value="">Select</option>
+    <?php
+    foreach(file("../data/visit_purpose.txt", FILE_IGNORE_NEW_LINES) as $line){
+        list($code, $display) = explode('|', $line);
+        $sel = (($data['Purpose']??'') == $code) ? 'selected' : '';
+        echo "<option value='$code' $sel>$display</option>";
+    }
+    ?>
 </select>
+
 </div>
 
 <!-- Fund -->

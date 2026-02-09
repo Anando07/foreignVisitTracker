@@ -1,5 +1,7 @@
 President
 Member
 Registrar
-Deputy Registrar
 Assistant Registrar
+Revenue Officer
+Assistant Revenue Officer
+Others

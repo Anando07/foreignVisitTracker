@@ -1,4 +1,11 @@
-Government of Bangladesh
+Self
+GoB
+Project
+IO
+FS
+BS
+University
+Employer
 Development Partner
 Donor Fund
 Self Funded
@@ -7,4 +14,4 @@ World Bank
 Asian Development Bank
 IMF
 UNDP
-Other
+Others

@@ -1,7 +1,15 @@
 Chairman
 Member
+Commissioner of Taxes
 Commissioner
+Additional Commissioner of Taxes
 Additional Commissioner
+Joint Commissioner of Taxes
 Joint Commissioner
+First Secretary
+Deputy Commissioner of Taxes
 Deputy Commissioner
+Second Secretary
+Assistant Commissioner of Taxes
 Assistant Commissioner
+Others

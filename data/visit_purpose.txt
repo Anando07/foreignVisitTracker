@@ -1,12 +1,18 @@
-Training
-Workshop
-Seminar
-Conference
-Study Tour
-Official Meeting
-Negotiation
-Bilateral Meeting
-Multilateral Meeting
-Capacity Building
-Technical Assistance
-Other
+Official Trip|Official Trip
+EBL|Ex-Bangladesh leave (Religious/Medical/Family Visit/Tourism etc.)
+Deputation|Deputation
+Study Leave|Study Leave
+Lien|Lien
+EL|Earning Leave
+Training|Training
+Workshop|Workshop
+Seminar|Seminar
+Conference|Conference
+Study Tour|Study Tour
+Official Meeting|Official Meeting
+Negotiation|Negotiation
+Bilateral Meeting|Bilateral Meeting
+Multilateral Meeting|Multilateral Meeting
+Capacity Building|Capacity Building
+Technical Assistance|Technical Assistance
+Other|Other
