@@ -1,6 +1,14 @@
 <?php
 // Fetch all visits
-$sql = "SELECT * FROM ForeignVisit ORDER BY ID DESC";
+$sql = "
+    SELECT 
+        fv.*,
+        a.name AS uploader_name
+    FROM ForeignVisit fv
+    LEFT JOIN admin a ON a.ID = fv.Uploader
+    ORDER BY fv.ID DESC
+";
+
 $visits = mysqli_query($db, $sql);
 $allVisits = mysqli_fetch_all($visits, MYSQLI_ASSOC);
 ?>
@@ -64,14 +72,17 @@ $allVisits = mysqli_fetch_all($visits, MYSQLI_ASSOC);
                     <a href='../uploads/<?= $visit["GO"] ?>' target='_blank'>Click</a>
                     <?= $rev_go_links ?>
                 </td>
-                <td><?= htmlspecialchars($visit["Uploader"]) ?></td>
+                <td><?= htmlspecialchars($visit['uploader_name'] ?? 'N/A') ?></td>
                 <td>
                     <button title="View" class="btn btn-sm btn-info" onclick="window.location.href='base.php?page=view_visit&id=<?= $visit['ID'] ?>'">👁️</button>
                     <button title="Edit" class="btn btn-sm btn-warning"
                         onclick="window.location.href='base.php?page=NewEntry&edit=<?= $visit['ID'] ?>'">
                         ✏️
                     </button>
-                    <button title="Delete" class="btn btn-sm btn-danger" onclick="confirmDeleteVisit(<?= $visit['ID'] ?>)">🗑️</button>
+                    <button class="btn btn-sm btn-danger"
+                        onclick="confirmDeleteVisit(<?= $visit['ID'] ?>)">
+                        🗑️
+                    </button>
                 </td>
             </tr>
             <?php endforeach; ?>
@@ -82,12 +93,22 @@ $allVisits = mysqli_fetch_all($visits, MYSQLI_ASSOC);
     </div>
 </div>
 
-<script>
 // Delete confirmation
-function confirmDeleteVisit(visitId) {
-    if(confirm("Are you sure you want to delete this visit entry?")) {
-        window.location.href = "base.php?page=delete_visit&id=" + visitId;
-    }
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+function confirmDeleteVisit(id) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: 'This record and all files will be permanently deleted!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = "../action_page.php?delete=" + id;
+        }
+    });
 }
 
 // Print Visit Table

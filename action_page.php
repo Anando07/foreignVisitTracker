@@ -105,13 +105,13 @@ $startDate   = $_POST['from_date'] ?? '';
 $endDate     = $_POST['to_date'] ?? '';
 $actualDep   = $_POST['actual_departure'] ?? '';
 $actualArr   = $_POST['actual_arrival'] ?? '';
-$uploader    = $_SESSION['login_user'] ?? '';
+$uploader    = $_SESSION['login_user_id'] ?? '';
 
 /* =========================
    BASIC VALIDATION
 ========================= */
 if ($serviceID <= 0 || empty($name) || empty($designation) || empty($startDate) || empty($endDate)) {
-    die("Required fields missing.");
+    die("Required fields missing!.");
 }
 
 $dateS = strtotime($startDate);
@@ -144,7 +144,7 @@ if ($update) {
     ");
 
     $stmt->bind_param(
-        "isssssssssssssssi",
+        "issssssssssssssii",
         $serviceID, $cadre, $office, $name, $designation, $grade, $workplace,
         $destCountry, $funding, $purpose, $startDate, $endDate,
         $actualDep, $actualArr, $days, $uploader, $id
@@ -181,7 +181,7 @@ if ($update) {
     ");
 
     $stmt->bind_param(
-        "issssissssssssiss",
+        "issssissssssssisi",
         $serviceID, $cadre, $office, $name, $designation, $grade, $workplace,
         $destCountry, $funding, $purpose, $startDate, $endDate,
         $actualDep, $actualArr, $days, $fileName, $uploader
