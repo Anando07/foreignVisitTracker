@@ -58,7 +58,7 @@ $current_page = $page;
 <meta charset="UTF-8">
 <title>FVT - <?= ucfirst($page); ?></title>
 <link rel="stylesheet" href="../assets/css/style.css">
-
+<link rel="stylesheet" href="../assets/css/entry-form.css">
 
 <style>
     /* Example sidebar active link style */
@@ -94,7 +94,7 @@ $current_page = $page;
 
 <script src="../assets/js/sidebar.js"></script>
 <script src="../assets/js/pagination.js"></script>
-
+<script src="../assets/js/designation.js"></script>
 
 </body>
 </html>

@@ -32,9 +32,15 @@
         <!-- Reports -->
         <a class="has-submenu">📑 Reports</a>
         <div class="submenu">
-            <a href="base.php?page=daily_report">Daily Report</a>
-            <a href="base.php?page=monthly_report">Monthly Report</a>
-            <a href="base.php?page=annual_report">Annual Report</a>
+            <a href="base.php?page=individual_report">Time Base Report (Individual)</a>
+            <a href="base.php?page=office_report">Time Base Report (Office)</a>
+            <a href="base.php?page=country_report">Time Base Report (Country)</a>
+            <a href="base.php?page=fund_report">Time Base Report (Fund)</a>
+            <a href="base.php?page=purpose_report">Time Base Report (Purpose)</a>
+            <a href="base.php?page=overall_report">Individual Report(Overall)</a>
+            <a href="base.php?page=unrepoted_report">Unreported Cases</a>
+            <a href="base.php?page=masimum_visit_report">Maximum Visit</a>
+            <a href="base.php?page=summary_report">Summary Report</a>
         </div>
 
         <!-- Settings (roles 1,2) -->
