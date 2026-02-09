@@ -72,7 +72,7 @@ $allVisits = mysqli_fetch_all($visits, MYSQLI_ASSOC);
                     <a href='../uploads/<?= $visit["GO"] ?>' target='_blank'>Click</a>
                     <?= $rev_go_links ?>
                 </td>
-                <td><?= htmlspecialchars($visit['uploader_name'] ?? 'N/A') ?></td>
+                <td><?= htmlspecialchars($visit['uploader_name'] ?? $visit['Uploader']) ?></td>
                 <td>
                     <button title="View" class="btn btn-sm btn-info" onclick="window.location.href='base.php?page=view_visit&id=<?= $visit['ID'] ?>'">👁️</button>
                     <button title="Edit" class="btn btn-sm btn-warning"
