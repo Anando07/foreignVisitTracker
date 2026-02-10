@@ -1,80 +1,115 @@
 <?php
-error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE);
 session_start();
-include("../config.php");
+require_once("../config.php");
 
-// Redirect to login if not logged in
+/* =========================
+   AUTH CHECK
+========================= */
 if (!isset($_SESSION['role_id'])) {
     header("Location: ../auth/login.php");
     exit;
 }
 
-// User info from session
-$user_id        = $_SESSION['login_user_id'];
-$username       = $_SESSION['login_user'];
-$user_fullname  = $_SESSION['user_name'];
-$role_name      = $_SESSION['role_name'];
-$role_id        = (int)$_SESSION['role_id'];
-$designation    = $_SESSION['user_designation'] ?? 'N/A';
-
-// Determine requested page
-$page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
-
-// Map pages to actual file paths (relative to template/)
-$allowed_pages = [
-    'dashboard'             => '../admin/dashboard.php',
-    'home'                  => '../user/home.php',
-    'add_user'              => '../admin/add_user.php',
-    'change_password'       => '../admin/change_password.php',
-    'password_change'       => '../auth/password_change.php',
-    'change_profile'        => '../auth/change_profile.php',
-    'users'                 => '../admin/users.php',
-    'NewEntry'              => '../NewEntry.php',
-    'ShowDashboard'         => '../ShowDashboard.php',
-    'add_visit'             => '../admin/add_visit.php',
-    'view_visits'           => '../view_visits.php',
-    'daily_report'          => '../admin/daily_report.php',
-    'monthly_report'        => '../admin/monthly_report.php',
-    'annual_report'         => '../admin/annual_report.php',
-    'settings'              => '../admin/settings.php'
-];
-
-// Admin-only pages
-$admin_pages = ['dashboard','add_user','change_password','users','add_visit','view_visits','daily_report','monthly_report','annual_report','settings'];
-
-// Redirect non-admins trying to access admin pages
-if (!in_array($role_id, [1,2,3,4,5]) && in_array($page, $admin_pages)) {
-    $page = 'home';
+/* =========================
+   FORCE DASHBOARD AFTER LOGIN
+========================= */
+if (!isset($_GET['page'])) {
+    header("Location: base.php?page=dashboard");
+    exit;
 }
 
-// Get the actual file to include
-$file_to_include = $allowed_pages[$page] ?? null;
+/* =========================
+   SESSION DATA
+========================= */
+$user_id       = $_SESSION['login_user_id'];
+$username      = $_SESSION['login_user'];
+$user_fullname = $_SESSION['user_name'];
+$role_name     = $_SESSION['role_name'];
+$role_id       = (int) $_SESSION['role_id'];
+$designation   = $_SESSION['user_designation'] ?? 'N/A';
 
-// Current page for sidebar highlighting
-$current_page = $page;
+/* =========================
+   PAGE ROUTING
+========================= */
+$page = $_GET['page'] ?? 'dashboard';
+
+/* =========================
+   ALLOWED PAGES
+========================= */
+$allowed_pages = [
+    'dashboard'       => '../admin/dashboard.php',
+    'home'            => '../user/home.php',
+    'add_user'        => '../admin/add_user.php',
+    'change_password' => '../admin/change_password.php',
+    'password_change' => '../auth/password_change.php',
+    'change_profile'  => '../auth/change_profile.php',
+    'users'           => '../admin/users.php',
+    'NewEntry'        => '../NewEntry.php',
+    'ShowDashboard'   => '../ShowDashboard.php',
+    'add_visit'       => '../admin/add_visit.php',
+    'view_visits'     => '../view_visits.php',
+    'daily_report'    => '../admin/daily_report.php',
+    'monthly_report'  => '../admin/monthly_report.php',
+    'annual_report'   => '../admin/annual_report.php',
+    'settings'        => '../admin/settings.php'
+];
+
+/* =========================
+   ADMIN ONLY PAGES
+========================= */
+$admin_pages = [
+    'dashboard',
+    'add_user',
+    'users',
+    'add_visit',
+    'view_visits',
+    'daily_report',
+    'monthly_report',
+    'annual_report',
+    'settings'
+];
+
+/* =========================
+   ROLE VALIDATION
+========================= */
+// Redirect non-admins trying to access admin pages
+if (in_array($page, $admin_pages) && !in_array($role_id, [1])) {
+    $page = 'dashboard'; // default dashboard for other roles
+}
+
+/* =========================
+   FINAL FILE
+========================= */
+$file_to_include = $allowed_pages[$page] ?? null;
+$current_page    = $page;
+
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>FVT - <?= ucfirst($page); ?></title>
+<title>FVT - <?= ucfirst(htmlspecialchars($page)); ?></title>
+
 <link rel="stylesheet" href="../assets/css/style.css">
 <link rel="stylesheet" href="../assets/css/entry-form.css">
 
 <style>
-    /* Example sidebar active link style */
-    .sidebar a.active {
-        background-color: #007bff;
-        color: #fff;
-        padding: 5px 10px;
-        border-radius: 4px;
-    }
+/* Active sidebar link */
+.sidebar a.active {
+    background-color: #007bff;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 4px;
+}
 </style>
 </head>
+
 <body>
 
 <?php include("sidebar.php"); ?>
+
 <div class="fvt-main">
     <?php include("header.php"); ?>
 
@@ -83,12 +118,12 @@ $current_page = $page;
         if ($file_to_include) {
             $full_path = __DIR__ . '/' . $file_to_include;
             if (file_exists($full_path)) {
-                include($full_path);
+                include $full_path;
             } else {
-                echo "<div class='fvt-card'><h3>File '{$file_to_include}' not found!</h3></div>";
+                echo "<div class='fvt-card'><h3>Page file not found!</h3></div>";
             }
         } else {
-            echo "<div class='fvt-card'><h3>Invalid page requested!</h3></div>";
+            echo "<div class='fvt-card'><h3>Invalid page request!</h3></div>";
         }
         ?>
     </div>

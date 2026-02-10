@@ -33,7 +33,7 @@
         <a class="has-submenu">📑 Reports</a>
         <div class="submenu">
             <a href="base.php?page=individual_report">Time Base Report (Individual)</a>
-            <?php if (in_array($role_id, [1,5])): ?>
+            <?php if (in_array($role_id, [1,2,5])): ?>
             <a href="base.php?page=office_report">Time Base Report (Office)</a>
             <a href="base.php?page=country_report">Time Base Report (Country)</a>
             <a href="base.php?page=fund_report">Time Base Report (Fund)</a>
