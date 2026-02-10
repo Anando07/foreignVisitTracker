@@ -14,6 +14,25 @@ body {
     background: #f4f7fa;
     transition: all 0.3s;
 }
+
+.fvt-welcome-card {
+    background: #0de79e;
+    border-radius: 12px;
+    padding: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    max-width: 1100px;
+    margin: 2px auto 20px auto; /* top:5px, bottom:20px, center horizontally */
+}
+
+.fvt-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    max-width: 1100px;
+    margin: auto;
+}
+
 /* =========================
    Sidebar
 ========================= */
@@ -134,6 +153,10 @@ body {
     position: sticky;
     top: 0;
     z-index: 10;
+}
+
+.fvt-header {
+    margin-bottom: 5px;
 }
 
 /* Hamburger */

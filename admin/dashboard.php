@@ -94,7 +94,7 @@ while($row = mysqli_fetch_assoc($cadreCounts)){
 <!-- ======================
      WELCOME CARD
 ====================== -->
-<div class="fvt-card">
+<div class="fvt-welcome-card">
     <h3>Welcome Back, <?= htmlspecialchars($user_fullname); ?> 👋</h3>
     <p><?= htmlspecialchars($designation); ?> | Manage your tasks according to your role permissions.</p>
 </div>
