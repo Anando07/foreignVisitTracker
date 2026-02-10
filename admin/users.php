@@ -64,41 +64,48 @@ $allUsers = mysqli_fetch_all($users, MYSQLI_ASSOC);
 <script>
 // Delete confirmation (global)
 function confirmDelete(userId) {
-    // First fetch the data from delete_user.php
-    fetch(`../admin/delete_user.php?id=${userId}`)
+    // First, check if user can be deleted
+    fetch(`../admin/delete_user.php?id=${userId}&action=check`)
         .then(response => response.json())
         .then(data => {
-            const userName = data.userName || "Unknown";
+            const fullName = data.name || "Unknown";
 
             if (!data.canDelete) {
-                // User cannot be deleted
                 Swal.fire({
                     icon: 'error',
                     title: 'Cannot Delete!',
                     text: data.message
                 });
             } else {
-                // Show confirmation modal to delete
+                // Confirm deletion
                 Swal.fire({
                     title: 'Are you sure?',
-                    text: `Do you want to delete user ${userName}?`,
+                    text: `Do you want to delete user ${fullName}?`,
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonText: 'Yes, delete!',
                     cancelButtonText: 'Cancel',
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        // Actually delete now
-                        fetch(`../admin/delete_user.php?id=${userId}`)
+                        // Actually delete
+                        fetch(`../admin/delete_user.php?id=${userId}&action=delete`)
                             .then(res => res.json())
                             .then(delData => {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Deleted!',
-                                    text: delData.message,
-                                    timer: 1500,
-                                    showConfirmButton: false
-                                }).then(() => location.reload());
+                                if (delData.canDelete) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Deleted!',
+                                        text: delData.message,
+                                        timer: 1500,
+                                        showConfirmButton: false
+                                    }).then(() => location.reload());
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error!',
+                                        text: delData.message
+                                    });
+                                }
                             });
                     }
                 });
@@ -106,7 +113,6 @@ function confirmDelete(userId) {
         })
         .catch(err => console.error(err));
 }
-
 </script>
 <script>
 function printTable() {
