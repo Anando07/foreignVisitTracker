@@ -19,7 +19,6 @@ $update = false;
 $data = [];
 
 if (!empty($_GET['edit']) || !empty($_GET['id'])) {
-
     $update = true;
     $id = isset($_GET['edit']) ? (int)$_GET['edit'] : (int)$_GET['id'];
 
@@ -39,161 +38,205 @@ if (!empty($_GET['edit']) || !empty($_GET['id'])) {
         <?= $update ? "✏️ Edit Foreign Visit" : "➕ New Foreign Visit Entry" ?>
     </div>
 
-<form id="foreignVisitForm" method="post" action="../action_page.php" enctype="multipart/form-data">
-<input type="hidden" name="update" value="<?= $update?1:0 ?>">
-<input type="hidden" name="id" value="<?= $data['ID'] ?? '' ?>">
+    <form id="foreignVisitForm" method="post" action="../action_page.php" enctype="multipart/form-data">
+        <input type="hidden" name="update" value="<?= $update ? 1 : 0 ?>">
+        <input type="hidden" name="id" value="<?= $data['ID'] ?? '' ?>">
 
-<div class="fvt-grid">
+        <div class="fvt-grid">
 
-<!-- Service ID -->
-<div class="fvt-group">
-<label>Service ID <span class="required">*</span></label>
-<input type="number" name="serviceID" class="fvt-input" required value="<?= $data['ServiceID'] ?? '' ?>">
+            <!-- Service ID -->
+            <div class="fvt-group">
+                <label>Service ID <span class="required">*</span></label>
+                <input type="number" name="serviceID" class="fvt-input" required value="<?= $data['ServiceID'] ?? '' ?>">
+                <div class="error-msg"></div>
+            </div>
+
+            <!-- Cadre -->
+            <div class="fvt-group">
+                <label>Cadre <span class="required">*</span></label>
+                <select name="cadreName" class="fvt-input" required>
+                <option value="">Select</option>
+                <?php
+                foreach(file("../data/cadre.txt", FILE_IGNORE_NEW_LINES) as $line){
+                    [$value,$label] = array_map('trim', explode('|',$line));
+                    $sel = (($data['Cadre'] ?? '') === $value) ? 'selected' : '';
+                    echo "<option value='$value' $sel>$label</option>";
+                }
+                ?>
+                </select>
+                <div class="error-msg"></div>
+            </div>
+
+            <!-- Name -->
+            <div class="fvt-group">
+                <label>Name <span class="required">*</span></label>
+                <input type="text" name="name" class="fvt-input" required value="<?= $data['Name'] ?? '' ?>">
+                <div class="error-msg"></div>
+            </div>
+
+            <!-- Office -->
+            <div class="fvt-group">
+                <label>Office <span class="required">*</span></label>
+                <select name="office" id="office" class="fvt-input" required>
+                <option value="">Select</option>
+                <?php
+                $offices = ["MoF"=>"Ministry of Finance","IRD"=>"IRD","NBR"=>"NBR","NSD"=>"NSD","TAT"=>"TAT","CEVT"=>"CEVT"];
+                foreach($offices as $k=>$v){
+                    $sel = (($data['Office'] ?? '')==$k)?'selected':'';
+                    echo "<option value='$k' $sel>$v</option>";
+                }
+                ?>
+                </select>
+                <div class="error-msg"></div>
+            </div>
+
+            <!-- Designation -->
+            <div class="fvt-group">
+                <label>Designation <span class="required">*</span></label>
+                <select name="designation" id="designation" class="fvt-input" required>
+                <option value="">Select Office First</option>
+                </select>
+                <div class="error-msg"></div>
+            </div>
+
+            <!-- Grade -->
+            <div class="fvt-group">
+                <label>Grade <span class="required">*</span></label>
+                <select name="grade" class="fvt-input" required>
+                <option value="">Select</option>
+                <?php for($i=1; $i<=20; $i++): ?>
+                <option value="<?= $i ?>" <?= (($data['Grade']??'')==$i)?'selected':'' ?>>Grade-<?= $i ?></option>
+                <?php endfor; ?>
+                </select>
+                <div class="error-msg"></div>
+            </div>
+
+            <!-- Workplace -->
+            <div class="fvt-group">
+                <label>Workplace <span class="required">*</span></label>
+                <input type="text" name="workplace" class="fvt-input" required value="<?= $data['Workplace'] ?? '' ?>">
+                <div class="error-msg"></div>
+            </div>
+
+            <!-- Destination Country -->
+            <div class="fvt-group">
+                <label>Destination Country <span class="required">*</span></label>
+                <select name="destination_country" class="fvt-input" required>
+                <option value="">Select</option>
+                <?php
+                foreach(file("../data/countries.txt", FILE_IGNORE_NEW_LINES) as $c){
+                    $sel = (($data['DestinationCountry']??'')==$c)?'selected':'';
+                    echo "<option $sel>$c</option>";
+                }
+                ?>
+                </select>
+                <div class="error-msg"></div>
+            </div>
+
+            <!-- Purpose -->
+            <div class="fvt-group">
+                <label>Purpose <span class="required">*</span></label>
+                <select name="purpose" class="fvt-input" required>
+                <option value="">Select</option>
+                <?php
+                foreach(file("../data/visit_purpose.txt", FILE_IGNORE_NEW_LINES) as $line){
+                    [$code,$display] = explode('|',$line);
+                    $sel = (($data['Purpose']??'')==$code)?'selected':'';
+                    echo "<option value='$code' $sel>$display</option>";
+                }
+                ?>
+                </select>
+                <div class="error-msg"></div>
+            </div>
+
+            <!-- Fund -->
+            <div class="fvt-group">
+                <label>Fund <span class="required">*</span></label>
+                <select name="fund" class="fvt-input" required>
+                <option value="">Select</option>
+                <?php
+                foreach(file("../data/fund.txt", FILE_IGNORE_NEW_LINES) as $f){
+                    $sel = (($data['FundingSource']??'')==$f)?'selected':'';
+                    echo "<option $sel>$f</option>";
+                }
+                ?>
+                </select>
+                <div class="error-msg"></div>
+            </div>
+
+            <!-- Dates -->
+            <div class="fvt-group">
+                <label>From Date <span class="required">*</span></label>
+                <input type="date" name="from_date" class="fvt-input" required value="<?= $data['StartDate'] ?? '' ?>">
+                <div class="error-msg"></div>
+            </div>
+
+            <div class="fvt-group">
+                <label>To Date <span class="required">*</span></label>
+                <input type="date" name="to_date" class="fvt-input" required value="<?= $data['EndDate'] ?? '' ?>">
+                <div class="error-msg"></div>
+            </div>
+
+            <div class="fvt-group">
+                <label>Actual Departure</label>
+                <input type="date" name="actual_departure" class="fvt-input" value="<?= $data['ActualDeparture'] ?? '' ?>">
+                <div class="error-msg"></div>
+            </div>
+
+            <div class="fvt-group">
+                <label>Actual Arrival</label>
+                <input type="date" name="actual_arrival" class="fvt-input" value="<?= $data['ActualArrival'] ?? '' ?>">
+                <div class="error-msg"></div>
+            </div>
+
+            <!-- GO File -->
+            <div class="fvt-group">
+                <label>GO / Order File <?= $update?'':'<span class="required">*</span>' ?></label>
+                <input type="file" name="go_file" class="fvt-input" <?= $update?'':'required' ?>>
+                <div class="error-msg"></div>
+            </div>
+
+        </div>
+
+        <div class="fvt-actions">
+            <button type="reset" class="fvt-btn fvt-btn-secondary">Reset</button>
+            <button type="submit" class="fvt-btn fvt-btn-success"><?= $update?'Update':'Submit' ?></button>
+        </div>
+    </form>
 </div>
-
-<!-- Cadre -->
-<div class="fvt-group">
-<label>Cadre <span class="required">*</span></label>
-<select name="cadreName" id="cadreName" class="fvt-input" required>
-<option value="">Select</option>
-<?php
-foreach (file("../data/cadre.txt", FILE_IGNORE_NEW_LINES) as $line) {
-    [$value, $label] = array_map('trim', explode('|', $line));
-    $sel = (($data['Cadre'] ?? '') === $value) ? 'selected' : '';
-    echo "<option value=\"$value\" $sel>$label</option>";
-}
-?>
-</select>
-</div>
-
-<!-- Name -->
-<div class="fvt-group">
-<label>Name <span class="required">*</span></label>
-<input type="text" name="name" class="fvt-input" required value="<?= $data['Name'] ?? '' ?>">
-</div>
-
-<!-- Office -->
-<div class="fvt-group">
-<label>Office <span class="required">*</span></label>
-<select name="office" id="office" class="fvt-input" required>
-<option value="">Select</option>
-<?php
-$offices = ["MoF"=>"Ministry of Finance","IRD"=>"IRD","NBR"=>"NBR","NSD"=>"NSD","TAT"=>"TAT","CEVT"=>"CEVT"];
-foreach($offices as $k=>$v){
-    $sel = (($data['Office'] ?? '')==$k)?'selected':'';
-    echo "<option value='$k' $sel>$v</option>";
-}
-?>
-</select>
-</div>
-
-<!-- Designation -->
-<div class="fvt-group">
-<label>Designation <span class="required">*</span></label>
-<select name="designation" id="designation" class="fvt-input" required>
-<option value="">Select Office First</option>
-</select>
-</div>
-
-<!-- Grade -->
-<div class="fvt-group">
-<label>Grade <span class="required">*</span></label>
-<select name="grade" class="fvt-input" required>
-    <option value="">Select</option>
-    <?php for($i=1; $i<=20; $i++): ?>
-        <option value="<?= $i ?>" <?= (($data['Grade']??'')==$i)?'selected':'' ?>>Grade-<?= $i ?></option>
-    <?php endfor; ?>
-</select>
-</div>
-
-<!-- Workplace -->
-<div class="fvt-group">
-<label>Workplace <span class="required">*</span></label>
-<input type="text" name="workplace" class="fvt-input" required value="<?= $data['Workplace'] ?? '' ?>">
-</div>
-
-<!-- Destination Country -->
-<div class="fvt-group">
-<label>Destination Country <span class="required">*</span></label>
-<select name="destination_country" class="fvt-input" required>
-<option value="">Select</option>
-<?php
-foreach(file("../data/countries.txt", FILE_IGNORE_NEW_LINES) as $c){
-    $sel = (($data['DestinationCountry']??'')==$c)?'selected':'';
-    echo "<option $sel>$c</option>";
-}
-?>
-</select>
-</div>
-
-<!-- Purpose -->
-<div class="fvt-group">
-<label>Purpose <span class="required">*</span></label>
-<select name="purpose" class="fvt-input" required>
-    <option value="">Select</option>
-    <?php
-    foreach(file("../data/visit_purpose.txt", FILE_IGNORE_NEW_LINES) as $line){
-        list($code, $display) = explode('|', $line);
-        $sel = (($data['Purpose']??'') == $code) ? 'selected' : '';
-        echo "<option value='$code' $sel>$display</option>";
-    }
-    ?>
-</select>
-
-</div>
-
-<!-- Fund -->
-<div class="fvt-group">
-<label>Fund <span class="required">*</span></label>
-<select name="fund" class="fvt-input" required>
-<option value="">Select</option>
-<?php
-foreach(file("../data/fund.txt", FILE_IGNORE_NEW_LINES) as $f){
-    $sel = (($data['FundingSource']??'')==$f)?'selected':'';
-    echo "<option $sel>$f</option>";
-}
-?>
-</select>
-</div>
-
-<!-- Dates -->
-<div class="fvt-group">
-<label>From Date <span class="required">*</span></label>
-<input type="date" name="from_date" class="fvt-input" required value="<?= $data['StartDate'] ?? '' ?>">
-</div>
-
-<div class="fvt-group">
-<label>To Date <span class="required">*</span></label>
-<input type="date" name="to_date" class="fvt-input" required value="<?= $data['EndDate'] ?? '' ?>">
-</div>
-
-<div class="fvt-group">
-<label>Actual Departure</label>
-<input type="date" name="actual_departure" class="fvt-input" value="<?= $data['ActualDeparture'] ?? '' ?>">
-</div>
-
-<div class="fvt-group">
-<label>Actual Arrival</label>
-<input type="date" name="actual_arrival" class="fvt-input" value="<?= $data['ActualArrival'] ?? '' ?>">
-</div>
-
-<!-- GO File -->
-<div class="fvt-group">
-<label>GO / Order File <?= $update?'':'<span class="required">*</span>' ?></label>
-<input type="file" name="go_file" class="fvt-input" <?= $update?'':'required' ?>>
-</div>
-
-</div>
-
-<div class="fvt-actions">
-<a href="base.php?page=ShowDashboard" class="fvt-btn fvt-btn-secondary">Cancel</a>
-<button type="submit" class="fvt-btn fvt-btn-success"><?= $update?'Update':'Submit' ?></button>
-</div>
-</form>
-
 <script>
-    // Pass selected designation for edit mode
-    document.getElementById('designation').dataset.selected = "<?= $data['Designation'] ?? '' ?>";
+// Frontend validation
+document.getElementById("foreignVisitForm").addEventListener("submit",function(e){
+    let ok=true;
+    document.querySelectorAll(".error-msg").forEach(x=>x.innerText="");
+    document.querySelectorAll(".fvt-input").forEach(x=>x.classList.remove("error"));
+
+    function err(el,msg){
+        el.classList.add("error");
+        el.nextElementSibling.innerText=msg;
+        ok=false;
+    }
+
+    document.querySelectorAll(".fvt-input[required]").forEach(el=>{
+        if(!el.value) err(el,"Required");
+    });
+
+    let f=document.querySelector("[name='from_date']").value;
+    let t=document.querySelector("[name='to_date']").value;
+    if(f && t && t<f) err(document.querySelector("[name='to_date']"),"End date cannot be before start date");
+
+    let file=document.querySelector("[name='go_file']");
+    if(file.files.length){
+        let ext=file.files[0].name.split('.').pop().toLowerCase();
+        if(!['pdf','jpg','jpeg'].includes(ext)) err(file,"Only PDF/JPG allowed");
+        if(file.files[0].size>512*1024) err(file,"Max 512 KB");
+    }
+
+    if(!ok) e.preventDefault();
+});
 </script>
 
-
+<script>
+// Pass selected designation for edit mode
+document.getElementById('designation').dataset.selected = "<?= $data['Designation'] ?? '' ?>";
+</script>

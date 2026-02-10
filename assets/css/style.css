@@ -118,10 +118,52 @@ body {
 /* Search input */
 .fvt-input { width: 250px; padding: 8px 10px; border: 1px solid #ccc; border-radius: 4px; }
 
-/* Clickable stat box */
-.stat-box.clickable { cursor: pointer; }
-.stat-box.clickable:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+/* Stats Grid */
+.fvt-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
 
+/* Stat Box (Rectangle Style) */
+.stat-box {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;          /* small radius = rectangle look */
+  padding: 24px 20px;
+  text-align: center;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+/* Clickable behavior */
+.stat-box.clickable {
+  cursor: pointer;
+}
+
+/* Hover effect */
+.stat-box.clickable:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+  border-color: #2563eb;
+}
+
+/* Number */
+.stat-box h2 {
+  font-size: 34px;
+  font-weight: 700;
+  color: #2563eb;
+  margin-bottom: 6px;
+}
+
+/* Label */
+.stat-box p {
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b7280;
+  margin: 0;
+}
 /* Responsive */
 @media(max-width:768px){
     .fvt-sidebar { position: fixed; z-index: 100; height: 100vh; }

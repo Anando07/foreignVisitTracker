@@ -1,205 +1,241 @@
-<?php 
-// Include the database configuration file  
-include("config.php");
+<?php
 session_start();
-if(isset($_SESSION['login_user'])) {
-    $word = $_SESSION['login_user'];
-    //echo "Welcome, " . $word; 
-} else {
-    die("<br><br><center>You are presently logged out. Please log in to access this page. <br> <br> <a href = ./Login.php> Click here to log in </a></center>");
+require_once "config.php";
+
+/* =========================
+   AUTHORIZATION
+========================= */
+if (!isset($_SESSION['role_id'])) {
+    header("Location: auth/login.php");
+    exit;
 }
 
-$serviceID = $_POST['serviceID'];
-
-if ($_POST['update'] == false){ 
-   $cadre = $_POST['cadreName'];//cadreOthers
-	
-	if($cadre == "Other Cadres") {
-    		$cadre = $_POST['cadreOthers'];
-	}
+if (!in_array((int)$_SESSION['role_id'], [1,2,5], true)) {
+    die("Unauthorized access.");
 }
 
-if ($_POST['update'] == true){ 
-$cadreEdit = $_POST['cadreEdit'];//cadreOthers
-}
-
-$office = $_POST['office'];
-$name = $_POST['name'];
-
-if ($_POST['update'] == true){   
-    $designation = $_POST['designation'];
-    /*if($designation == "Others") {
-        $designation = $_POST['desigOthers']; 
-    }*/
-}
-
-if ($_POST['update'] == false){    
-    $designation2 = $_POST['designation2'];
-    if($designation2 == "Others") {
-        $designation2 = $_POST['desigOthers']; 
-        //echo $designation2;
-    } 
-}  
-
-//$designation2 = $_POST['designation2'];
-$grade = $_POST['grade'];
-$workplace = $_POST['workplace']; 
-$destCountry = $_POST['destCountry'];   
-$startDate = $_POST['StartDate']; 
-$endDate = $_POST['EndDate'];
-
-$actualDeparture = $_POST['ActualDeparture']; 
-$actualArrival = $_POST['ActualArrival']; 
-
-$purpose = $_POST['Purpose'];
-$fundingSource = $_POST['FundingSource'];
-
-$dateS = strtotime($startDate); 
-$dateE = strtotime($endDate);
-$dateDiff = ($dateE - $dateS); 
-$daysInitial = round(($dateDiff)/(60*60*24)); 
-$days = $daysInitial + 1;
-//$days = 5;
-//$GO = $_POST['myfile'];  
-
-if($serviceID==""){
-    die("<br><br><center>Sorry. <b> The Service ID field cannot be left empty. </b> Please resubmit with valid input. <br> <br> <a href = ./NewEntry.php> Click here to retry </a></center>");
-}
-
-if ($_POST['update'] == true){   
-    if($cadreEdit==""){
-        die("<br><br><center>Sorry. <b>The Cadre field cannot be left empty. </b> Please resubmit with valid input. <br> <br> <a href = ./NewEntry.php> Click here to retry </a></center>");
-    }
-}
-if ($_POST['update'] == false){   
-    if($cadre==""){
-        die("<br><br><center>Sorry. <b>The Cadre field cannot be left empty. </b> Please resubmit with valid input. <br> <br> <a href = ./NewEntry.php> Click here to retry </a></center>"); 
-    }
-}
-
-if($name==""){
-    die("<br><br><center>Sorry. <b>The Name field cannot be left empty. </b> Please resubmit with valid input. <br> <br> <a href = ./NewEntry.php> Click here to retry </a></center>");
-}
-if ($_POST['update'] == true){   
-    if($designation==""){
-        die("<br><br><center>Sorry. <b>The Designation field cannot be left empty. </b> Please resubmit with valid input. <br> <br> <a href = ./NewEntry.php> Click here to retry </a></center>");
-    }
-}
-if ($_POST['update'] == false){   
-    if($designation2==""){
-        die("<br><br><center>Sorry. <b>The Designation field cannot be left empty. </b> Please resubmit with valid input. <br> <br> <a href = ./NewEntry.php> Click here to retry </a></center>"); 
-    }
-}
-if($workplace==""){
-    die("<br><br><center>Sorry. <b>The Workplace field cannot be left empty. </b> Please resubmit with valid input. <br> <br> <a href = ./NewEntry.php> Click here to retry </a></center>");
-}
-if($destCountry==""){
-    die("<br><br><center>Sorry. <b>The Destination Country field cannot be left empty. </b> Please resubmit with valid input. <br> <br> <a href = ./NewEntry.php> Click here to retry </a></center>");
-}
-if($startDate==""){
-    die("<br><br><center>Sorry. <b>The Start Date field cannot be left empty. </b> Please resubmit with valid input. <br> <br> <a href = ./NewEntry.php> Click here to retry </a></center>");
-}
-if($endDate==""){
-    die("<br><br><center>Sorry. <b>The End Date field cannot be left empty. </b> Please resubmit with valid input. <br> <br> <a href = ./NewEntry.php> Click here to retry </a></center>");
-}
-if($purpose==""){
-    die("<br><br><center>Sorry. <b>The Purpose of visit cannot be left empty. </b> Please resubmit with valid input. <br> <br> <a href = ./NewEntry.php> Click here to retry </a></center>");
-}
-if($days < 0){
-     echo "<br> <br> <br>";
-     echo '<html> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="cross.png" alt = "Success" width="150" height="150" > </html>'; 
-    die("<br><br><center>Sorry. <b>End Date cannot be earlier than the Start Date. </b> Please resubmit with valid input. <br> <br> <a href = ./NewEntry.php> Click here to retry </a></center>");
-}
-if (!preg_match("/^[a-zA-Z. ]*$/",$name)) { //!preg_match("/^[a-zA-Z ]*$/",$name)
-  //$nameErr = "Only letters and white space allowed";
-     echo "<br> <br> <br>";
-     echo '<html> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="cross.png" alt = "Success" width="150" height="150" > </html>';
-    die("<br><br><center>Sorry. <b>Only letters and white space are allowed in the Name field.</b> Please resubmit with valid input. <br> <br> <a href = ./NewEntry.php> Click here to retry </a></center>");
-} 
-
-if(($actualDeparture != "") && ($actualDeparture != "")) {
-    
-    $dateAS = strtotime($actualDeparture); 
-    $dateAE = strtotime($actualArrival);
-    $dateADiff = ($dateAE - $dateAS); 
-    $daysAInitial = round(($dateADiff)/(60*60*24)); 
-    $daysA = $daysAInitial + 1;   
-    
-    if($daysA < 0) {
+/* =========================
+   SUCCESS MESSAGE FUNCTION
+========================= */
+function successBox($title, $message, $link) {
+    echo "
+    <div style='
+        max-width:520px;
+        margin:70px auto;
+        padding:35px;
+        text-align:center;
+        border-radius:8px;
+        background:#f4fff6;
+        border:1px solid #28a745;
+        font-family:Arial'>
         
-        die("<br><br><center>Sorry. <b>Actual Arrival cannot be earlier than the Actual Departure. </b> Please resubmit with valid input. <br> <br> <a href = ./NewEntry.php> Click here to retry </a></center>");     
-    }
-    
+        <img src='SuccessIcon.png' width='120'><br><br>
+        <h3 style='color:#28a745;'>$title</h3>
+        <p>$message</p><br>
+        <a href='$link' style='
+            padding:10px 25px;
+            background:#28a745;
+            color:#fff;
+            text-decoration:none;
+            border-radius:5px;'>Go Back</a>
+    </div>";
 }
-  
-//$days=date_diff($startDate,$endDate);
 
+/* =========================
+   DELETE RECORD + FILES
+========================= */
+if (isset($_GET['delete'])) {
+    $id = (int)$_GET['delete'];
 
+    // Get main GO file
+    $stmt = $db->prepare("SELECT GO FROM ForeignVisit WHERE ID=?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $res = $stmt->get_result()->fetch_assoc();
 
-$t = time();
-$targetDir = "uploads/";
-//$fileName = "xyz.pdf";
-$fileName = basename($_FILES["file"]["name"]);
-$fileName = $t . $fileName;
-$targetFilePath = $targetDir . $fileName;
-$fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION); 
-
-if (move_uploaded_file($_FILES["file"]["tmp_name"], $targetFilePath)){
-    //echo "File Uploaded"; 
-} 
-else{ 
-    echo "File NOT uploaded";
-} 
-//if (isset($_POST['update'])) 
-if ($_POST['update'] == true){   
-    $id = $_POST['id'];  
-      
-    $record = "UPDATE ForeignVisit SET ServiceID ='$serviceID', Cadre = '$cadreEdit', Office = '$office', Name = '$name', Designation = '$designation', Grade = '$grade', Workplace = '$workplace', DestinationCountry = '$destCountry', FundingSource = '$fundingSource', Purpose = '$purpose', StartDate = '$startDate', EndDate = '$endDate', ActualDeparture = '$actualDeparture', ActualArrival = '$actualArrival', Days = '$days', Uploader = '$word' WHERE ID = '$id' ";    
-    //echo "Edit Successful.";  
-    $_SESSION['message'] = "Address updated!";      
-    //GO = '$fileName' 
-
-    $record2 = "INSERT INTO RevisedGO (ID, RevGO) VALUES ('".$id."','".$fileName."')";
-
-    if ($db->query($record) === TRUE) { 
-         echo "<br> <br> <br>";
-         echo '<html> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="SuccessIcon.png" alt = "Success" width="150" height="150" > </html>';  
-        echo "<br><br><br><br><center> Thank you for updating the GO information. <br> <br>";
-        //echo "<br> <br> Dropdown Workplace is ".$wkplc."<br>"; 
-        echo "<a href= ./ActionType.php>Click here to go back to home page</a> </center>";
-    
-    } else {
-        echo "Error: " . $record . "<br>" . $conn->error;
-    } 
-
-    if ($db->query($record2) === TRUE) {
-        //echo "<br><br><br><br><center> Thank you for updating the GO information. <br> <br>"; 
-        //echo "<br> <br> Dropdown Workplace is ".$wkplc."<br>"; 
-        //echo "<a href= ./ActionType.php>Click here to go back to home page</a> </center>"; 
-    
-    } else {
-        echo "Error: " . $record2 . "<br>" . $conn->error;
-    }    
-    //header('location: formBeng.php'); 
-    //die ("Update Successful.");    
-} 
-
-if ($_POST['update'] == false) {
-
-    $sql = "INSERT INTO ForeignVisit (ServiceID, Cadre, Office, Name, Designation, Grade, Workplace, DestinationCountry, FundingSource, Purpose, StartDate, EndDate, ActualDeparture, ActualArrival, Days, GO, Uploader) VALUES ('".$serviceID."','".$cadre."','".$office."','".$name."','".$designation2."','".$grade."','".$workplace."','".$destCountry."','".$fundingSource."','".$purpose."','".$startDate."','".$endDate."','".$actualDeparture."','".$actualArrival."','".$days."','".$fileName."','".$word."')";
-
-    if ($db->query($sql) === TRUE) {  
-         echo "<br> <br> <br>";
-         echo '<html> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="SuccessIcon.png" alt = "Success" width="150" height="150" > </html>';  
-	
-        echo "<br><br><br><br><center> Thank you for entering new GO information. <br> <br>";
-        //echo "<br> <br> Dropdown Workplace is ".$wkplc."<br>";
-        echo "<a href= ./ActionType.php>Click here to go back to home page</a> </center>";
-    
-    } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+    if (!$res) {
+        echo json_encode(['status'=>'error','errors'=>['delete'=>'Record not found.']]);
+        exit;
     }
-} 
 
-$db->close(); 
-?> 
+    // Delete main GO file
+    if (!empty($res['GO'])) {
+        $file = "uploads/" . $res['GO'];
+        if (file_exists($file)) unlink($file);
+    }
+
+    // Delete Revised GO files
+    $stmt = $db->prepare("SELECT RevGO FROM RevisedGO WHERE ID=?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $r = $stmt->get_result();
+    while ($row = $r->fetch_assoc()) {
+        $f = "uploads/" . $row['RevGO'];
+        if (file_exists($f)) unlink($f);
+    }
+
+    // Delete DB records
+    $db->query("DELETE FROM RevisedGO WHERE ID=$id");
+    $db->query("DELETE FROM ForeignVisit WHERE ID=$id");
+
+    successBox(
+        "Deleted Successfully",
+        "Record and all related files were removed.",
+        "template/base.php?page=view_visits"
+    );
+    exit;
+}
+
+/* =========================
+   GET POST DATA
+========================= */
+$update = isset($_POST['update']) && $_POST['update'] == 1;
+$id     = (int)($_POST['id'] ?? 0);
+
+$serviceID   = $_POST['serviceID'] ?? '';
+$cadre       = trim($_POST['cadreName'] ?? '');
+$office      = trim($_POST['office'] ?? '');
+$name        = trim($_POST['name'] ?? '');
+$designation = trim($_POST['designation'] ?? '');
+$grade       = trim($_POST['grade'] ?? '');
+$workplace   = trim($_POST['workplace'] ?? '');
+$destCountry = trim($_POST['destination_country'] ?? '');
+$funding     = trim($_POST['fund'] ?? '');
+$purpose     = trim($_POST['purpose'] ?? '');
+$startDate   = trim($_POST['from_date'] ?? '');
+$endDate     = trim($_POST['to_date'] ?? '');
+$actualDep   = trim($_POST['actual_departure'] ?? '');
+$actualArr   = trim($_POST['actual_arrival'] ?? '');
+$uploader    = $_SESSION['login_user_id'] ?? '';
+
+$errors = [];
+
+/* =========================
+   REQUIRED FIELD VALIDATION
+========================= */
+if ($serviceID === '') {
+    $errors['serviceID'] = "Service ID is required.";
+} elseif (!ctype_digit($serviceID)) {
+    $errors['serviceID'] = "Service ID must be a number.";
+} else {
+    $serviceID = (int)$serviceID; // safe integer
+}
+
+if (empty($cadre)) $errors['cadreName'] = "Cadre is required.";
+if (empty($office)) $errors['office'] = "Office is required.";
+if (empty($name)) $errors['name'] = "Name is required.";
+if (empty($designation)) $errors['designation'] = "Designation is required.";
+if (empty($grade)) $errors['grade'] = "Grade is required.";
+if (empty($workplace)) $errors['workplace'] = "Workplace is required.";
+if (empty($destCountry)) $errors['destination_country'] = "Destination Country is required.";
+if (empty($funding)) $errors['fund'] = "Funding Source is required.";
+if (empty($purpose)) $errors['purpose'] = "Purpose is required.";
+if (empty($startDate)) $errors['from_date'] = "From Date is required.";
+if (empty($endDate)) $errors['to_date'] = "To Date is required.";
+
+/* =========================
+   DATE VALIDATION
+========================= */
+if ($startDate && $endDate) {
+    $dateS = strtotime($startDate);
+    $dateE = strtotime($endDate);
+    if ($dateE < $dateS) $errors['to_date'] = "End date cannot be before start date.";
+    $days = (int)(($dateE - $dateS) / 86400) + 1;
+    if ($days <= 0) $errors['to_date'] = "Invalid date range.";
+} else {
+    $days = 0;
+}
+
+/* =========================
+   FILE VALIDATION
+========================= */
+$fileName = '';
+$fileRequired = !$update;
+
+if (!empty($_FILES['go_file']['name'])) {
+    $file = $_FILES['go_file'];
+    $ext  = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+    $size = $file['size'];
+
+    if (!in_array($ext, ['pdf','jpg','jpeg'])) $errors['go_file'] = "GO file must be PDF or JPG.";
+    if ($size > 512*1024) $errors['go_file'] = "GO file must not exceed 512 KB.";
+
+    if (empty($errors['go_file'])) {
+        $fileName = time() . "_" . basename($file['name']);
+        if (!move_uploaded_file($file['tmp_name'], "uploads/" . $fileName)) {
+            $errors['go_file'] = "Failed to upload file.";
+        }
+    }
+} elseif ($fileRequired) {
+    $errors['go_file'] = "GO file is required.";
+}
+
+/* =========================
+   SHOW ERRORS
+========================= */
+if (!empty($errors)) {
+    // return JSON for frontend to display under each field
+    echo json_encode(['status'=>'error','errors'=>$errors]);
+    exit;
+}
+
+/* =========================
+   INSERT OR UPDATE DB
+========================= */
+if ($update) {
+    $stmt = $db->prepare("
+        UPDATE ForeignVisit SET
+        ServiceID=?, Cadre=?, Office=?, Name=?, Designation=?, Grade=?, Workplace=?,
+        DestinationCountry=?, FundingSource=?, Purpose=?, StartDate=?, EndDate=?,
+        ActualDeparture=?, ActualArrival=?, Days=?, Uploader=?
+        WHERE ID=?
+    ");
+    $stmt->bind_param(
+        "issssssssssssssii",
+        $serviceID, $cadre, $office, $name, $designation, $grade, $workplace,
+        $destCountry, $funding, $purpose, $startDate, $endDate,
+        $actualDep, $actualArr, $days, $uploader, $id
+    );
+
+    if ($stmt->execute()) {
+        if ($fileName) {
+            $stmt2 = $db->prepare("INSERT INTO RevisedGO (ID, RevGO) VALUES (?,?)");
+            $stmt2->bind_param("is", $id, $fileName);
+            $stmt2->execute();
+        }
+        successBox(
+            "Update Successful",
+            "Foreign visit information updated successfully.",
+            "template/base.php?page=view_visits"
+        );
+    } else {
+         echo $stmt->error;
+    }
+} else {
+    $stmt = $db->prepare("
+        INSERT INTO ForeignVisit
+        (ServiceID,Cadre,Office,Name,Designation,Grade,Workplace,
+        DestinationCountry,FundingSource,Purpose,StartDate,EndDate,
+        ActualDeparture,ActualArrival,Days,GO,Uploader)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+    ");
+    $stmt->bind_param(
+        "issssissssssssisi",
+        $serviceID, $cadre, $office, $name, $designation, $grade, $workplace,
+        $destCountry, $funding, $purpose, $startDate, $endDate,
+        $actualDep, $actualArr, $days, $fileName, $uploader
+    );
+
+    if ($stmt->execute()) {
+        successBox(
+            "Entry Successful",
+            "New foreign visit record added successfully.",
+            "template/base.php?page=NewEntry"
+        );
+    } else {
+        echo $stmt->error;
+    }
+}
+
+$db->close();
+?>

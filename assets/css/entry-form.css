@@ -90,6 +90,12 @@
     padding: 6px;
 }
 
+/* Error messages in red */
+.error-msg {
+    color: red;
+    font-size: 0.875rem;
+    margin-top: 3px;
+}
 /* Responsive */
 @media(max-width:768px) {
     .fvt-grid {
