@@ -14,21 +14,29 @@ body {
     background: #f4f7fa;
     transition: all 0.3s;
 }
-
 /* =========================
    Sidebar
 ========================= */
 .fvt-sidebar {
-    width: 220px;
-    background: #2c3e50;
-    color: #fff;
+    width: 260px;
+    height: 100vh;             /* full viewport height */
+    background: #defc8d;
+    color: #11e245;
     transition: width 0.3s;
     display: flex;
     flex-direction: column;
+    overflow: hidden;          /* stop scroll */
+    position: fixed;           /* fixed sidebar */
+    top: 0;
+    left: 0;
+    z-index: 1000;
 }
 
-.fvt-sidebar.collapsed { width: 60px; }
+.fvt-sidebar.collapsed {
+    width: 60px;               /* minimized width */
+}
 
+/* Logo */
 .fvt-logo {
     font-size: 18px;
     font-weight: bold;
@@ -36,40 +44,82 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #1f2a36;
+    background: #0a07eb;
+    color: #fff;
 }
 
-.sidebar-text { transition: opacity 0.3s; }
-.fvt-sidebar.collapsed .sidebar-text { opacity: 0; display: none; }
+/* Sidebar text */
+.sidebar-text {
+    transition: opacity 0.3s;
+}
+.fvt-sidebar.collapsed .sidebar-text {
+    opacity: 0;
+    display: none;             /* hide text when collapsed */
+}
 
-.fvt-menu { display: flex; flex-direction: column; margin-top: 10px; }
+/* Menu */
+.fvt-menu {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    flex: 1;                   /* fill remaining height */
+}
+
 .fvt-menu a {
-    display: block;
-    color: #fff;
+    display: flex;
+    align-items: center;
+    color: #0a07eb;
     text-decoration: none;
     padding: 12px 20px;
     white-space: nowrap;
     cursor: pointer;
     transition: background 0.2s, padding 0.3s;
 }
-.fvt-menu a:hover { background: #1abc9c; padding-left: 30px; border-radius: 4px; }
+
+.fvt-menu a:hover {
+    background: #1abc9c;
+    padding-left: 30px;
+    border-radius: 4px;
+}
 
 /* Submenu */
-.submenu { display: none; flex-direction: column; background: #34495e; }
-.submenu a { padding-left: 40px; }
-.has-submenu::after {
-    content: "▶";
-    float: right;
-    transition: transform 0.3s;
-}
-.has-submenu.open::after { transform: rotate(90deg); }
-
-/* Main content */
-.fvt-main {
-    flex: 1; 
-    transition: all 0.3s;
+.submenu {
     display: flex;
     flex-direction: column;
+    background: white;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.has-submenu.open + .submenu {
+    max-height: 500px; /* adjust to content height */
+}
+
+/* Arrow */
+.has-submenu::after {
+    content: "▶";
+    margin-left: auto;
+    transition: transform 0.3s;
+}
+
+.has-submenu.open::after {
+    transform: rotate(90deg);
+}
+
+/* =========================
+   Main content
+========================= */
+.fvt-main {
+    flex: 1;
+    margin-left: 260px;        /* leave space for sidebar */
+    transition: margin-left 0.3s;
+    display: flex;
+    flex-direction: column;
+}
+
+.fvt-sidebar.collapsed ~ .fvt-main {
+    margin-left: 60px;         /* adjust for collapsed sidebar */
 }
 
 /* Header */
@@ -77,17 +127,28 @@ body {
     display: flex; 
     justify-content: flex-end; 
     align-items: center; 
-    background: #34495e; 
-    color: #fff; 
+    background: #caeb7e; 
+    color: #2b08f3; 
     padding: 15px 20px; 
     border-radius: 6px 6px 0 0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
 /* Hamburger */
-.hamburger { font-size: 24px; cursor: pointer; color: #fff; }
+.hamburger {
+    font-size: 24px;
+    cursor: pointer;
+    color: #fff;
+}
 
 /* Content */
-.fvt-content { padding: 20px; flex: 1; }
+.fvt-content {
+    padding: 20px;
+    flex: 1;
+    overflow-y: auto;           /* allow scrolling inside main content */
+}
 
 /* Tables */
 .fvt-table {
@@ -166,6 +227,11 @@ body {
 }
 /* Responsive */
 @media(max-width:768px){
-    .fvt-sidebar { position: fixed; z-index: 100; height: 100vh; }
+    .fvt-sidebar {
+        position: fixed;
+        height: 100vh;
+        z-index: 100;
+    }
     .fvt-main { margin-left: 60px; }
 }
+

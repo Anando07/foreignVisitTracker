@@ -93,7 +93,7 @@ $allVisits = mysqli_fetch_all($visits, MYSQLI_ASSOC);
     </div>
 </div>
 
-// Delete confirmation
+<!-- Delete confirmation -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 function confirmDeleteVisit(id) {
