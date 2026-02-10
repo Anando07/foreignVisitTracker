@@ -14,7 +14,7 @@ $user_id        = $_SESSION['login_user_id'];
 $username       = $_SESSION['login_user'];
 $user_fullname  = $_SESSION['user_name'];
 $role_name      = $_SESSION['role_name'];
-$role_id        = $_SESSION['role_id'];
+$role_id        = (int)$_SESSION['role_id'];
 $designation    = $_SESSION['user_designation'] ?? 'N/A';
 
 // Determine requested page
@@ -43,7 +43,7 @@ $allowed_pages = [
 $admin_pages = ['dashboard','add_user','change_password','users','add_visit','view_visits','daily_report','monthly_report','annual_report','settings'];
 
 // Redirect non-admins trying to access admin pages
-if (!in_array($role_id, [1,2]) && in_array($page, $admin_pages)) {
+if (!in_array($role_id, [1,2,3,4,5]) && in_array($page, $admin_pages)) {
     $page = 'home';
 }
 

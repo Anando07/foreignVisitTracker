@@ -264,9 +264,6 @@ label { font-weight:bold; display:block; margin-bottom:5px; color:#fff; }
                     <?php echo $message; ?>
                 </div>
             <?php endif; ?>
-
-            
-
             <form action="" method="post">
                 <label>Username:</label>
                 <input type="text" name="username" class="box" placeholder="Username or Email" 

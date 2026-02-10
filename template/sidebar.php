@@ -7,25 +7,25 @@
         <!-- Dashboard link -->
         <a href="base.php?page=dashboard">📊 Dashboard</a>
 
-        <!-- Users menu (roles 1,2,5) -->
+        <!-- Users menu (roles 1) -->
         <?php if (in_array($role_id, [1])): ?>
         <a class="has-submenu">👥 Users</a>
         <div class="submenu">
             <?php if (in_array($role_id, [1])): ?>
             <a href="base.php?page=add_user">Add User</a>
-            <?php endif; ?>
             <a href="base.php?page=users">View Users</a>
+            <?php endif; ?>
         </div>
         <?php endif; ?>
 
         <!-- Foreign Visits menu -->
-        <?php if ($role_id != 4): ?>
+        <?php if (in_array($role_id, [1, 5])): ?>
         <a class="has-submenu">✈ Foreign Visits</a>
         <div class="submenu">
-            <?php if (in_array($role_id, [1,2,3,4,5])): ?>
+            <?php if (in_array($role_id, [1,5])): ?>
             <a href="base.php?page=NewEntry">Add Visit</a>
-            <?php endif; ?>
             <a href="base.php?page=view_visits">View Visits</a>
+            <?php endif; ?>
         </div>
         <?php endif; ?>
 
@@ -33,6 +33,7 @@
         <a class="has-submenu">📑 Reports</a>
         <div class="submenu">
             <a href="base.php?page=individual_report">Time Base Report (Individual)</a>
+            <?php if (in_array($role_id, [1,5])): ?>
             <a href="base.php?page=office_report">Time Base Report (Office)</a>
             <a href="base.php?page=country_report">Time Base Report (Country)</a>
             <a href="base.php?page=fund_report">Time Base Report (Fund)</a>
@@ -41,6 +42,7 @@
             <a href="base.php?page=unrepoted_report">Unreported Cases</a>
             <a href="base.php?page=masimum_visit_report">Maximum Visit</a>
             <a href="base.php?page=summary_report">Summary Report</a>
+            <?php endif; ?>
         </div>
 
         <!-- Settings (roles 1,2) -->

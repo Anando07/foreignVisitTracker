@@ -1,12 +1,6 @@
 <?php
 error_reporting(E_ALL ^ E_NOTICE);
-session_start();
 include("../config.php");
-
-$user_id        = $_SESSION['login_user_id'] ?? '';
-$username       = $_SESSION['login_user'] ?? '';
-$user_fullname  = $_SESSION['user_name'] ?? 'User';
-$designation    = $_SESSION['user_designation'] ?? 'N/A';
 
 // ======================
 // DASHBOARD STATS
@@ -29,8 +23,9 @@ $totalCountry = mysqli_fetch_assoc($qCountries)['total'] ?? 0;
 // ======================
 
 // Users
+if ($role_id == 1) {
 $users = mysqli_query($db, "SELECT ID, Name, UserName, Email, Designation, Status FROM Admin ORDER BY ID DESC");
-
+}
 // Visits
 $visits = mysqli_query($db, "SELECT ID, Name, Designation, Office, ServiceID, Cadre, DestinationCountry, Purpose, StartDate, EndDate FROM ForeignVisit ORDER BY ID DESC");
 
@@ -140,12 +135,10 @@ while($row = mysqli_fetch_assoc($cadreCounts)){
         <h2><?= $totalUsers; ?></h2>
         <p>Total Users</p>
     </div>
-
     <div class="stat-box clickable" onclick="showSection('visitsSection')">
         <h2><?= $totalVisits; ?></h2>
         <p>Foreign Visits</p>
     </div>
-
     <div class="stat-box clickable" onclick="showSection('countrySection')">
         <h2><?= $totalCountry; ?></h2>
         <p>Destination Countries</p>
@@ -155,6 +148,7 @@ while($row = mysqli_fetch_assoc($cadreCounts)){
 <!-- ======================
      USERS TABLE
 ====================== -->
+<?php if ($role_id === 1): ?>
 <div class="fvt-card" id="usersSection" style="display:none;">
     <h3>User List</h3>
     <button class="btn btn-primary mb-2" onclick="printTable('userTable')">Print Users</button>
@@ -184,10 +178,11 @@ while($row = mysqli_fetch_assoc($cadreCounts)){
         </tbody>
     </table>
 </div>
-
+<?php endif; ?>
 <!-- ======================
      VISITS TABLE
 ====================== -->
+<?php if (in_array($role_id, [1,2], true)): ?>
 <div class="fvt-card" id="visitsSection" style="display:none;">
     <h3>Foreign Visit List</h3>
     <button class="btn btn-primary mb-2" onclick="printTable('visitTable')">Print Visits</button>
@@ -250,7 +245,7 @@ while($row = mysqli_fetch_assoc($cadreCounts)){
         </tbody>
     </table>
 </div>
-
+<?php endif; ?>
 <!-- ======================
      SCRIPTS
 ====================== -->
@@ -261,9 +256,13 @@ while($row = mysqli_fetch_assoc($cadreCounts)){
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 <script>
 /* Show Sections */
+
 function showSection(id){
-    ['usersSection','visitsSection','countrySection'].forEach(sec=>{
-        document.getElementById(sec).style.display = (sec===id)?'block':'none';
+    ['usersSection','visitsSection','countrySection'].forEach(sec => {
+        const el = document.getElementById(sec);
+        if (el) {
+            el.style.display = (sec === id) ? 'block' : 'none';
+        }
     });
 }
 
