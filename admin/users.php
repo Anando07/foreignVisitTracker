@@ -60,17 +60,54 @@ $allUsers = mysqli_fetch_all($users, MYSQLI_ASSOC);
     <!-- Pagination container for global JS -->
     <div class="table-pagination" data-table="userTable" style="margin-top:10px; text-align:center;"></div>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 // Delete confirmation (global)
 function confirmDelete(userId) {
-    if (confirm("Are you sure you want to delete this user?")) {
-        window.location.href = "base.php?page=delete_user&id=" + userId;
-    }
+    // First fetch the data from delete_user.php
+    fetch(`../admin/delete_user.php?id=${userId}`)
+        .then(response => response.json())
+        .then(data => {
+            const userName = data.userName || "Unknown";
+
+            if (!data.canDelete) {
+                // User cannot be deleted
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Cannot Delete!',
+                    text: data.message
+                });
+            } else {
+                // Show confirmation modal to delete
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: `Do you want to delete user ${userName}?`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete!',
+                    cancelButtonText: 'Cancel',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Actually delete now
+                        fetch(`../admin/delete_user.php?id=${userId}`)
+                            .then(res => res.json())
+                            .then(delData => {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Deleted!',
+                                    text: delData.message,
+                                    timer: 1500,
+                                    showConfirmButton: false
+                                }).then(() => location.reload());
+                            });
+                    }
+                });
+            }
+        })
+        .catch(err => console.error(err));
 }
 
 </script>
-
 <script>
 function printTable() {
 
