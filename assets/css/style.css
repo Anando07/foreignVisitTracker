@@ -59,7 +59,8 @@ body {
 .fvt-logo {
     font-size: 18px;
     font-weight: bold;
-    padding: 20px;
+    min-height: 56px;
+    padding: 0 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -148,7 +149,8 @@ body {
     align-items: center; 
     background: #caeb7e; 
     color: #2b08f3; 
-    padding: 15px 20px; 
+    min-height: 56px;
+    padding: 0 20px;
     border-radius: 6px 6px 0 0;
     position: sticky;
     top: 0;
@@ -257,4 +259,9 @@ body {
     }
     .fvt-main { margin-left: 60px; }
 }
+
+/* =========================
+   Search & Reset Buttons
+========================= */
+
 

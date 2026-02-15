@@ -1,6 +1,15 @@
 <?php
 error_reporting(E_ALL & ~E_NOTICE);
 session_start();
+/* =========================
+   PREVENT BROWSER CACHING
+   (SESSION SAFE)
+========================= */
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+header("Expires: 0");
+
 require_once("../config.php");
 
 /* =========================
@@ -49,6 +58,7 @@ $allowed_pages = [
     'ShowDashboard'   => '../ShowDashboard.php',
     'add_visit'       => '../admin/add_visit.php',
     'view_visits'     => '../view_visits.php',
+    'Report'          => '../Report.php',
     'daily_report'    => '../admin/daily_report.php',
     'monthly_report'  => '../admin/monthly_report.php',
     'annual_report'   => '../admin/annual_report.php',
@@ -92,9 +102,8 @@ $current_page    = $page;
 <meta charset="UTF-8">
 <title>FVT - <?= ucfirst(htmlspecialchars($page)); ?></title>
 
-<link rel="stylesheet" href="../assets/css/style.css">
-<link rel="stylesheet" href="../assets/css/entry-form.css">
-
+<link rel="stylesheet" href="../assets/css/style.css?v=<?= filemtime('../assets/css/style.css'); ?>">
+<link rel="stylesheet" href="../assets/css/entry-form.css?v=<?= filemtime('../assets/css/entry-form.css'); ?>">
 <style>
 /* Active sidebar link */
 .sidebar a.active {
@@ -129,9 +138,9 @@ $current_page    = $page;
     </div>
 </div>
 
-<script src="../assets/js/sidebar.js"></script>
-<script src="../assets/js/pagination.js"></script>
-<script src="../assets/js/designation.js"></script>
-
+<script src="../assets/js/sidebar.js?v=<?= filemtime('../assets/js/sidebar.js'); ?>"></script>
+<script src="../assets/js/pagination.js?v=<?= filemtime('../assets/js/pagination.js'); ?>"></script>
+<script src="../assets/js/designation.js?v=<?= filemtime('../assets/js/designation.js'); ?>"></script>
+<script src="../assets/js/datalist.js?v=<?= filemtime('../assets/js/datalist.js'); ?>"></script>
 </body>
 </html>
