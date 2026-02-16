@@ -1,7 +1,11 @@
 <?php
-error_reporting(E_ALL ^ E_NOTICE);
-session_start();
-require_once "config.php";
+/* =========================
+   ACCESS CONTROL
+========================= */
+$allowedRoles = [1, 2, 5];
+if (!isset($_SESSION['role_id']) || !in_array((int)$_SESSION['role_id'], $allowedRoles, true)) {
+    die("Unauthorized access.");
+}
 
 /* =========================
    FORM INPUT
@@ -16,7 +20,7 @@ $result     = null;
 ========================= */
 $dateCondition = '';
 if (!empty($startDate) && !empty($endDate)) {
-    $dateCondition = " AND fv.StartDate BETWEEN '" . mysqli_real_escape_string($db, $startDate) . "'
+    $dateCondition = " AND fv.StartDate BETWEEN '" . mysqli_real_escape_string($db, $startDate) . "' 
                                         AND '" . mysqli_real_escape_string($db, $endDate) . "'";
 }
 
@@ -72,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && in_array($visitType, ['maximum','mi
                 <button type="submit" class="btn btn-search">Search</button>
 
                 <!-- Reset Button -->
-                <button type="reset" id="resBtn" class="btn btn-reset">Reset</button>
+                <button type="button" id="resBtn" class="btn btn-reset">Reset</button>
 
                 <?php if($visitType): ?>
                     <a href="../pdfMaxMinReport.php?visit_type=<?= $visitType ?>&start_date=<?= $startDate ?>&end_date=<?= $endDate ?>"
@@ -112,9 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && in_array($visitType, ['maximum','mi
                             <td><?= htmlspecialchars($row['DestinationCountry']) ?></td>
                             <td><?= htmlspecialchars($row['FundingSource']) ?></td>
                             <td><?= htmlspecialchars($row['Purpose']) ?></td>
-                            <td style="font-weight:bold; text-align:center;">
-                                <?= $row['visit_times'] ?>
-                            </td>
+                            <td style="font-weight:bold; text-align:center;"><?= $row['visit_times'] ?></td>
                         </tr>
                     <?php endwhile; ?>
                 <?php elseif($_SERVER['REQUEST_METHOD']==='POST'): ?>
@@ -129,29 +131,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && in_array($visitType, ['maximum','mi
     </div>
 </div>
 
-<link rel="stylesheet"
-      href="../assets/css/report-type.css?v=<?= filemtime('../assets/css/report-type.css'); ?>">
-
-<script>
-document.getElementById('resetBtn').onclick = () => {
-    // Clear all three fields
-    document.getElementById('visitType').value = '';
-    document.getElementById('startDate').value = '';
-    document.getElementById('endDate').value = '';
-
-    // Optional: refresh page to clear table
-    window.location.href = "base.php?page=MaximumMinimumReport";
-};
-</script>
+<link rel="stylesheet" href="../assets/css/report-type.css?v=<?= filemtime('../assets/css/report-type.css'); ?>">
 
 <script>
 document.getElementById('resBtn').onclick = () => {
-    // Clear all three fields
+    // Clear all fields
     document.getElementById('visitType').value = '';
     document.getElementById('startDate').value = '';
     document.getElementById('endDate').value = '';
 
-    // Optional: refresh page to clear table
-    window.location.href = "base.php?page=MaxMinReport";
+    // Refresh page to clear table
+    window.location.href = "base.php?page=MaximumMinimumReport";
 };
 </script>
