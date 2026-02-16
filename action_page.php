@@ -98,32 +98,45 @@ $actualArr   = trim($_POST['actual_arrival'] ?? '');
 $passport    = trim($_POST['passport'] ?? '');
 $nid         = trim($_POST['nid'] ?? '');
 
-$passport = trim($_POST['passport'] ?? '');
-$nid      = trim($_POST['nid'] ?? '');
+$passport = $passport === '' ? null : $passport;
+$nid      = $nid === '' ? null : $nid;
 
-/* Convert empty strings to NULL */
-$passport = ($passport === '') ? null : $passport;
-$nid      = ($nid === '') ? null : $nid;
 $uploader = $_SESSION['login_user_id']; 
-$editor = $_SESSION['login_user_id'];
+$editor   = $_SESSION['login_user_id'];
 
 $errors = [];
 
 /* =========================
-   REQUIRED FIELD VALIDATION
+   MODE BASED VALIDATION
 ========================= */
-if ($serviceID === '' || !ctype_digit($serviceID)) $errors['serviceID'] = "Valid Service ID required.";
-if ($cadre === '') $errors['cadreName'] = "Cadre is required.";
-if ($office === '') $errors['office'] = "Office is required.";
-if ($name === '') $errors['name'] = "Name is required.";
-if ($designation === '') $errors['designation'] = "Designation is required.";
-if ($grade === '') $errors['grade'] = "Grade is required.";
-if ($workplace === '') $errors['workplace'] = "Workplace is required.";
-if ($destCountry === '') $errors['destination_country'] = "Destination country required.";
-if ($funding === '') $errors['fund'] = "Funding source required.";
-if ($purpose === '') $errors['purpose'] = "Purpose is required.";
-if ($startDate === '') $errors['from_date'] = "From date required.";
-if ($endDate === '') $errors['to_date'] = "To date required.";
+
+// NORMAL MODE
+if (!$unreported) {
+    if ($serviceID === '' || !ctype_digit($serviceID)) $errors['serviceID'] = "Valid Service ID required.";
+    if ($cadre === '') $errors['cadreName'] = "Cadre is required.";
+    if ($office === '') $errors['office'] = "Office is required.";
+    if ($name === '') $errors['name'] = "Name is required.";
+    if ($designation === '') $errors['designation'] = "Designation is required.";
+    if ($grade === '') $errors['grade'] = "Grade is required.";
+    if ($workplace === '') $errors['workplace'] = "Workplace is required.";
+    if ($destCountry === '') $errors['destination_country'] = "Destination country required.";
+    if ($funding === '') $errors['fund'] = "Funding source required.";
+    if ($purpose === '') $errors['purpose'] = "Purpose is required.";
+    if ($startDate === '') $errors['from_date'] = "From date required.";
+    if ($endDate === '') $errors['to_date'] = "To date required.";
+    $actualDep = null;
+    $actualArr = null;
+
+    if (!$update && empty($_FILES['go_file']['name'])) {
+        $errors['go_file'] = "GO file is required for normal entry.";
+    }
+}
+
+// UNREPORTED MODE
+if ($unreported) {
+    if ($actualDep === '') $errors['actual_departure'] = "Actual Departure is required.";
+    if ($actualArr === '') $errors['actual_arrival'] = "Actual Arrival is required.";
+}
 
 /* =========================
    DATE CALCULATION
@@ -137,26 +150,6 @@ if ($startDate && $endDate) {
     } else {
         $days = (int)(($e - $s) / 86400) + 1;
     }
-}
-
-/* =========================
-   MODE BASED VALIDATION
-========================= */
-
-// NORMAL MODE
-if (!$unreported) {
-    $actualDep = null;
-    $actualArr = null;
-
-    if (!$update && empty($_FILES['go_file']['name'])) {
-        $errors['go_file'] = "GO file is required for normal entry.";
-    }
-}
-
-// UNREPORTED MODE
-if ($unreported) {
-    if ($actualDep === '') $errors['actual_departure'] = "Actual Departure is required.";
-    if ($actualArr === '') $errors['actual_arrival'] = "Actual Arrival is required.";
 }
 
 /* =========================
@@ -183,6 +176,7 @@ if (!empty($_FILES['go_file']['name'])) {
     }
 }
 
+
 /* =========================
    RETURN ERRORS
 ========================= */
@@ -192,24 +186,34 @@ if (!empty($errors)) {
 }
 
 /* =========================
-   UPDATE
+   UPDATE / INSERT
 ========================= */
-if ($update) {
-
-    $stmt = $db->prepare("
-        UPDATE ForeignVisit SET
-        ServiceID=?, Cadre=?, Office=?, Name=?, Designation=?, Grade=?, Workplace=?,
-        DestinationCountry=?, FundingSource=?, Purpose=?, StartDate=?, EndDate=?,
-        ActualDeparture=?, ActualArrival=?, Days=?, Passport=?, NID=?, Editor=?
-        WHERE ID=?
-    ");
-
-    $stmt->bind_param(
-        "isssssssssssssissii",
-        $serviceID, $cadre, $office, $name, $designation, $grade, $workplace,
-        $destCountry, $funding, $purpose, $startDate, $endDate,
-        $actualDep, $actualArr, $days, $passport, $nid, $editor, $id
-    );
+if ($update || $unreported) {
+    // UPDATE NORMAL OR UNREPORTED
+    if ($unreported) {
+        // Only Actual Dates
+        $stmt = $db->prepare("
+            UPDATE ForeignVisit SET
+            ActualDeparture=?, ActualArrival=?, Editor=?
+            WHERE ID=?
+        ");
+        $stmt->bind_param("ssii", $actualDep, $actualArr, $editor, $id);
+    } else {
+        // Normal update full record
+        $stmt = $db->prepare("
+            UPDATE ForeignVisit SET
+            ServiceID=?, Cadre=?, Office=?, Name=?, Designation=?, Grade=?, Workplace=?,
+            DestinationCountry=?, FundingSource=?, Purpose=?, StartDate=?, EndDate=?,
+            Days=?, Passport=?, NID=?, Editor=?
+            WHERE ID=?
+        ");
+        $stmt->bind_param(
+            "isssssssssssissii",
+            $serviceID, $cadre, $office, $name, $designation, $grade, $workplace,
+            $destCountry, $funding, $purpose, $startDate, $endDate,
+            $days, $passport, $nid, $editor, $id
+        );
+    }
 
     $stmt->execute();
 
@@ -217,9 +221,7 @@ if ($update) {
         $db->query("INSERT INTO RevisedGO (ID, RevGO) VALUES ($id, '$fileName')");
     }
 
-    $redirectPage = $unreported
-    ? "template/base.php?page=UnreportedVisits"
-    : "template/base.php?page=ViewVisits";
+    $redirectPage = $unreported ? "template/base.php?page=UnreportedVisits" : "template/base.php?page=ViewVisits";
 
     successBox(
         "Update Successful",
@@ -228,16 +230,11 @@ if ($update) {
             : "Foreign visit information updated successfully.",
         $redirectPage
     );
-
-}
-
-/* =========================
-   INSERT
-========================= */
+} 
 else {
-
+    // INSERT NEW RECORD
     $stmt = $db->prepare("
-    INSERT INTO ForeignVisit
+        INSERT INTO ForeignVisit
         (
             ServiceID, Cadre, Office, Name, Designation, Grade, Workplace,
             DestinationCountry, FundingSource, Purpose,
@@ -246,35 +243,14 @@ else {
         VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
     ");
 
-    if (!$stmt) {
-        die("Prepare failed: " . $db->error);
-    }
-
-
     $stmt->bind_param(
         "issssissssssissss",
-        $serviceID,      // i
-        $cadre,          // s
-        $office,         // s
-        $name,           // s
-        $designation,    // s
-        $grade,          // i
-        $workplace,      // s
-        $destCountry,    // s
-        $funding,        // s
-        $purpose,        // s
-        $startDate,      // s
-        $endDate,        // s
-        $days,           // i
-        $fileName,       // s
-        $passport,       // s | NULL
-        $nid,            // s | NULL
-        $uploader        // s
+        $serviceID, $cadre, $office, $name, $designation, $grade, $workplace,
+        $destCountry, $funding, $purpose, $startDate, $endDate, $days,
+        $fileName, $passport, $nid, $uploader
     );
 
-    if (!$stmt->execute()) {
-        die("Insert failed: " . $stmt->error);
-    }
+    $stmt->execute();
 
     successBox(
         "Entry Successful",

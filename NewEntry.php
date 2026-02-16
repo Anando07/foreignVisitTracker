@@ -62,14 +62,16 @@ $datesRequired = $isUnreportedMode; // Actual Departure/Arrival required only in
             <!-- Service ID -->
             <div class="fvt-group">
                 <label>Service ID <span class="required">*</span></label>
-                <input type="number" name="serviceID" class="fvt-input" required value="<?= $data['ServiceID'] ?? '' ?>">
+                <input type="number" name="serviceID" class="fvt-input" 
+                <?= $isUnreportedMode ? 'readonly' : '' ?>
+                required value="<?= $data['ServiceID'] ?? '' ?>">
                 <div class="error-msg"></div>
             </div>
 
             <!-- Cadre -->
             <div class="fvt-group">
                 <label>Cadre <span class="required">*</span></label>
-                <select name="cadreName" class="fvt-input" required>
+                <select name="cadreName" class="fvt-input" <?= $isUnreportedMode ? 'disabled' : '' ?> required>
                     <option value="">Select</option>
                     <?php
                     foreach(file("../data/cadre.txt", FILE_IGNORE_NEW_LINES) as $line){
@@ -85,28 +87,32 @@ $datesRequired = $isUnreportedMode; // Actual Departure/Arrival required only in
             <!-- Name -->
             <div class="fvt-group">
                 <label>Name <span class="required">*</span></label>
-                <input type="text" name="name" class="fvt-input" required value="<?= $data['Name'] ?? '' ?>">
+                <input type="text" name="name" class="fvt-input" 
+                <?= $isUnreportedMode ? 'readonly' : '' ?>
+                required value="<?= $data['Name'] ?? '' ?>">
                 <div class="error-msg"></div>
             </div>
            
             <!-- Passport -->
             <div class="fvt-group">
                 <label>Passport No</label>
-                <input type="text" name="passport" class="fvt-input" value="<?= $data['Passport'] ?? '' ?>">
+                <input type="text" name="passport" class="fvt-input" <?= $isUnreportedMode ? 'readonly' : '' ?> value="<?= $data['Passport'] ?? '' ?>">
                 <div class="error-msg"></div>
             </div>
             
             <!-- NID -->
             <div class="fvt-group">
                 <label>NID</label>
-                <input type="text" name="nid" class="fvt-input" value="<?= $data['NID'] ?? '' ?>">
+                <input type="text" name="nid" class="fvt-input" 
+                <?= $isUnreportedMode ? 'readonly' : '' ?>
+                value="<?= $data['NID'] ?? '' ?>">
                 <div class="error-msg"></div>
             </div>
 
             <!-- Office -->
             <div class="fvt-group">
                 <label>Office <span class="required">*</span></label>
-                <select name="office" id="office" class="fvt-input" required>
+                <select name="office" id="office" class="fvt-input" <?= $isUnreportedMode ? 'disabled' : '' ?> required>
                     <option value="">Select</option>
                     <?php
                     $offices = ["MoF"=>"Ministry of Finance","IRD"=>"IRD","NBR"=>"NBR","NSD"=>"NSD","TAT"=>"TAT","CEVT"=>"CEVT"];
@@ -122,7 +128,7 @@ $datesRequired = $isUnreportedMode; // Actual Departure/Arrival required only in
             <!-- Designation -->
             <div class="fvt-group">
                 <label>Designation <span class="required">*</span></label>
-                <select name="designation" id="designation" class="fvt-input" required>
+                <select name="designation" id="designation" class="fvt-input" <?= $isUnreportedMode ? 'disabled' : '' ?> required>
                     <option value="">Select Office First</option>
                 </select>
                 <div class="error-msg"></div>
@@ -131,7 +137,7 @@ $datesRequired = $isUnreportedMode; // Actual Departure/Arrival required only in
             <!-- Grade -->
             <div class="fvt-group">
                 <label>Grade <span class="required">*</span></label>
-                <select name="grade" class="fvt-input" required>
+                <select name="grade" class="fvt-input" <?= $isUnreportedMode ? 'disabled' : '' ?> required>
                     <option value="">Select</option>
                     <?php for($i=1; $i<=20; $i++): ?>
                     <option value="<?= $i ?>" <?= (($data['Grade']??'')==$i)?'selected':'' ?>>Grade-<?= $i ?></option>
@@ -143,14 +149,14 @@ $datesRequired = $isUnreportedMode; // Actual Departure/Arrival required only in
             <!-- Workplace -->
             <div class="fvt-group">
                 <label>Workplace <span class="required">*</span></label>
-                <input type="text" name="workplace" class="fvt-input" required value="<?= $data['Workplace'] ?? '' ?>">
+                <input type="text" name="workplace" class="fvt-input" required <?= $isUnreportedMode ? 'readonly' : '' ?> value="<?= $data['Workplace'] ?? '' ?>">
                 <div class="error-msg"></div>
             </div>
 
             <!-- Destination Country -->
             <div class="fvt-group">
                 <label>Destination Country <span class="required">*</span></label>
-                <select name="destination_country" class="fvt-input" required>
+                <select name="destination_country" class="fvt-input" <?= $isUnreportedMode ? 'disabled' : '' ?> required>
                     <option value="">Select</option>
                     <?php
                     foreach(file("../data/countries.txt", FILE_IGNORE_NEW_LINES) as $c){
@@ -165,7 +171,7 @@ $datesRequired = $isUnreportedMode; // Actual Departure/Arrival required only in
             <!-- Purpose -->
             <div class="fvt-group">
                 <label>Purpose <span class="required">*</span></label>
-                <select name="purpose" class="fvt-input" required>
+                <select name="purpose" class="fvt-input" <?= $isUnreportedMode ? 'disabled' : '' ?> required>
                     <option value="">Select</option>
                     <?php
                     foreach(file("../data/visit_purpose.txt", FILE_IGNORE_NEW_LINES) as $line){
@@ -181,7 +187,7 @@ $datesRequired = $isUnreportedMode; // Actual Departure/Arrival required only in
             <!-- Fund -->
             <div class="fvt-group">
                 <label>Fund <span class="required">*</span></label>
-                <select name="fund" class="fvt-input" required>
+                <select name="fund" class="fvt-input" <?= $isUnreportedMode ? 'disabled' : '' ?> required>
                     <option value="">Select</option>
                     <?php
                     foreach(file("../data/fund.txt", FILE_IGNORE_NEW_LINES) as $f){
@@ -196,29 +202,36 @@ $datesRequired = $isUnreportedMode; // Actual Departure/Arrival required only in
             <!-- Dates -->
             <div class="fvt-group">
                 <label>From Date <span class="required">*</span></label>
-                <input type="date" name="from_date" class="fvt-input" required value="<?= $data['StartDate'] ?? '' ?>">
+                <input type="date" name="from_date" class="fvt-input" <?= $isUnreportedMode ? 'readonly' : '' ?> required value="<?= $data['StartDate'] ?? '' ?>">
                 <div class="error-msg"></div>
             </div>
 
             <div class="fvt-group">
                 <label>To Date <span class="required">*</span></label>
-                <input type="date" name="to_date" class="fvt-input" required value="<?= $data['EndDate'] ?? '' ?>">
+                <input type="date" name="to_date" class="fvt-input" <?= $isUnreportedMode ? 'readonly' : '' ?> required value="<?= $data['EndDate'] ?? '' ?>">
                 <div class="error-msg"></div>
             </div>
 
             <!-- Actual Departure -->
             <div class="fvt-group">
                 <label>Actual Departure <?= $datesRequired ? '<span class="required">*</span>' : '' ?></label>
-                <input type="date" name="actual_departure" class="fvt-input" <?= $datesRequired ? 'required' : '' ?> value="<?= $data['ActualDeparture'] ?? '' ?>">
+                <input type="date" name="actual_departure" class="fvt-input"
+                    <?= $isUnreportedMode ? '' : 'readonly' ?>
+                    <?= $datesRequired ? 'required' : '' ?>
+                    value="<?= $data['ActualDeparture'] ?? '' ?>">
                 <div class="error-msg"></div>
             </div>
 
             <!-- Actual Arrival -->
             <div class="fvt-group">
                 <label>Actual Arrival <?= $datesRequired ? '<span class="required">*</span>' : '' ?></label>
-                <input type="date" name="actual_arrival" class="fvt-input" <?= $datesRequired ? 'required' : '' ?> value="<?= $data['ActualArrival'] ?? '' ?>">
+                <input type="date" name="actual_arrival" class="fvt-input"
+                    <?= $isUnreportedMode ? '' : 'readonly' ?>
+                    <?= $datesRequired ? 'required' : '' ?>
+                    value="<?= $data['ActualArrival'] ?? '' ?>">
                 <div class="error-msg"></div>
             </div>
+
 
             <!-- GO File -->
             <div class="fvt-group">
