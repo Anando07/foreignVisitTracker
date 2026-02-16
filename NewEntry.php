@@ -88,6 +88,20 @@ $datesRequired = $isUnreportedMode; // Actual Departure/Arrival required only in
                 <input type="text" name="name" class="fvt-input" required value="<?= $data['Name'] ?? '' ?>">
                 <div class="error-msg"></div>
             </div>
+           
+            <!-- Passport -->
+            <div class="fvt-group">
+                <label>Passport No</label>
+                <input type="text" name="passport" class="fvt-input" value="<?= $data['Passport'] ?? '' ?>">
+                <div class="error-msg"></div>
+            </div>
+            
+            <!-- NID -->
+            <div class="fvt-group">
+                <label>NID</label>
+                <input type="text" name="nid" class="fvt-input" value="<?= $data['NID'] ?? '' ?>">
+                <div class="error-msg"></div>
+            </div>
 
             <!-- Office -->
             <div class="fvt-group">
@@ -215,7 +229,7 @@ $datesRequired = $isUnreportedMode; // Actual Departure/Arrival required only in
 
         </div>
 
-        <div class="fvt-actions">
+        <div style="text-align: center;" class="fvt-actions">
             <button type="reset" class="fvt-btn fvt-btn-secondary">Reset</button>
             <button type="submit" class="fvt-btn fvt-btn-success"><?= $update?'Update':'Submit' ?></button>
         </div>

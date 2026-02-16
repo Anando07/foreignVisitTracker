@@ -95,9 +95,17 @@ $startDate   = trim($_POST['from_date'] ?? '');
 $endDate     = trim($_POST['to_date'] ?? '');
 $actualDep   = trim($_POST['actual_departure'] ?? '');
 $actualArr   = trim($_POST['actual_arrival'] ?? '');
+$passport    = trim($_POST['passport'] ?? '');
+$nid         = trim($_POST['nid'] ?? '');
 
-$uploader = $_SESSION['login_user_id'];
-$editor   = $_SESSION['login_user_id'];
+$passport = trim($_POST['passport'] ?? '');
+$nid      = trim($_POST['nid'] ?? '');
+
+/* Convert empty strings to NULL */
+$passport = ($passport === '') ? null : $passport;
+$nid      = ($nid === '') ? null : $nid;
+$uploader = $_SESSION['login_user_id']; 
+$editor = $_SESSION['login_user_id'];
 
 $errors = [];
 
@@ -192,15 +200,15 @@ if ($update) {
         UPDATE ForeignVisit SET
         ServiceID=?, Cadre=?, Office=?, Name=?, Designation=?, Grade=?, Workplace=?,
         DestinationCountry=?, FundingSource=?, Purpose=?, StartDate=?, EndDate=?,
-        ActualDeparture=?, ActualArrival=?, Days=?, Editor=?
+        ActualDeparture=?, ActualArrival=?, Days=?, Passport=?, NID=?, Editor=?
         WHERE ID=?
     ");
 
     $stmt->bind_param(
-        "isssssssssssssiii",
+        "isssssssssssssissii",
         $serviceID, $cadre, $office, $name, $designation, $grade, $workplace,
         $destCountry, $funding, $purpose, $startDate, $endDate,
-        $actualDep, $actualArr, $days, $editor, $id
+        $actualDep, $actualArr, $days, $passport, $nid, $editor, $id
     );
 
     $stmt->execute();
@@ -229,21 +237,44 @@ if ($update) {
 else {
 
     $stmt = $db->prepare("
-        INSERT INTO ForeignVisit
-        (ServiceID,Cadre,Office,Name,Designation,Grade,Workplace,
-        DestinationCountry,FundingSource,Purpose,StartDate,EndDate,
-        ActualDeparture,ActualArrival,Days,GO,Uploader,Editor)
-        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+    INSERT INTO ForeignVisit
+        (
+            ServiceID, Cadre, Office, Name, Designation, Grade, Workplace,
+            DestinationCountry, FundingSource, Purpose,
+            StartDate, EndDate, Days, GO, Passport, NID, Uploader
+        )
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
     ");
 
+    if (!$stmt) {
+        die("Prepare failed: " . $db->error);
+    }
+
+
     $stmt->bind_param(
-        "issssissssssssisis",
-        $serviceID, $cadre, $office, $name, $designation, $grade, $workplace,
-        $destCountry, $funding, $purpose, $startDate, $endDate,
-        $actualDep, $actualArr, $days, $fileName, $uploader, $editor
+        "issssissssssissss",
+        $serviceID,      // i
+        $cadre,          // s
+        $office,         // s
+        $name,           // s
+        $designation,    // s
+        $grade,          // i
+        $workplace,      // s
+        $destCountry,    // s
+        $funding,        // s
+        $purpose,        // s
+        $startDate,      // s
+        $endDate,        // s
+        $days,           // i
+        $fileName,       // s
+        $passport,       // s | NULL
+        $nid,            // s | NULL
+        $uploader        // s
     );
 
-    $stmt->execute();
+    if (!$stmt->execute()) {
+        die("Insert failed: " . $stmt->error);
+    }
 
     successBox(
         "Entry Successful",
