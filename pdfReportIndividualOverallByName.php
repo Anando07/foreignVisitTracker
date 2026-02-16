@@ -11,10 +11,9 @@ include("config.php");
 require ('fpdf181/fpdf.php');
 $pdf = new FPDF();
 $pdf->AddPage();
-//$pdf->Image('Logo.jpeg', 183, 250, 25, 25); 
-$pdf->Image('BD50.png', 10,5, 20, 20); //$x, $y, $width, $height
-//$pdf->Image('Logo.jpeg', 95,5, 20, 20); //$x, $y, $width, $height
-$pdf->Image('Mujib100.png', 182,5, 25, 20); //$x, $y, $width, $height 
+$pdf->Image('Logo.jpeg', 95,5, 20, 20); //$x, $y, $width, $height
+// $pdf->Image('BD50.png', 10,5, 20, 20); //$x, $y, $width, $height
+// $pdf->Image('Mujib100.png', 182,5, 25, 20); //$x, $y, $width, $height 
 $pdf->SetFont('Arial','B',12);	
 $pdf->SetTextColor(255,0,0);
 

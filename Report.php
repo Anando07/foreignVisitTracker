@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                      AND '" . mysqli_real_escape_string($db, $endDate) . "'";
     }
 
-    $sql .= " ORDER BY fv.ID DESC";
+    $sql .= " ORDER BY fv.StartDate DESC";
 
     // Execute query
     $result = mysqli_query($db, $sql);
@@ -131,12 +131,12 @@ while($row = mysqli_fetch_assoc($res)) $purposes[] = $row['Purpose'];
                     switch($searchType) {
                         case 'service_id': $pdfFile = "../pdfReportIndividualByID.php?idReq=$encodedValue&FromDate=$startDate&ToDate=$endDate"; break;
                         case 'name':       $pdfFile = "../pdfReportIndividualByName.php?nameReq=$encodedValue&FromDate=$startDate&ToDate=$endDate"; break;
-                        case 'designation':$pdfFile = "../pdfReportIndividualByDesignation.php?idReq=$encodedValue&FromDate=$startDate&ToDate=$endDate"; break;
-                        case 'cadre':      $pdfFile = "../pdfReportIndividualByCadre.php?idReq=$encodedValue&FromDate=$startDate&ToDate=$endDate"; break;
-                        case 'office':     $pdfFile = "../pdfReportIndividualByOffice.php?idReq=$encodedValue&FromDate=$startDate&ToDate=$endDate"; break;
-                        case 'country':    $pdfFile = "../pdfReportIndividualByCountry.php?idReq=$encodedValue&FromDate=$startDate&ToDate=$endDate"; break;
-                        case 'fund':       $pdfFile = "../pdfReportIndividualByFund.php?idReq=$encodedValue&FromDate=$startDate&ToDate=$endDate"; break;
-                        case 'purpose':    $pdfFile = "../pdfReportIndividualByPurpose.php?idReq=$encodedValue&FromDate=$startDate&ToDate=$endDate"; break;
+                        case 'designation':$pdfFile = "../pdfReportIndividualByDesignation.php?designationReq=$encodedValue&FromDate=$startDate&ToDate=$endDate"; break;
+                        case 'cadre':      $pdfFile = "../pdfReportIndividualByCadre.php?cadreReq=$encodedValue&FromDate=$startDate&ToDate=$endDate"; break;
+                        case 'office':     $pdfFile = "../pdfReportIndividualByOffice.php?officeReq=$encodedValue&FromDate=$startDate&ToDate=$endDate"; break;
+                        case 'country':    $pdfFile = "../pdfReportIndividualByCountry.php?countryReq=$encodedValue&FromDate=$startDate&ToDate=$endDate"; break;
+                        case 'fund':       $pdfFile = "../pdfReportIndividualByFund.php?fundReq=$encodedValue&FromDate=$startDate&ToDate=$endDate"; break;
+                        case 'purpose':    $pdfFile = "../pdfReportIndividualByPurpose.php?purposeReq=$encodedValue&FromDate=$startDate&ToDate=$endDate"; break;
                     }
                 ?>
                     <a href="<?= $pdfFile ?>" target="_blank" class="btn btn-download">PDF</a>

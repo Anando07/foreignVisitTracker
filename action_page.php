@@ -81,7 +81,7 @@ if (isset($_GET['delete'])) {
     successBox(
         "Deleted Successfully",
         "Record and all related files were removed.",
-        "template/base.php?page=view_visits"
+        "template/base.php?page=ViewVisits"
     );
     exit;
 }

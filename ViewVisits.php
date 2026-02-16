@@ -75,10 +75,15 @@ $allVisits = mysqli_fetch_all($visits, MYSQLI_ASSOC);
                 <td><?= htmlspecialchars($visit['uploader_name'] ?? $visit['Uploader']) ?></td>
                 <td>
                     <button title="View" class="btn btn-sm btn-info" onclick="window.location.href='base.php?page=view_visit&id=<?= $visit['ID'] ?>'">👁️</button>
-                    <button title="Edit" class="btn btn-sm btn-warning"
+                    <!-- <button title="Edit" class="btn btn-sm btn-warning"
                         onclick="window.location.href='base.php?page=NewEntry&edit=<?= $visit['ID'] ?>'">
                         ✏️
+                    </button> -->
+                    <button title="Edit" class="btn btn-sm btn-warning"
+                        onclick="confirmEditVisit(<?= $visit['ID'] ?>)">
+                        ✏️
                     </button>
+
                     <button class="btn btn-sm btn-danger"
                         onclick="confirmDeleteVisit(<?= $visit['ID'] ?>)">
                         🗑️
@@ -94,23 +99,8 @@ $allVisits = mysqli_fetch_all($visits, MYSQLI_ASSOC);
 </div>
 
 <!--  Delete confirmation -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-function confirmDeleteVisit(id) {
-    Swal.fire({
-        title: 'Are you sure?',
-        text: 'This record and all files will be permanently deleted!',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            window.location.href = "../action_page.php?delete=" + id;
-        }
-    });
-}
 
+<script>
 // Print Visit Table
 function printVisitTable() {
     const visits = <?php echo json_encode($allVisits); ?>;
@@ -188,3 +178,4 @@ function printVisitTable() {
     newWin.onload = function(){ newWin.print(); newWin.close(); };
 }
 </script>
+

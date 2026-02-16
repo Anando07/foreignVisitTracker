@@ -24,7 +24,7 @@
         <div class="submenu">
             <?php if (in_array($role_id, [1,5])): ?>
             <a href="base.php?page=NewEntry">Add Visit</a>
-            <a href="base.php?page=view_visits">View Visits</a>
+            <a href="base.php?page=ViewVisits">View Visits</a>
             <?php endif; ?>
         </div>
         <?php endif; ?>
@@ -33,15 +33,9 @@
         <a class="has-submenu">📑 Reports</a>
         <div class="submenu">
             <?php if (in_array($role_id, [1,2,5])): ?>
-            <a href="base.php?page=Report">Time Base Report (Individual)</a>
-            <a href="base.php?page=office_report">Time Base Report (Office)</a>
-            <a href="base.php?page=country_report">Time Base Report (Country)</a>
-            <a href="base.php?page=fund_report">Time Base Report (Fund)</a>
-            <a href="base.php?page=purpose_report">Time Base Report (Purpose)</a>
-            <a href="base.php?page=overall_report">Individual Report(Overall)</a>
+            <a href="base.php?page=Report">Time Base Report</a>
             <a href="base.php?page=unrepoted_report">Unreported Cases</a>
             <a href="base.php?page=masimum_visit_report">Maximum Visit</a>
-            <a href="base.php?page=summary_report">Summary Report</a>
             <?php endif; ?>
         </div>
 

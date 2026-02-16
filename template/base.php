@@ -57,7 +57,7 @@ $allowed_pages = [
     'NewEntry'        => '../NewEntry.php',
     'ShowDashboard'   => '../ShowDashboard.php',
     'add_visit'       => '../admin/add_visit.php',
-    'view_visits'     => '../view_visits.php',
+    'ViewVisits'     => '../ViewVisits.php',
     'Report'          => '../Report.php',
     'daily_report'    => '../admin/daily_report.php',
     'monthly_report'  => '../admin/monthly_report.php',
@@ -73,7 +73,7 @@ $admin_pages = [
     'add_user',
     'users',
     'add_visit',
-    'view_visits',
+    'ViewVisits',
     'daily_report',
     'monthly_report',
     'annual_report',
@@ -137,10 +137,12 @@ $current_page    = $page;
         ?>
     </div>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="../assets/js/sidebar.js?v=<?= filemtime('../assets/js/sidebar.js'); ?>"></script>
 <script src="../assets/js/pagination.js?v=<?= filemtime('../assets/js/pagination.js'); ?>"></script>
 <script src="../assets/js/designation.js?v=<?= filemtime('../assets/js/designation.js'); ?>"></script>
+<script src="../assets/js/verify_password.js?v=<?= filemtime('../assets/js/verify_password.js'); ?>"></script>
+<script src="../assets/js/delete_verify_password.js?v=<?= filemtime('../assets/js/delete_verify_password.js'); ?>"></script>
 <script src="../assets/js/datalist.js?v=<?= filemtime('../assets/js/datalist.js'); ?>"></script>
 </body>
 </html>
