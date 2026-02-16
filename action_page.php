@@ -42,57 +42,46 @@ function successBox($title, $message, $link) {
 }
 
 /* =========================
-   DELETE RECORD + FILES
+   DELETE RECORD
 ========================= */
 if (isset($_GET['delete'])) {
     $id = (int)$_GET['delete'];
 
-    // Get main GO file
     $stmt = $db->prepare("SELECT GO FROM ForeignVisit WHERE ID=?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
     $res = $stmt->get_result()->fetch_assoc();
 
-    if (!$res) {
-        echo json_encode(['status'=>'error','errors'=>['delete'=>'Record not found.']]);
-        exit;
-    }
-
-    // Delete main GO file
     if (!empty($res['GO'])) {
         $file = "uploads/" . $res['GO'];
         if (file_exists($file)) unlink($file);
     }
 
-    // Delete Revised GO files
-    $stmt = $db->prepare("SELECT RevGO FROM RevisedGO WHERE ID=?");
-    $stmt->bind_param("i", $id);
-    $stmt->execute();
-    $r = $stmt->get_result();
+    $r = $db->query("SELECT RevGO FROM RevisedGO WHERE ID=$id");
     while ($row = $r->fetch_assoc()) {
         $f = "uploads/" . $row['RevGO'];
         if (file_exists($f)) unlink($f);
     }
 
-    // Delete DB records
     $db->query("DELETE FROM RevisedGO WHERE ID=$id");
     $db->query("DELETE FROM ForeignVisit WHERE ID=$id");
 
     successBox(
         "Deleted Successfully",
-        "Record and all related files were removed.",
+        "Foreign visit record and all related files were removed.",
         "template/base.php?page=ViewVisits"
     );
     exit;
 }
 
 /* =========================
-   GET POST DATA
+   INPUT DATA
 ========================= */
-$update = isset($_POST['update']) && $_POST['update'] == 1;
-$id     = (int)($_POST['id'] ?? 0);
+$update     = isset($_POST['update']) && $_POST['update'] == 1;
+$id         = (int)($_POST['id'] ?? 0);
+$unreported = isset($_POST['unreported_mode']) && $_POST['unreported_mode'] == 1;
 
-$serviceID   = $_POST['serviceID'] ?? '';
+$serviceID   = trim($_POST['serviceID'] ?? '');
 $cadre       = trim($_POST['cadreName'] ?? '');
 $office      = trim($_POST['office'] ?? '');
 $name        = trim($_POST['name'] ?? '');
@@ -106,135 +95,163 @@ $startDate   = trim($_POST['from_date'] ?? '');
 $endDate     = trim($_POST['to_date'] ?? '');
 $actualDep   = trim($_POST['actual_departure'] ?? '');
 $actualArr   = trim($_POST['actual_arrival'] ?? '');
-$uploader    = $_SESSION['login_user_id'] ?? '';
+
+$uploader = $_SESSION['login_user_id'];
+$editor   = $_SESSION['login_user_id'];
 
 $errors = [];
 
 /* =========================
    REQUIRED FIELD VALIDATION
 ========================= */
-if ($serviceID === '') {
-    $errors['serviceID'] = "Service ID is required.";
-} elseif (!ctype_digit($serviceID)) {
-    $errors['serviceID'] = "Service ID must be a number.";
-} else {
-    $serviceID = (int)$serviceID; // safe integer
-}
-
-if (empty($cadre)) $errors['cadreName'] = "Cadre is required.";
-if (empty($office)) $errors['office'] = "Office is required.";
-if (empty($name)) $errors['name'] = "Name is required.";
-if (empty($designation)) $errors['designation'] = "Designation is required.";
-if (empty($grade)) $errors['grade'] = "Grade is required.";
-if (empty($workplace)) $errors['workplace'] = "Workplace is required.";
-if (empty($destCountry)) $errors['destination_country'] = "Destination Country is required.";
-if (empty($funding)) $errors['fund'] = "Funding Source is required.";
-if (empty($purpose)) $errors['purpose'] = "Purpose is required.";
-if (empty($startDate)) $errors['from_date'] = "From Date is required.";
-if (empty($endDate)) $errors['to_date'] = "To Date is required.";
+if ($serviceID === '' || !ctype_digit($serviceID)) $errors['serviceID'] = "Valid Service ID required.";
+if ($cadre === '') $errors['cadreName'] = "Cadre is required.";
+if ($office === '') $errors['office'] = "Office is required.";
+if ($name === '') $errors['name'] = "Name is required.";
+if ($designation === '') $errors['designation'] = "Designation is required.";
+if ($grade === '') $errors['grade'] = "Grade is required.";
+if ($workplace === '') $errors['workplace'] = "Workplace is required.";
+if ($destCountry === '') $errors['destination_country'] = "Destination country required.";
+if ($funding === '') $errors['fund'] = "Funding source required.";
+if ($purpose === '') $errors['purpose'] = "Purpose is required.";
+if ($startDate === '') $errors['from_date'] = "From date required.";
+if ($endDate === '') $errors['to_date'] = "To date required.";
 
 /* =========================
-   DATE VALIDATION
+   DATE CALCULATION
 ========================= */
+$days = 0;
 if ($startDate && $endDate) {
-    $dateS = strtotime($startDate);
-    $dateE = strtotime($endDate);
-    if ($dateE < $dateS) $errors['to_date'] = "End date cannot be before start date.";
-    $days = (int)(($dateE - $dateS) / 86400) + 1;
-    if ($days <= 0) $errors['to_date'] = "Invalid date range.";
-} else {
-    $days = 0;
+    $s = strtotime($startDate);
+    $e = strtotime($endDate);
+    if ($e < $s) {
+        $errors['to_date'] = "End date cannot be before start date.";
+    } else {
+        $days = (int)(($e - $s) / 86400) + 1;
+    }
+}
+
+/* =========================
+   MODE BASED VALIDATION
+========================= */
+
+// NORMAL MODE
+if (!$unreported) {
+    $actualDep = null;
+    $actualArr = null;
+
+    if (!$update && empty($_FILES['go_file']['name'])) {
+        $errors['go_file'] = "GO file is required for normal entry.";
+    }
+}
+
+// UNREPORTED MODE
+if ($unreported) {
+    if ($actualDep === '') $errors['actual_departure'] = "Actual Departure is required.";
+    if ($actualArr === '') $errors['actual_arrival'] = "Actual Arrival is required.";
 }
 
 /* =========================
    FILE VALIDATION
 ========================= */
 $fileName = '';
-$fileRequired = !$update;
 
 if (!empty($_FILES['go_file']['name'])) {
     $file = $_FILES['go_file'];
     $ext  = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
     $size = $file['size'];
 
-    if (!in_array($ext, ['pdf','jpg','jpeg'])) $errors['go_file'] = "GO file must be PDF or JPG.";
-    if ($size > 512*1024) $errors['go_file'] = "GO file must not exceed 512 KB.";
+    if (!in_array($ext, ['pdf','jpg','jpeg'])) {
+        $errors['go_file'] = "GO file must be PDF or JPG.";
+    }
+
+    if ($size > 512 * 1024) {
+        $errors['go_file'] = "GO file must not exceed 512KB.";
+    }
 
     if (empty($errors['go_file'])) {
         $fileName = time() . "_" . basename($file['name']);
-        if (!move_uploaded_file($file['tmp_name'], "uploads/" . $fileName)) {
-            $errors['go_file'] = "Failed to upload file.";
-        }
+        move_uploaded_file($file['tmp_name'], "uploads/" . $fileName);
     }
-} elseif ($fileRequired) {
-    $errors['go_file'] = "GO file is required.";
 }
 
 /* =========================
-   SHOW ERRORS
+   RETURN ERRORS
 ========================= */
 if (!empty($errors)) {
-    // return JSON for frontend to display under each field
     echo json_encode(['status'=>'error','errors'=>$errors]);
     exit;
 }
 
 /* =========================
-   INSERT OR UPDATE DB
+   UPDATE
 ========================= */
 if ($update) {
+
     $stmt = $db->prepare("
         UPDATE ForeignVisit SET
         ServiceID=?, Cadre=?, Office=?, Name=?, Designation=?, Grade=?, Workplace=?,
         DestinationCountry=?, FundingSource=?, Purpose=?, StartDate=?, EndDate=?,
-        ActualDeparture=?, ActualArrival=?, Days=?, Uploader=?
+        ActualDeparture=?, ActualArrival=?, Days=?, Editor=?
         WHERE ID=?
     ");
+
     $stmt->bind_param(
-        "issssssssssssssii",
+        "isssssssssssssiii",
         $serviceID, $cadre, $office, $name, $designation, $grade, $workplace,
         $destCountry, $funding, $purpose, $startDate, $endDate,
-        $actualDep, $actualArr, $days, $uploader, $id
+        $actualDep, $actualArr, $days, $editor, $id
     );
 
-    if ($stmt->execute()) {
-        if ($fileName) {
-            $stmt2 = $db->prepare("INSERT INTO RevisedGO (ID, RevGO) VALUES (?,?)");
-            $stmt2->bind_param("is", $id, $fileName);
-            $stmt2->execute();
-        }
-        successBox(
-            "Update Successful",
-            "Foreign visit information updated successfully.",
-            "template/base.php?page=view_visits"
-        );
-    } else {
-         echo $stmt->error;
+    $stmt->execute();
+
+    if ($fileName) {
+        $db->query("INSERT INTO RevisedGO (ID, RevGO) VALUES ($id, '$fileName')");
     }
-} else {
+
+    $redirectPage = $unreported
+    ? "template/base.php?page=UnreportedVisits"
+    : "template/base.php?page=ViewVisits";
+
+    successBox(
+        "Update Successful",
+        $unreported
+            ? "Unreported foreign visit updated successfully."
+            : "Foreign visit information updated successfully.",
+        $redirectPage
+    );
+
+}
+
+/* =========================
+   INSERT
+========================= */
+else {
+
     $stmt = $db->prepare("
         INSERT INTO ForeignVisit
         (ServiceID,Cadre,Office,Name,Designation,Grade,Workplace,
         DestinationCountry,FundingSource,Purpose,StartDate,EndDate,
-        ActualDeparture,ActualArrival,Days,GO,Uploader)
-        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+        ActualDeparture,ActualArrival,Days,GO,Uploader,Editor)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
     ");
+
     $stmt->bind_param(
-        "issssissssssssisi",
+        "issssissssssssisis",
         $serviceID, $cadre, $office, $name, $designation, $grade, $workplace,
         $destCountry, $funding, $purpose, $startDate, $endDate,
-        $actualDep, $actualArr, $days, $fileName, $uploader
+        $actualDep, $actualArr, $days, $fileName, $uploader, $editor
     );
 
-    if ($stmt->execute()) {
-        successBox(
-            "Entry Successful",
-            "New foreign visit record added successfully.",
-            "template/base.php?page=NewEntry"
-        );
-    } else {
-        echo $stmt->error;
-    }
+    $stmt->execute();
+
+    successBox(
+        "Entry Successful",
+        $unreported
+            ? "Unreported foreign visit saved successfully."
+            : "Foreign visit entry added successfully.",
+        "template/base.php?page=NewEntry"
+    );
 }
 
 $db->close();

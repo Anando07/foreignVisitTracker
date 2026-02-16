@@ -2,14 +2,16 @@
 // Check if user has permission to view this page
 if (in_array($role_id, [1, 2, 5])):
 
-    // Fetch all visits with uploader name
+    // Fetch all unreported visits
     $sql = "
         SELECT 
             fv.*,
-            a.name AS uploader_name
+            a.name AS editor_name
         FROM ForeignVisit fv
-        LEFT JOIN admin a ON a.ID = fv.Uploader
-        ORDER BY fv.ID DESC
+        LEFT JOIN admin a ON a.ID = fv.Editor
+        WHERE fv.ActualArrival = '0000-00-00' 
+          AND fv.EndDate < CURDATE()
+        ORDER BY fv.EndDate ASC
     ";
 
     $visits = mysqli_query($db, $sql);
@@ -17,12 +19,25 @@ if (in_array($role_id, [1, 2, 5])):
 ?>
 
 <div class="fvt-card" id="visitsSection">
-    <h3 style="color:red; text-align:center;">Foreign Visits</h3>
+    <h3 style="color:red; text-align:center;">Unreported Foreign Visits</h3>
 
-    <!-- Search and Print -->
+    <!-- Search and Print/PDF -->
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <!-- Search box -->
         <input type="text" class="table-search fvt-input" placeholder="Search visits..." data-table="visitTable" style="width:48%;">
-        <button class="btn btn-primary" onclick="printVisitTable()">🖨️ Print Visits</button>
+
+        <!-- Buttons -->
+        <div style="display:flex; gap:10px;">
+            <!-- Print Button -->
+            <button class="btn btn-primary" onclick="printVisitTable()">
+                🖨️ Print Visits
+            </button>
+
+            <!-- PDF Button -->
+            <button class="btn btn-success" onclick="window.open('../pdfUnreportedCases.php', '_blank')">
+                📄 Generate PDF
+            </button>
+        </div>
     </div>
 
     <div style="overflow-x:auto;">
@@ -77,11 +92,13 @@ if (in_array($role_id, [1, 2, 5])):
                         <a href='../uploads/<?= $visit["GO"] ?>' target='_blank'>Click</a>
                         <?= $rev_go_links ?>
                     </td>
-                    <td><?= htmlspecialchars($visit['uploader_name'] ?? $visit['Uploader']) ?></td>
+                    <td><?= htmlspecialchars($visit['editor_name'] ?? $visit['Editor']) ?></td>
                     <?php if (in_array($role_id, [1, 5])): ?>
                         <td>
-                            <button title="Edit" class="btn btn-sm btn-warning" onclick="confirmEditVisit(<?= $visit['ID'] ?>)">✏️</button>
-                            <button class="btn btn-sm btn-danger" onclick="confirmDeleteVisit(<?= $visit['ID'] ?>)">🗑️</button>
+                            <button title="Reported" class="btn btn-sm btn-warning"
+                                onclick="confirmReportedVisit(<?= $visit['ID'] ?>)">
+                                ✏️
+                            </button>
                         </td>
                     <?php endif; ?>
                 </tr>
@@ -93,7 +110,6 @@ if (in_array($role_id, [1, 2, 5])):
 </div>
 
 <script>
-// Print Visit Table
 function printVisitTable() {
     const visits = <?php echo json_encode($allVisits); ?>;
     const logoUrl = "http://localhost/foreignVisitTracker/assets/images/Logo.png";
@@ -109,25 +125,23 @@ function printVisitTable() {
         </div>
     `;
 
-    let html = `
-        <table style="width:100%; border-collapse:collapse;" border="1" cellpadding="5">
-            <thead>
-                <tr style="background:#f2f2f2;">
-                    <th>#</th>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Designation</th>
-                    <th>Workplace</th>
-                    <th>Country</th>
-                    <th>Funding</th>
-                    <th>Purpose</th>
-                    <th>Start Date (Departure)</th>
-                    <th>End Date (Arrival)</th>
-                    <th>Days</th>
-                </tr>
-            </thead>
-            <tbody>
-    `;
+    let html = `<table style="width:100%; border-collapse:collapse;" border="1" cellpadding="5">
+        <thead>
+            <tr style="background:#f2f2f2;">
+                <th>#</th>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Designation</th>
+                <th>Workplace</th>
+                <th>Country</th>
+                <th>Funding</th>
+                <th>Purpose</th>
+                <th>Start Date (Departure)</th>
+                <th>End Date (Arrival)</th>
+                <th>Days</th>
+            </tr>
+        </thead>
+        <tbody>`;
 
     visits.forEach((v, i) => {
         const actualDeparture = (v.ActualDeparture == "0000-00-00") ? "Unreported" : v.ActualDeparture;
@@ -145,8 +159,7 @@ function printVisitTable() {
                 <td>${v.StartDate} (${actualDeparture})</td>
                 <td>${v.EndDate} (${actualArrival})</td>
                 <td>${v.Days}</td>
-            </tr>
-        `;
+            </tr>`;
     });
 
     html += `</tbody></table>`;
@@ -155,7 +168,7 @@ function printVisitTable() {
     newWin.document.write(`
         <html>
         <head>
-            <title>All Foreign Visits</title>
+            <title>Unreported Foreign Visits</title>
             <style>
                 body { font-family: Arial, sans-serif; }
                 table, th, td { border:1px solid #000; border-collapse: collapse; padding:5px; }
@@ -173,7 +186,6 @@ function printVisitTable() {
 
 <?php
 else:
-    // Unauthorized
     echo "<div class='fvt-card'><h3 style='color:red; text-align:center;'>You are not authorized to visit this page!</h3></div>";
 endif;
 ?>

@@ -13,14 +13,21 @@ if (!in_array((int)$_SESSION['role_id'], [1,2,5], true)) {
 }
 
 /* =========================
-   EDIT MODE
+   EDIT MODE / UNREPORTED MODE
 ========================= */
 $update = false;
+$isUnreportedMode = false;  // flag for unreported visits
 $data = [];
 
-if (!empty($_GET['edit']) || !empty($_GET['id'])) {
+if (!empty($_GET['edit']) || !empty($_GET['id']) || !empty($_GET['unreported'])) {
     $update = true;
-    $id = isset($_GET['edit']) ? (int)$_GET['edit'] : (int)$_GET['id'];
+
+    if (!empty($_GET['unreported'])) {
+        $id = (int)$_GET['unreported'];
+        $isUnreportedMode = true;
+    } else {
+        $id = isset($_GET['edit']) ? (int)$_GET['edit'] : (int)$_GET['id'];
+    }
 
     $stmt = $db->prepare("SELECT * FROM ForeignVisit WHERE ID=?");
     $stmt->bind_param("i", $id);
@@ -31,16 +38,24 @@ if (!empty($_GET['edit']) || !empty($_GET['id'])) {
         exit("Record not found");
     }
 }
+
+// Determine required flags
+$goRequired = !$isUnreportedMode; // GO file required only in New/Edit
+$datesRequired = $isUnreportedMode; // Actual Departure/Arrival required only in Unreported
 ?>
 
 <div class="fvt-card">
     <div class="fvt-header">
-        <?= $update ? "✏️ Edit Foreign Visit" : "➕ New Foreign Visit Entry" ?>
+        <?= $update
+            ? ($isUnreportedMode ? "✏️ Edit Unreported Visit" : "✏️ Edit Foreign Visit")
+            : "➕ New Foreign Visit Entry"
+        ?>
     </div>
 
     <form id="foreignVisitForm" method="post" action="../action_page.php" enctype="multipart/form-data">
         <input type="hidden" name="update" value="<?= $update ? 1 : 0 ?>">
         <input type="hidden" name="id" value="<?= $data['ID'] ?? '' ?>">
+        <input type="hidden" name="unreported_mode" value="<?= $isUnreportedMode ? 1 : 0 ?>">
 
         <div class="fvt-grid">
 
@@ -55,14 +70,14 @@ if (!empty($_GET['edit']) || !empty($_GET['id'])) {
             <div class="fvt-group">
                 <label>Cadre <span class="required">*</span></label>
                 <select name="cadreName" class="fvt-input" required>
-                <option value="">Select</option>
-                <?php
-                foreach(file("../data/cadre.txt", FILE_IGNORE_NEW_LINES) as $line){
-                    [$value,$label] = array_map('trim', explode('|',$line));
-                    $sel = (($data['Cadre'] ?? '') === $value) ? 'selected' : '';
-                    echo "<option value='$value' $sel>$label</option>";
-                }
-                ?>
+                    <option value="">Select</option>
+                    <?php
+                    foreach(file("../data/cadre.txt", FILE_IGNORE_NEW_LINES) as $line){
+                        [$value,$label] = array_map('trim', explode('|',$line));
+                        $sel = (($data['Cadre'] ?? '') === $value) ? 'selected' : '';
+                        echo "<option value='$value' $sel>$label</option>";
+                    }
+                    ?>
                 </select>
                 <div class="error-msg"></div>
             </div>
@@ -78,14 +93,14 @@ if (!empty($_GET['edit']) || !empty($_GET['id'])) {
             <div class="fvt-group">
                 <label>Office <span class="required">*</span></label>
                 <select name="office" id="office" class="fvt-input" required>
-                <option value="">Select</option>
-                <?php
-                $offices = ["MoF"=>"Ministry of Finance","IRD"=>"IRD","NBR"=>"NBR","NSD"=>"NSD","TAT"=>"TAT","CEVT"=>"CEVT"];
-                foreach($offices as $k=>$v){
-                    $sel = (($data['Office'] ?? '')==$k)?'selected':'';
-                    echo "<option value='$k' $sel>$v</option>";
-                }
-                ?>
+                    <option value="">Select</option>
+                    <?php
+                    $offices = ["MoF"=>"Ministry of Finance","IRD"=>"IRD","NBR"=>"NBR","NSD"=>"NSD","TAT"=>"TAT","CEVT"=>"CEVT"];
+                    foreach($offices as $k=>$v){
+                        $sel = (($data['Office'] ?? '')==$k)?'selected':''; 
+                        echo "<option value='$k' $sel>$v</option>";
+                    }
+                    ?>
                 </select>
                 <div class="error-msg"></div>
             </div>
@@ -94,7 +109,7 @@ if (!empty($_GET['edit']) || !empty($_GET['id'])) {
             <div class="fvt-group">
                 <label>Designation <span class="required">*</span></label>
                 <select name="designation" id="designation" class="fvt-input" required>
-                <option value="">Select Office First</option>
+                    <option value="">Select Office First</option>
                 </select>
                 <div class="error-msg"></div>
             </div>
@@ -103,10 +118,10 @@ if (!empty($_GET['edit']) || !empty($_GET['id'])) {
             <div class="fvt-group">
                 <label>Grade <span class="required">*</span></label>
                 <select name="grade" class="fvt-input" required>
-                <option value="">Select</option>
-                <?php for($i=1; $i<=20; $i++): ?>
-                <option value="<?= $i ?>" <?= (($data['Grade']??'')==$i)?'selected':'' ?>>Grade-<?= $i ?></option>
-                <?php endfor; ?>
+                    <option value="">Select</option>
+                    <?php for($i=1; $i<=20; $i++): ?>
+                    <option value="<?= $i ?>" <?= (($data['Grade']??'')==$i)?'selected':'' ?>>Grade-<?= $i ?></option>
+                    <?php endfor; ?>
                 </select>
                 <div class="error-msg"></div>
             </div>
@@ -122,13 +137,13 @@ if (!empty($_GET['edit']) || !empty($_GET['id'])) {
             <div class="fvt-group">
                 <label>Destination Country <span class="required">*</span></label>
                 <select name="destination_country" class="fvt-input" required>
-                <option value="">Select</option>
-                <?php
-                foreach(file("../data/countries.txt", FILE_IGNORE_NEW_LINES) as $c){
-                    $sel = (($data['DestinationCountry']??'')==$c)?'selected':'';
-                    echo "<option $sel>$c</option>";
-                }
-                ?>
+                    <option value="">Select</option>
+                    <?php
+                    foreach(file("../data/countries.txt", FILE_IGNORE_NEW_LINES) as $c){
+                        $sel = (($data['DestinationCountry']??'')==$c)?'selected':''; 
+                        echo "<option $sel>$c</option>";
+                    }
+                    ?>
                 </select>
                 <div class="error-msg"></div>
             </div>
@@ -137,14 +152,14 @@ if (!empty($_GET['edit']) || !empty($_GET['id'])) {
             <div class="fvt-group">
                 <label>Purpose <span class="required">*</span></label>
                 <select name="purpose" class="fvt-input" required>
-                <option value="">Select</option>
-                <?php
-                foreach(file("../data/visit_purpose.txt", FILE_IGNORE_NEW_LINES) as $line){
-                    [$code,$display] = explode('|',$line);
-                    $sel = (($data['Purpose']??'')==$code)?'selected':'';
-                    echo "<option value='$code' $sel>$display</option>";
-                }
-                ?>
+                    <option value="">Select</option>
+                    <?php
+                    foreach(file("../data/visit_purpose.txt", FILE_IGNORE_NEW_LINES) as $line){
+                        [$code,$display] = explode('|',$line);
+                        $sel = (($data['Purpose']??'')==$code)?'selected':''; 
+                        echo "<option value='$code' $sel>$display</option>";
+                    }
+                    ?>
                 </select>
                 <div class="error-msg"></div>
             </div>
@@ -153,13 +168,13 @@ if (!empty($_GET['edit']) || !empty($_GET['id'])) {
             <div class="fvt-group">
                 <label>Fund <span class="required">*</span></label>
                 <select name="fund" class="fvt-input" required>
-                <option value="">Select</option>
-                <?php
-                foreach(file("../data/fund.txt", FILE_IGNORE_NEW_LINES) as $f){
-                    $sel = (($data['FundingSource']??'')==$f)?'selected':'';
-                    echo "<option $sel>$f</option>";
-                }
-                ?>
+                    <option value="">Select</option>
+                    <?php
+                    foreach(file("../data/fund.txt", FILE_IGNORE_NEW_LINES) as $f){
+                        $sel = (($data['FundingSource']??'')==$f)?'selected':''; 
+                        echo "<option $sel>$f</option>";
+                    }
+                    ?>
                 </select>
                 <div class="error-msg"></div>
             </div>
@@ -177,22 +192,24 @@ if (!empty($_GET['edit']) || !empty($_GET['id'])) {
                 <div class="error-msg"></div>
             </div>
 
+            <!-- Actual Departure -->
             <div class="fvt-group">
-                <label>Actual Departure</label>
-                <input type="date" name="actual_departure" class="fvt-input" value="<?= $data['ActualDeparture'] ?? '' ?>">
+                <label>Actual Departure <?= $datesRequired ? '<span class="required">*</span>' : '' ?></label>
+                <input type="date" name="actual_departure" class="fvt-input" <?= $datesRequired ? 'required' : '' ?> value="<?= $data['ActualDeparture'] ?? '' ?>">
                 <div class="error-msg"></div>
             </div>
 
+            <!-- Actual Arrival -->
             <div class="fvt-group">
-                <label>Actual Arrival</label>
-                <input type="date" name="actual_arrival" class="fvt-input" value="<?= $data['ActualArrival'] ?? '' ?>">
+                <label>Actual Arrival <?= $datesRequired ? '<span class="required">*</span>' : '' ?></label>
+                <input type="date" name="actual_arrival" class="fvt-input" <?= $datesRequired ? 'required' : '' ?> value="<?= $data['ActualArrival'] ?? '' ?>">
                 <div class="error-msg"></div>
             </div>
 
             <!-- GO File -->
             <div class="fvt-group">
-                <label>GO / Order File <?= $update?'':'<span class="required">*</span>' ?></label>
-                <input type="file" name="go_file" class="fvt-input" <?= $update?'':'required' ?>>
+                <label>GO / Order File <?= $goRequired ? '<span class="required">*</span>' : '' ?></label>
+                <input type="file" name="go_file" class="fvt-input" <?= $goRequired ? 'required' : '' ?>>
                 <div class="error-msg"></div>
             </div>
 
@@ -204,9 +221,9 @@ if (!empty($_GET['edit']) || !empty($_GET['id'])) {
         </div>
     </form>
 </div>
+
 <script>
-// Frontend validation
-document.getElementById("foreignVisitForm").addEventListener("submit",function(e){
+document.getElementById("foreignVisitForm").addEventListener("submit", function(e){
     let ok=true;
     document.querySelectorAll(".error-msg").forEach(x=>x.innerText="");
     document.querySelectorAll(".fvt-input").forEach(x=>x.classList.remove("error"));
@@ -225,8 +242,15 @@ document.getElementById("foreignVisitForm").addEventListener("submit",function(e
     let t=document.querySelector("[name='to_date']").value;
     if(f && t && t<f) err(document.querySelector("[name='to_date']"),"End date cannot be before start date");
 
+    // Only validate actual dates if required
+    let dep=document.querySelector("[name='actual_departure']");
+    let arr=document.querySelector("[name='actual_arrival']");
+    if(dep.required && arr.required && dep.value && arr.value && arr.value<dep.value)
+        err(arr,"Arrival cannot be before departure");
+
+    // GO file validation if required
     let file=document.querySelector("[name='go_file']");
-    if(file.files.length){
+    if(file.required && file.files.length){
         let ext=file.files[0].name.split('.').pop().toLowerCase();
         if(!['pdf','jpg','jpeg'].includes(ext)) err(file,"Only PDF/JPG allowed");
         if(file.files[0].size>512*1024) err(file,"Max 512 KB");
@@ -234,9 +258,6 @@ document.getElementById("foreignVisitForm").addEventListener("submit",function(e
 
     if(!ok) e.preventDefault();
 });
-</script>
 
-<script>
-// Pass selected designation for edit mode
 document.getElementById('designation').dataset.selected = "<?= $data['Designation'] ?? '' ?>";
 </script>

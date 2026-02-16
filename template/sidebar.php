@@ -33,8 +33,8 @@
         <a class="has-submenu">📑 Reports</a>
         <div class="submenu">
             <?php if (in_array($role_id, [1,2,5])): ?>
-            <a href="base.php?page=Report">Time Base Report</a>
-            <a href="base.php?page=unrepoted_report">Unreported Cases</a>
+            <a href="base.php?page=Report">Time Base Visit</a>
+            <a href="base.php?page=UnreportedVisits">Unreported Visit</a>
             <a href="base.php?page=masimum_visit_report">Maximum Visit</a>
             <?php endif; ?>
         </div>

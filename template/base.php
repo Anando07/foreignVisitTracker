@@ -57,8 +57,9 @@ $allowed_pages = [
     'NewEntry'        => '../NewEntry.php',
     'ShowDashboard'   => '../ShowDashboard.php',
     'add_visit'       => '../admin/add_visit.php',
-    'ViewVisits'     => '../ViewVisits.php',
+    'ViewVisits'      => '../ViewVisits.php',
     'Report'          => '../Report.php',
+    'UnreportedVisits' => '../UnreportedVisits.php',
     'daily_report'    => '../admin/daily_report.php',
     'monthly_report'  => '../admin/monthly_report.php',
     'annual_report'   => '../admin/annual_report.php',
@@ -74,9 +75,6 @@ $admin_pages = [
     'users',
     'add_visit',
     'ViewVisits',
-    'daily_report',
-    'monthly_report',
-    'annual_report',
     'settings'
 ];
 

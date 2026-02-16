@@ -1,4 +1,7 @@
 <?php
+error_reporting(E_ALL ^ E_NOTICE);
+session_start();
+
 /* =========================
    FORM INPUTS
 ========================= */
@@ -93,7 +96,7 @@ while($row = mysqli_fetch_assoc($res)) $purposes[] = $row['Purpose'];
 ?>
 
 <div class="fvt-card">
-    <h2 class="report-title">Individual Time Based Report</h2>
+    <h2 class="report-title">Time Based Different Type Report</h2>
 
     <form method="post" class="fvt-form" id="reportForm">
         <div class="form-grid">
