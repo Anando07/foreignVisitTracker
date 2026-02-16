@@ -60,9 +60,7 @@ $allowed_pages = [
     'ViewVisits'      => '../ViewVisits.php',
     'Report'          => '../Report.php',
     'UnreportedVisits' => '../UnreportedVisits.php',
-    'daily_report'    => '../admin/daily_report.php',
-    'monthly_report'  => '../admin/monthly_report.php',
-    'annual_report'   => '../admin/annual_report.php',
+    'MaxMinReport'    => '../MaxMinReport.php',
     'settings'        => '../admin/settings.php'
 ];
 

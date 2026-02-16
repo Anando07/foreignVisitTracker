@@ -35,7 +35,7 @@
             <?php if (in_array($role_id, [1,2,5])): ?>
             <a href="base.php?page=Report">Time Base Visit</a>
             <a href="base.php?page=UnreportedVisits">Unreported Visit</a>
-            <a href="base.php?page=masimum_visit_report">Maximum Visit</a>
+            <a href="base.php?page=MaxMinReport">Maximum Visit</a>
             <?php endif; ?>
         </div>
 
