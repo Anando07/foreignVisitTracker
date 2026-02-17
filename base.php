@@ -1,5 +1,10 @@
 <?php
-require_once("init.php"); // sets up $db and $auth
+
+require_once("init.php");
+require_once ("repositories/UserRepository.php");
+require_once ("helpers/UserService.php");
+require_once ("helpers/ProfileService.php");
+require_once ("helpers/PasswordService.php");
 
 /* =========================
    PREVENT BROWSER CACHING
@@ -26,11 +31,11 @@ if (!isset($_GET['page'])) {
 /* =========================
    SESSION DATA
 ========================= */
-$user_id       = $_SESSION['login_user_id'];
+$userId       = $_SESSION['login_user_id'];
+$roleId       = (int) $_SESSION['role_id'];
 $username      = $_SESSION['login_user'];
-$user_fullname = $_SESSION['user_name'];
-$role_name     = $_SESSION['role_name'];
-$role_id       = (int) $_SESSION['role_id'];
+$userFullname = $_SESSION['user_name'];
+$roleName     = $_SESSION['role_name'];
 $designation   = $_SESSION['user_designation'] ?? 'N/A';
 
 /* =========================
@@ -42,8 +47,8 @@ $allowed_pages = [
     'self_change_password' => 'dashboard/self_change_password.php',
     'change_password' => 'auth/change_password.php',
     'home'            => 'user/home.php',
-    'add_user'        => 'user/add_user.php',
-    'users'           => 'user/users.php',
+    'AddEditUser'     => 'user/AddEditUser.php',
+    'Users'           => 'user/Users.php',
     'NewEntry'        => '../NewEntry.php',
     'ShowDashboard'   => '../ShowDashboard.php',
     'add_visit'       => '../admin/add_visit.php',
@@ -56,15 +61,15 @@ $allowed_pages = [
 
 $admin_pages = [
     'dashboard',
-    'add_user',
-    'users',
+    'AddEditUser',
+    'Users',
     'add_visit',
     'ViewVisits',
     'settings'
 ];
 
 // Redirect non-admins from admin pages
-if(in_array($page, $admin_pages) && $role_id !== 1){
+if(in_array($page, $admin_pages) && $roleId !== 1){
     $page = 'dashboard';
 }
 
@@ -80,6 +85,7 @@ $current_page = $page;
 
 <link rel="stylesheet" href="assets/css/style.css?v=<?= filemtime('assets/css/style.css'); ?>">
 <link rel="stylesheet" href="assets/css/profile.css?v=<?= filemtime('assets/css/profile.css'); ?>">
+<link rel="stylesheet" href="assets/css/user.css?v=<?= filemtime('assets/css/user.css'); ?>">
 <link rel="stylesheet" href="assets/css/entry-form.css?v=<?= filemtime('assets/css/entry-form.css'); ?>">
 
 <style>

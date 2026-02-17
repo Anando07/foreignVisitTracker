@@ -1,11 +1,8 @@
 <?php
-require_once __DIR__."/../init.php";
-require_once __DIR__."/../helpers/PasswordService.php";
-
-$auth->checkLogin();
-
 $service = new PasswordService($db);
-$userId  = $_SESSION['login_user_id'];
+
+$user  = $service->getUserById($userId);
+$roles = $service->getRoles();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 

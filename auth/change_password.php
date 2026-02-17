@@ -7,7 +7,7 @@ $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 if ($id <= 0) {
     $_SESSION['msg'] = "❌ Invalid User!";
     $_SESSION['msg_type'] = "error";
-    header("Location: base.php?page=users");
+    header("Location: base.php?page=Users");
     exit;
 }
 

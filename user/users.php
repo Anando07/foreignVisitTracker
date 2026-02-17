@@ -1,8 +1,7 @@
+
 <?php
-// Fetch all users
-$sql = "SELECT * FROM Admin ORDER BY ID ASC";
-$users = mysqli_query($db, $sql);
-$allUsers = mysqli_fetch_all($users, MYSQLI_ASSOC);
+require_once __DIR__."/../controllers/UserController.php";
+$allUsers = $service->getAllUsers();
 ?>
 
 <div class="fvt-card" id="usersSection">
@@ -43,7 +42,7 @@ $allUsers = mysqli_fetch_all($users, MYSQLI_ASSOC);
                 </td>
                 <td>
                     <?php if ($user['Role_ID'] != 1): ?>
-                        <button title="Edit" class="btn btn-sm btn-warning" onclick="window.location.href='base.php?page=add_user&id=<?= $user['ID'] ?>'">✏️</button>
+                        <button title="Edit" class="btn btn-sm btn-warning" onclick="window.location.href='base.php?page=AddEditUser&id=<?= $user['ID'] ?>'">✏️</button>
                         <button title="Change Password" class="btn btn-sm btn-info" onclick="window.location.href='base.php?page=change_password&id=<?= $user['ID'] ?>'">🔑</button>
                         <button title="Delete" class="btn btn-sm btn-danger" onclick="confirmDelete(<?= $user['ID'] ?>)">🗑️</button>
                     <?php endif; ?>
@@ -60,8 +59,8 @@ $allUsers = mysqli_fetch_all($users, MYSQLI_ASSOC);
 <script>
 // Delete confirmation (global)
 function confirmDelete(userId) {
-    // First, check if user can be deleted
-    fetch(`../admin/delete_user.php?id=${userId}&action=check`)
+    // Step 1: Check if user can be deleted
+    fetch(`controllers/UserController.php?id=${userId}&action=check`)
         .then(response => response.json())
         .then(data => {
             const fullName = data.name || "Unknown";
@@ -72,43 +71,46 @@ function confirmDelete(userId) {
                     title: 'Cannot Delete!',
                     text: data.message
                 });
-            } else {
-                // Confirm deletion
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: `Do you want to delete user ${fullName}?`,
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Yes, delete!',
-                    cancelButtonText: 'Cancel',
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Actually delete
-                        fetch(`../admin/delete_user.php?id=${userId}&action=delete`)
-                            .then(res => res.json())
-                            .then(delData => {
-                                if (delData.canDelete) {
-                                    Swal.fire({
-                                        icon: 'success',
-                                        title: 'Deleted!',
-                                        text: delData.message,
-                                        timer: 1500,
-                                        showConfirmButton: false
-                                    }).then(() => location.reload());
-                                } else {
-                                    Swal.fire({
-                                        icon: 'error',
-                                        title: 'Error!',
-                                        text: delData.message
-                                    });
-                                }
-                            });
-                    }
-                });
+                return;
             }
+
+            // Step 2: Ask for confirmation
+            Swal.fire({
+                title: 'Are you sure?',
+                text: `Do you want to delete user ${fullName}?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete!',
+                cancelButtonText: 'Cancel',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Step 3: Call delete action
+                    fetch(`controllers/UserController.php?id=${userId}&action=delete`)
+                        .then(res => res.json())
+                        .then(delData => {
+                            if (delData.canDelete) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Deleted!',
+                                    text: delData.message,
+                                    timer: 1500,
+                                    showConfirmButton: false
+                                }).then(() => location.reload());
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error!',
+                                    text: delData.message
+                                });
+                            }
+                        })
+                        .catch(err => console.error(err));
+                }
+            });
         })
         .catch(err => console.error(err));
 }
+
 </script>
 <script>
 function printTable() {

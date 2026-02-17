@@ -1,29 +1,25 @@
 <?php
 class ProfileService {
+    private $userRepo;
     private $db;
 
     public function __construct($db) {
         $this->db = $db;
+        $this->userRepo = new UserRepository($db);
     }
 
     /* ======================
        GET USER
     ====================== */
     public function getUserById($userId) {
-        $res = mysqli_query($this->db, "SELECT * FROM Admin WHERE ID=".(int)$userId);
-        return mysqli_fetch_assoc($res);
+        return $this->userRepo->getUserById($userId);
     }
 
     /* ======================
        GET ROLES
     ====================== */
     public function getRoles() {
-        $roles = [];
-        $res = mysqli_query($this->db, "SELECT SL, Role FROM Role ORDER BY SL ASC");
-        while ($r = mysqli_fetch_assoc($res)) {
-            $roles[$r['SL']] = $r['Role'];
-        }
-        return $roles;
+        return $this->userRepo->getRoles();
     }
 
     /* ======================

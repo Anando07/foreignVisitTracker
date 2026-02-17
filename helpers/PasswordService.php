@@ -1,9 +1,27 @@
 <?php
+
 class PasswordService {
+    
+    private $userRepo;
     private $db;
 
     public function __construct($db) {
         $this->db = $db;
+        $this->userRepo = new UserRepository($db);
+    }
+
+    /* ======================
+       GET USER
+    ====================== */
+    public function getUserById($userId) {
+        return $this->userRepo->getUserById($userId);
+    }
+
+    /* ======================
+       GET ROLES
+    ====================== */
+    public function getRoles() {
+        return $this->userRepo->getRoles();
     }
 
     /* ======================

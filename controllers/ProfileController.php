@@ -1,11 +1,5 @@
 <?php
-require_once __DIR__ . "/../init.php";
-require_once __DIR__ . "/../helpers/ProfileService.php";
-
 $profile = new ProfileService($db);
-
-$userId   = $_SESSION['login_user_id'];
-$roleId   = $_SESSION['role_id'];
 
 $user  = $profile->getUserById($userId);
 $roles = $profile->getRoles();
