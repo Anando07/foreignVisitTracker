@@ -1,11 +1,14 @@
 <?php
+require_once("../init.php");
+
+// Destroy session
+$auth->logout();
+
+// Create fresh session for flash message
 session_start();
+$_SESSION['msg'] = "You have successfully logged out.";
+$_SESSION['msg_type'] = "success";
 
-// Destroy all session data
-session_unset();
-session_destroy();
-
-// Redirect to login page with logout flag
-header('Location: Login.php?logout=1');
+// Redirect to login
+header("Location: login.php");
 exit();
-?>

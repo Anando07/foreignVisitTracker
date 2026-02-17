@@ -1,0 +1,159 @@
+/* Reset */
+* { margin:0; padding:0; box-sizing:border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+body, html { height:100%; }
+
+/* Body background */
+body {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background: url('../images/backGround.avif') no-repeat center center fixed;
+    background-size: cover;
+    position: relative;
+}
+
+/* Overlay for readability */
+body::before {
+    content:'';
+    position:absolute;
+    top:0; left:0; right:0; bottom:0;
+    background: rgba(0,0,0,0.4); /* dark overlay */
+    z-index:0;
+}
+
+/* Main container */
+.container {
+    position: relative;
+    z-index:1;
+    display:flex;
+    max-width: 900px;
+    width:90%;
+    min-height:500px;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 8px 20px rgba(0,0,0,0.3);
+}
+
+/* Left Panel */
+.left-panel {
+    flex:1;
+    padding:40px 20px;
+    background: rgba(255,255,255,0.15); /* semi-transparent */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color:#fff;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    border-right: 1px solid rgba(255,255,255,0.2);
+}
+.left-panel img { width:80px; height:80px; margin-bottom:20px; }
+.left-panel h1 { font-size:22px; margin-bottom:10px; font-weight:bold; }
+.left-panel h2 { font-size:18px; margin-bottom:8px; font-weight:normal; }
+.left-panel h3 { font-size:14px; margin-bottom:15px; font-weight:normal; }
+.left-panel p { font-size:13px; margin-top:10px; color:#eee; }
+
+/* Right Panel */
+.right-panel {
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:30px;
+    background: rgba(255,255,255,0.15); /* semi-transparent */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-left: 1px solid rgba(255,255,255,0.2);
+}
+
+/* Login form container */
+/* Title section background */
+.login-container .title {
+    text-align:center;
+    margin-bottom:20px;
+    padding:20px;
+    border-radius:8px 8px 0 0; /* round top corners */
+    background: url('../images/backGround.avif') no-repeat center center;
+    background-size: cover;
+    position: relative;
+    color:#fff;
+}
+
+/* Overlay for readability */
+.login-container .title::after {
+    content:'';
+    position:absolute;
+    top:0; left:0; right:0; bottom:0;
+    background: rgba(0,0,0,0.4); /* dark overlay */
+    border-radius:8px 8px 0 0;
+    z-index:0;
+}
+
+.login-container .title h2,
+.login-container .title p {
+    position: relative; /* put text above overlay */
+    z-index:1;
+    margin:0;
+}
+
+.login-container .title h2 { font-size:22px; }
+.login-container .title p { font-size:14px; color:#ddd; margin-top:5px; }
+
+
+/* Form styles */
+label { font-weight:bold; display:block; margin-bottom:5px; color:#fff; }
+.box { 
+    width:100%; 
+    padding:10px; 
+    border-radius:6px; 
+    border:1px solid rgba(255,255,255,0.4); 
+    margin-bottom:15px; 
+    background: rgba(255,255,255,0.1); 
+    color:#fff; 
+    transition:0.3s;
+}
+.box:focus { 
+    border-color:#66a6ff; 
+    box-shadow:0 0 5px rgba(102,166,255,0.5); 
+    outline:none; 
+    background: rgba(255,255,255,0.15); 
+}
+.password-wrapper { position: relative; }
+.eye-icon { position:absolute; right:10px; top:10px; cursor:pointer; color:#fff; }
+
+/* Submit button */
+.submit-btn {
+    width:100%; 
+    padding:12px;
+    font-weight:bold; 
+    border:none; 
+    border-radius:6px;
+    background: linear-gradient(135deg, rgba(102,166,255,0.8), rgba(137,247,254,0.8));
+    color:#fff;
+    cursor:pointer; 
+    transition:0.3s;
+}
+.submit-btn:hover { 
+    background: linear-gradient(135deg, rgba(137,247,254,0.9), rgba(102,166,255,0.9)); 
+}
+
+/* Forgot password link */
+.forgot-password { text-align:right; font-size:13px; margin-top:5px; }
+.forgot-password a { color:#fff; text-decoration:underline; }
+.forgot-password a:hover { color:#66a6ff; }
+
+/* Messages */
+.message { font-size: 13px; margin-bottom: 15px; padding: 8px; border-radius: 5px; text-align:center; }
+.message.danger { background:#ffcccc; color:#cc0000; }
+.message.warning { background:#fff3cd; color:#856404; }
+.message.success { background:#d4edda; color:#155724; }
+
+/* Responsive */
+@media(max-width:800px){
+    .container { flex-direction:column; min-height:600px; }
+    .left-panel, .right-panel { flex:none; width:100%; padding:30px; }
+    .left-panel { order:2; }
+    .right-panel { order:1; }
+}

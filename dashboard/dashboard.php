@@ -1,7 +1,4 @@
 <?php
-error_reporting(E_ALL ^ E_NOTICE);
-include("../config.php");
-
 // ======================
 // DASHBOARD STATS
 // ======================
@@ -82,7 +79,6 @@ while($row = mysqli_fetch_assoc($cadreCounts)){
     $cadreLabels[] = $row['Cadre'];
     $cadreData[]   = (int)$row['total'];
 }
-
 
 ?>
 

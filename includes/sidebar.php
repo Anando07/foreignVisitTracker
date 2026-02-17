@@ -43,9 +43,9 @@
         <?php if (in_array($role_id, [1,2,3,4,5])): ?>
         <a class="has-submenu">⚙ Settings</a>
         <div class="submenu">
-            <a href="base.php?page=change_profile">👤 My Profile</a>
-            <a href="base.php?page=password_change">🔑 Change Password</a>
-            <a href="../auth/login.php?logout=1">🚪 Logout</a>
+            <a href="base.php?page=profile">👤 My Profile</a>
+            <a href="base.php?page=self_change_password">🔑 Change Password</a>
+            <a href="auth/logout.php">🚪 Logout</a>
         </div>
         <?php endif; ?>
 

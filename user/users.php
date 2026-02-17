@@ -1,8 +1,4 @@
 <?php
-error_reporting(E_ALL ^ E_NOTICE);
-session_start();
-include("../config.php");
-
 // Fetch all users
 $sql = "SELECT * FROM Admin ORDER BY ID ASC";
 $users = mysqli_query($db, $sql);
