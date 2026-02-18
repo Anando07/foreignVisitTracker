@@ -1,8 +1,6 @@
 
 <?php
 require_once __DIR__."/../controllers/UserController.php";
-$allUsers = $service->getAllUsers();
-
 ?>
 
 <div class="fvt-card" id="usersSection">

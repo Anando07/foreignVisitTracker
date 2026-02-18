@@ -2,64 +2,63 @@
 /* =========================
    AUTHORIZATION
 ========================= */
-$auth->checkLogin();
-
-// Only Administrator, Admin, Operator
-if (!in_array((int)$_SESSION['login_role_id'], [1,2,5], true)) {
-    $auth->setFlash("Unauthorized access.", "error");
-    header("Location: base.php?page=home");
+if (!isset($_SESSION['login_role_id'])) {
+    header("Location: auth/login.php");
     exit;
+}
+
+if (!in_array((int)$_SESSION['login_role_id'], [1,2,5], true)) {
+    die("Unauthorized access.");
 }
 
 $service = new ForeignVisitService($db);
 
 /* =========================
-   DELETE
+   DETERMINE MODE (GET / POST)
 ========================= */
-if (isset($_GET['delete'])) {
+$id = 0;
+$isEdit = false;
 
-    if ((int)$_SESSION['login_role_id'] !== 1) {
-        $auth->setFlash("Delete allowed only for Administrator.", "error");
-        header("Location: base.php?page=ViewVisits");
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $id     = isset($_POST['id']) ? (int)$_POST['id'] : 0;
+    $isEdit = isset($_POST['update']) && $_POST['update'] == 1;
+} else {
+    if (!empty($_GET['edit']) || !empty($_GET['id']) || !empty($_GET['unreported'])) {
+        $id = !empty($_GET['unreported'])
+            ? (int)$_GET['unreported']
+            : (int)($_GET['edit'] ?? $_GET['id']);
+        $isEdit = true;
+    }
+}
+
+/* =========================
+   FETCH VISIT (EDIT MODE)
+========================= */
+$visit = $isEdit ? $service->getVisitById($id) : null;
+
+$isUnreportedMode = $visit['UnreportedMode'] ?? 0;
+
+/* =========================
+   HANDLE POST
+========================= */
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    $result = $service->saveVisit($_POST, $_FILES, $isEdit, $id);
+
+    if (isset($result['error'])) {
+        $_SESSION['msg'] = "❌ " . $result['error'];
+        $_SESSION['msg_type'] = "error";
+    } else {
+        $_SESSION['msg'] = "✅ " . $result['success'];
+        $_SESSION['msg_type'] = "success";
+        header("Location: base.php?page=ForeignVisitEntry");
         exit;
     }
-
-    try {
-        $service->delete((int)$_GET['delete']);
-        $auth->setFlash(
-            "Foreign visit record deleted successfully.",
-            "success"
-        );
-    } catch (Exception $e) {
-        $auth->setFlash($e->getMessage(), "error");
-    }
-
-    header("Location: base.php?page=ViewVisits");
-    exit;
 }
 
 /* =========================
-   SAVE (INSERT / UPDATE)
+   LIST DATA
 ========================= */
-$_POST['uploader'] = $_SESSION['login_user_id'];
-$_POST['editor']   = $_SESSION['login_user_id'];
-
-$update     = isset($_POST['update']) && $_POST['update'] == 1;
-$unreported = isset($_POST['unreported_mode']) && $_POST['unreported_mode'] == 1;
-
-$result = $service->save($_POST, $_FILES, $update, $unreported);
-
-/* =========================
-   VALIDATION ERRORS (AJAX)
-========================= */
-if ($result['status'] === 'error') {
-    echo json_encode($result);
-    exit;
-}
-
-/* =========================
-   SUCCESS
-========================= */
-$auth->setFlash($result['message'], "success");
-header("Location: base.php?page=" . $result['redirect']);
-exit;
+$allVisits = $service->getAllVisits();
+$allUnreportedVisits = $service->getAllUnreportedVisits();
+?>

@@ -1,21 +1,5 @@
 <?php
-// Check if user has permission to view this page
-if (in_array($roleId, [1, 2, 5])):
-
-    // Fetch all unreported visits
-    $sql = "
-        SELECT 
-            fv.*,
-            a.name AS editor_name
-        FROM ForeignVisit fv
-        LEFT JOIN admin a ON a.ID = fv.Editor
-        WHERE fv.ActualArrival = '0000-00-00' 
-          AND fv.EndDate < CURDATE()
-        ORDER BY fv.EndDate ASC
-    ";
-
-    $visits = mysqli_query($db, $sql);
-    $allVisits = mysqli_fetch_all($visits, MYSQLI_ASSOC);
+ require_once __DIR__."/../controllers/ForeignVisitController.php";
 ?>
 
 <div class="fvt-card" id="visitsSection">
@@ -63,7 +47,7 @@ if (in_array($roleId, [1, 2, 5])):
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($allVisits as $i => $visit): 
+                <?php foreach ($allUnreportedVisits as $i => $visit): 
                     $actualDeparture = ($visit["ActualDeparture"] == "0000-00-00") ? "Unreported" : $visit["ActualDeparture"];
                     $actualArrival   = ($visit["ActualArrival"] == "0000-00-00") ? "Unreported" : $visit["ActualArrival"];
 
@@ -183,9 +167,3 @@ function printVisitTable() {
     newWin.onload = function(){ newWin.print(); newWin.close(); };
 }
 </script>
-
-<?php
-else:
-    echo "<div class='fvt-card'><h3 style='color:red; text-align:center;'>You are not authorized to visit this page!</h3></div>";
-endif;
-?>

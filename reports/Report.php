@@ -214,7 +214,7 @@ while($row = mysqli_fetch_assoc($res)) $purposes[] = $row['Purpose'];
         <div class="table-pagination" data-table="reportTable" style="margin-top:10px; text-align:center;"></div>
     </div>
 </div>
-
+<link rel="stylesheet" href="assets/css/report-type.css?v=<?= filemtime('assets/css/report-type.css'); ?>">
 <script>
     window.services = <?= json_encode($services) ?>;
     window.names = <?= json_encode($names) ?>;

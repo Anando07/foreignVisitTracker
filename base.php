@@ -1,10 +1,10 @@
 <?php
 require_once("init.php");
 require_once ("repositories/UserRepository.php");
-require_once ("helpers/UserService.php");
-require_once ("helpers/ProfileService.php");
-require_once ("helpers/PasswordService.php");
-require_once "helpers/ForeignVisitService.php";
+require_once ("services/UserService.php");
+require_once ("services/ProfileService.php");
+require_once ("services/PasswordService.php");
+require_once ("services/ForeignVisitService.php");
 /* =========================
    PREVENT BROWSER CACHING
 ========================= */
@@ -49,7 +49,7 @@ $allowed_pages = [
     'home'            => 'user/home.php',
     'AddEditUser'     => 'user/AddEditUser.php',
     'Users'           => 'user/Users.php',
-    'NewEntry'        => 'entries/NewEntry.php',
+    'ForeignVisitEntry'        => 'entries/ForeignVisitEntry.php',
     'ViewVisits'      => 'entries/ViewVisits.php',
     'Report'          => 'reports/Report.php',
     'UnreportedVisits'=> 'reports/UnreportedVisits.php',
@@ -59,7 +59,7 @@ $allowed_pages = [
 $admin_pages = [
     'AddEditUser',
     'Users',
-    'NewEntry',
+    'ForeignVisitEntry',
     'ViewVisits',
     'Report',
     'UnreportedVisits',
@@ -85,7 +85,7 @@ $current_page = $page;
 <link rel="stylesheet" href="assets/css/profile.css?v=<?= filemtime('assets/css/profile.css'); ?>">
 <link rel="stylesheet" href="assets/css/user.css?v=<?= filemtime('assets/css/user.css'); ?>">
 <link rel="stylesheet" href="assets/css/entry-form.css?v=<?= filemtime('assets/css/entry-form.css'); ?>">
-<link rel="stylesheet" href="assets/css/report-type.css?v=<?= filemtime('assets/css/report-type.css'); ?>">
+<!-- <link rel="stylesheet" href="assets/css/report-type.css?v=<?= filemtime('assets/css/report-type.css'); ?>"> -->
 <style>
 /* Active sidebar link */
 .sidebar a.active {

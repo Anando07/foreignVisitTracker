@@ -46,5 +46,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     $status = (int)$_POST['status'];
     $role_id = (int)$_POST['role_id'];
 }
-
+$allUsers = $service->getAllUsers();
 ?>

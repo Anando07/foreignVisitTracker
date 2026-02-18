@@ -24,7 +24,7 @@
         <?php if (in_array($role, ['Administrator', 'Operator'])): ?>
         <a class="has-submenu menu-item">✈ Foreign Visits <span class="submenu-arrow"></span></a>
         <div class="submenu">
-            <a href="base.php?page=NewEntry"><span class="icon">➕</span> Add Visit</a>
+            <a href="base.php?page=ForeignVisitEntry"><span class="icon">➕</span> Add Visit</a>
             <a href="base.php?page=ViewVisits"><span class="icon">📋</span> View Visits</a>
             <a href="base.php?page=UnreportedVisits"><span class="icon">⚠️</span> Unreported Visit</a>
         </div>

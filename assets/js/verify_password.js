@@ -41,7 +41,7 @@ function confirmEditVisit(visitId) {
                 return false;
             }
 
-            return fetch('../auth/verify_password.php', {
+            return fetch('auth/verify_password.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: 'password=' + encodeURIComponent(password)
@@ -61,7 +61,7 @@ function confirmEditVisit(visitId) {
         allowOutsideClick: () => !Swal.isLoading()
     }).then((result) => {
         if (result.isConfirmed) {
-            window.location.href = 'base.php?page=NewEntry&edit=' + visitId;
+            window.location.href = 'base.php?page=ForeignVisitEntry&edit=' + visitId;
         }
     });
 }
@@ -109,7 +109,7 @@ function confirmReportedVisit(visitId) {
                 return false;
             }
 
-            return fetch('../auth/verify_password.php', {
+            return fetch('auth/verify_password.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: 'password=' + encodeURIComponent(password)
@@ -129,7 +129,7 @@ function confirmReportedVisit(visitId) {
         allowOutsideClick: () => !Swal.isLoading()
     }).then((result) => {
         if (result.isConfirmed) {
-            window.location.href = 'base.php?page=NewEntry&unreported=' + visitId;
+            window.location.href = 'base.php?page=ForeignVisitEntry&unreported=' + visitId;
         }
     });
 }

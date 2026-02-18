@@ -1,4 +1,52 @@
 
+<?php
+require_once __DIR__."/../controllers/ForeignVisitController.php";
+/* =========================
+   AUTHORIZATION
+========================= */
+if (!isset($_SESSION['login_role_id'])) {
+    header("Location: auth/login.php");
+    exit;
+}
+
+if (!in_array((int)$_SESSION['login_role_id'], [1,2,5], true)) {
+    header("Location: base.php?page=home");
+    exit;
+}
+
+/* =========================
+   EDIT MODE / UNREPORTED MODE
+========================= */
+$update = false;
+$isUnreportedMode = false;  // flag for unreported visits
+$data = [];
+
+if (!empty($_GET['edit']) || !empty($_GET['id']) || !empty($_GET['unreported'])) {
+    $update = true;
+
+    if (!empty($_GET['unreported'])) {
+        $id = (int)$_GET['unreported'];
+        $isUnreportedMode = true;
+    } else {
+        $id = isset($_GET['edit']) ? (int)$_GET['edit'] : (int)$_GET['id'];
+    }
+
+    $stmt = $db->prepare("SELECT * FROM ForeignVisit WHERE ID=?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $data = $stmt->get_result()->fetch_assoc();
+
+    if (!$data) {
+        exit("Record not found");
+    }
+}
+
+// Determine required flags
+$goRequired = !$isUnreportedMode; // GO file required only in New/Edit
+$datesRequired = $isUnreportedMode; // Actual Departure/Arrival required only in Unreported
+?>
+
+
 <div class="fvt-card">
     <div class="fvt-header">
         <?= $update
@@ -7,7 +55,7 @@
         ?>
     </div>
 
-    <form id="foreignVisitForm" method="post"  action="controllers/ForeignVisitController.php" enctype="multipart/form-data">
+    <form id="foreignVisitForm" method="post" enctype="multipart/form-data">
         <input type="hidden" name="update" value="<?= $update ? 1 : 0 ?>">
         <input type="hidden" name="id" value="<?= $data['ID'] ?? '' ?>">
         <input type="hidden" name="unreported_mode" value="<?= $isUnreportedMode ? 1 : 0 ?>">
@@ -29,7 +77,7 @@
                 <select name="cadreName" class="fvt-input" <?= $isUnreportedMode ? 'disabled' : '' ?> required>
                     <option value="">Select</option>
                     <?php
-                    foreach(file("../data/cadre.txt", FILE_IGNORE_NEW_LINES) as $line){
+                    foreach(file("data/cadre.txt", FILE_IGNORE_NEW_LINES) as $line){
                         [$value,$label] = array_map('trim', explode('|',$line));
                         $sel = (($data['Cadre'] ?? '') === $value) ? 'selected' : '';
                         echo "<option value='$value' $sel>$label</option>";
@@ -114,7 +162,7 @@
                 <select name="destination_country" class="fvt-input" <?= $isUnreportedMode ? 'disabled' : '' ?> required>
                     <option value="">Select</option>
                     <?php
-                    foreach(file("../data/countries.txt", FILE_IGNORE_NEW_LINES) as $c){
+                    foreach(file("data/countries.txt", FILE_IGNORE_NEW_LINES) as $c){
                         $sel = (($data['DestinationCountry']??'')==$c)?'selected':''; 
                         echo "<option $sel>$c</option>";
                     }
@@ -129,7 +177,7 @@
                 <select name="purpose" class="fvt-input" <?= $isUnreportedMode ? 'disabled' : '' ?> required>
                     <option value="">Select</option>
                     <?php
-                    foreach(file("../data/visit_purpose.txt", FILE_IGNORE_NEW_LINES) as $line){
+                    foreach(file("data/visit_purpose.txt", FILE_IGNORE_NEW_LINES) as $line){
                         [$code,$display] = explode('|',$line);
                         $sel = (($data['Purpose']??'')==$code)?'selected':''; 
                         echo "<option value='$code' $sel>$display</option>";
@@ -145,7 +193,7 @@
                 <select name="fund" class="fvt-input" <?= $isUnreportedMode ? 'disabled' : '' ?> required>
                     <option value="">Select</option>
                     <?php
-                    foreach(file("../data/fund.txt", FILE_IGNORE_NEW_LINES) as $f){
+                    foreach(file("data/fund.txt", FILE_IGNORE_NEW_LINES) as $f){
                         $sel = (($data['FundingSource']??'')==$f)?'selected':''; 
                         echo "<option $sel>$f</option>";
                     }

@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Fetch the designations from the corresponding office file
-        fetch(`../data/designation/${office.value}.txt`)
+        fetch(`data/designation/${office.value}.txt`)
             .then(response => {
                 if (!response.ok) throw new Error("Network response was not ok");
                 return response.text();

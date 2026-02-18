@@ -43,7 +43,7 @@ function confirmDeleteVisit(id) {
                 return false;
             }
 
-            return fetch('../auth/verify_password.php', {
+            return fetch('auth/verify_password.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: 'password=' + encodeURIComponent(password)

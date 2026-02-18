@@ -1,19 +1,5 @@
 <?php
-// Check if user has permission to view this page
- if (in_array($role, ['Administrator', 'Admin', 'Operator'])):
-
-    // Fetch all visits with uploader name
-    $sql = "
-        SELECT 
-            fv.*,
-            a.name AS uploader_name
-        FROM ForeignVisit fv
-        LEFT JOIN admin a ON a.ID = fv.Uploader
-        ORDER BY fv.ID DESC
-    ";
-
-    $visits = mysqli_query($db, $sql);
-    $allVisits = mysqli_fetch_all($visits, MYSQLI_ASSOC);
+ require_once __DIR__."/../controllers/ForeignVisitController.php";
 ?>
 
 <div class="fvt-card" id="visitsSection">
@@ -57,7 +43,7 @@
                     $result2 = mysqli_query($db, "SELECT * FROM RevisedGO WHERE ID = " . $visit["ID"]);
                     if($result2->num_rows > 0){
                         while($row2 = $result2->fetch_assoc()){
-                            $rev_go_links .= "<br><a href='../uploads/".$row2["RevGO"]."' target='_blank'>Click</a>";
+                            $rev_go_links .= "<br><a href='uploads/".$row2["RevGO"]."' target='_blank'>Click</a>";
                         }
                     }
                 ?>
@@ -74,7 +60,7 @@
                     <td><?= $visit["EndDate"] ?><br>(<?= $actualArrival ?>)</td>
                     <td><?= $visit["Days"] ?></td>
                     <td>
-                        <a href='../uploads/<?= $visit["GO"] ?>' target='_blank'>Click</a>
+                        <a href='uploads/<?= $visit["GO"] ?>' target='_blank'>Click</a>
                         <?= $rev_go_links ?>
                     </td>
                     <td><?= htmlspecialchars($visit['uploader_name'] ?? $visit['Uploader']) ?></td>
@@ -171,9 +157,4 @@ function printVisitTable() {
 }
 </script>
 
-<?php
-else:
-    // Unauthorized
-    echo "<div class='fvt-card'><h3 style='color:red; text-align:center;'>You are not authorized to visit this page!</h3></div>";
-endif;
-?>
+
