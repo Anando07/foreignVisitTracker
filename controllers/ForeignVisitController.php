@@ -85,6 +85,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 }
+if (isset($_GET['delete'])){
+    $id = (int)$_GET['delete'];
+    try {
+        $service->deleteVisit($id);
+        successBox(
+            "Deleted Successfully",
+            "Foreign visit record and all related files were removed.",
+            "base.php?page=ViewVisits"
+        );
+    } catch(Exception $e){
+        successBox("Error","Failed to delete record: ".$e->getMessage(),"base.php?page=ViewVisits");
+    }
+    exit;
+}
 
 /* =========================
    LIST DATA
