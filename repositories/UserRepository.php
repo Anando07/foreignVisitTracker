@@ -47,11 +47,5 @@ class UserRepository {
         }
         return $users;
     }
-     /* DELETE USER */
-    public function deleteUser($id){
-        $stmt = $this->db->prepare("DELETE FROM Admin WHERE ID=?");
-        $stmt->bind_param("i", $id);
-        return $stmt->execute();
-    }
 
 }

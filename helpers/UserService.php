@@ -1,5 +1,4 @@
 <?php
-
 class UserService {
     private $db;
     private $repo;
@@ -62,27 +61,5 @@ class UserService {
             $stmt->execute();
             return ['success'=>"User added successfully!"];
         }
-    }
-
-    public function canDeleteUser($userId, $currentUserId){
-        $user = $this->getUserById($userId);
-        if(!$user) return ['canDelete'=>false,'message'=>"User not found.", 'name'=>'Unknown'];
-        if($userId==$currentUserId) return ['canDelete'=>false,'message'=>"You cannot delete your own account!", 'name'=>$user['Name']];
-
-        $stmt = $this->db->prepare("SELECT COUNT(*) as cnt FROM ForeignVisit WHERE Uploader=? OR Uploader=?");
-        $stmt->bind_param("is", $userId, $user['UserName']);
-        $stmt->execute();
-        $res = $stmt->get_result()->fetch_assoc();
-        $stmt->close();
-
-        if($res['cnt']>0) return ['canDelete'=>false,'message'=>"Cannot delete user: linked to Foreign Visit records.", 'name'=>$user['Name']];
-
-        return ['canDelete'=>true,'message'=>"User can be deleted.", 'name'=>$user['Name']];
-    }
-
-    public function deleteUserWithCheck($userId, $currentUserId){
-        $check = $this->canDeleteUser($userId, $currentUserId);
-        if(!$check['canDelete']) return $check;
-        return $this->repo->deleteUser($userId) ? ['canDelete'=>true,'message'=>"User deleted successfully.",'name'=>$check['name']] : ['canDelete'=>false,'message'=>"Failed to delete user.",'name'=>$check['name']];
     }
 }

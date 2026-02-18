@@ -47,20 +47,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     $role_id = (int)$_POST['role_id'];
 }
 
-// ======================
-// DELETE USER AJAX
-// ======================
-if (isset($_GET['action']) && in_array($_GET['action'], ['check','delete'])){
-    header('Content-Type: application/json');
-    $userId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
-    $currentUserId = $_SESSION['login_user_id'] ?? 0;
-
-    if ($_GET['action'] === 'check'){
-        echo json_encode($service->canDeleteUser($userId, $currentUserId));
-    } else {
-        echo json_encode($service->deleteUserWithCheck($userId, $currentUserId));
-    }
-    exit;
-}
-
 ?>

@@ -1,5 +1,4 @@
 <?php
-
 require_once("init.php");
 require_once ("repositories/UserRepository.php");
 require_once ("helpers/UserService.php");
@@ -51,20 +50,20 @@ $allowed_pages = [
     'AddEditUser'     => 'user/AddEditUser.php',
     'Users'           => 'user/Users.php',
     'NewEntry'        => 'entries/NewEntry.php',
-    'UnreportedVisits'=> 'entries/UnreportedVisits.php',
     'ViewVisits'      => 'entries/ViewVisits.php',
-    'Report'          => '../Report.php',
-    'UnreportedVisits'=> '../UnreportedVisits.php',
-    'MaxMinReport'    => '../MaxMinReport.php',
-    'settings'        => '../admin/settings.php'
+    'Report'          => 'reports/Report.php',
+    'UnreportedVisits'=> 'reports/UnreportedVisits.php',
+    'MaxMinReport'    => 'reports/MaxMinReport.php'
 ];
 
 $admin_pages = [
     'AddEditUser',
     'Users',
     'NewEntry',
+    'ViewVisits',
+    'Report',
     'UnreportedVisits',
-    'ViewVisits'
+    'MaxMinReport'
 ];
 
 // Redirect non-admins from admin pages

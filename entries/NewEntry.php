@@ -2,12 +2,12 @@
 /* =========================
    AUTHORIZATION
 ========================= */
-if (!isset($_SESSION['role_id'])) {
-    header("Location: ../auth/login.php");
+if (!isset($_SESSION['login_role_id'])) {
+    header("Location: auth/login.php");
     exit;
 }
 
-if (!in_array((int)$_SESSION['role_id'], [1,2,5], true)) {
+if (!in_array((int)$_SESSION['login_role_id'], [1,2,5], true)) {
     header("Location: base.php?page=home");
     exit;
 }

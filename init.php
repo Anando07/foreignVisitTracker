@@ -4,8 +4,8 @@ error_reporting(E_ALL ^ E_NOTICE);
 session_start();
 
 // Database config
-include("config.php");
-
+// include("config.php");
+require_once "config.php";
 // Include helper classes
 include("helpers/auth.php");
 
