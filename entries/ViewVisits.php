@@ -1,6 +1,6 @@
 <?php
 // Check if user has permission to view this page
-if (in_array($role_id, [1, 2, 5])):
+ if (in_array($role, ['Administrator', 'Admin', 'Operator'])):
 
     // Fetch all visits with uploader name
     $sql = "
@@ -42,7 +42,7 @@ if (in_array($role_id, [1, 2, 5])):
                     <th>Days</th>
                     <th>GO</th>
                     <th>Uploaded by</th>
-                    <?php if (in_array($role_id, [1, 5])): ?>
+                    <?php if (in_array($role, ['Administrator', 'Operator'])): ?>
                         <th>Actions</th>
                     <?php endif; ?>
                 </tr>
@@ -78,7 +78,7 @@ if (in_array($role_id, [1, 2, 5])):
                         <?= $rev_go_links ?>
                     </td>
                     <td><?= htmlspecialchars($visit['uploader_name'] ?? $visit['Uploader']) ?></td>
-                    <?php if (in_array($role_id, [1, 5])): ?>
+                    <?php if (in_array($role, ['Administrator', 'Operator'])): ?>
                         <td>
                             <button title="Edit" class="btn btn-sm btn-warning" onclick="confirmEditVisit(<?= $visit['ID'] ?>)">✏️</button>
                             <button class="btn btn-sm btn-danger" onclick="confirmDeleteVisit(<?= $visit['ID'] ?>)">🗑️</button>

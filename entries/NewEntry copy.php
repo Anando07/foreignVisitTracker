@@ -1,3 +1,48 @@
+<?php
+/* =========================
+   AUTHORIZATION
+========================= */
+if (!isset($_SESSION['login_role_id'])) {
+    header("Location: auth/login.php");
+    exit;
+}
+
+if (!in_array((int)$_SESSION['login_role_id'], [1,2,5], true)) {
+    header("Location: base.php?page=home");
+    exit;
+}
+
+/* =========================
+   EDIT MODE / UNREPORTED MODE
+========================= */
+$update = false;
+$isUnreportedMode = false;  // flag for unreported visits
+$data = [];
+
+if (!empty($_GET['edit']) || !empty($_GET['id']) || !empty($_GET['unreported'])) {
+    $update = true;
+
+    if (!empty($_GET['unreported'])) {
+        $id = (int)$_GET['unreported'];
+        $isUnreportedMode = true;
+    } else {
+        $id = isset($_GET['edit']) ? (int)$_GET['edit'] : (int)$_GET['id'];
+    }
+
+    $stmt = $db->prepare("SELECT * FROM ForeignVisit WHERE ID=?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $data = $stmt->get_result()->fetch_assoc();
+
+    if (!$data) {
+        exit("Record not found");
+    }
+}
+
+// Determine required flags
+$goRequired = !$isUnreportedMode; // GO file required only in New/Edit
+$datesRequired = $isUnreportedMode; // Actual Departure/Arrival required only in Unreported
+?>
 
 <div class="fvt-card">
     <div class="fvt-header">
@@ -7,7 +52,7 @@
         ?>
     </div>
 
-    <form id="foreignVisitForm" method="post"  action="controllers/ForeignVisitController.php" enctype="multipart/form-data">
+    <form id="foreignVisitForm" method="post" action="../action_page.php" enctype="multipart/form-data">
         <input type="hidden" name="update" value="<?= $update ? 1 : 0 ?>">
         <input type="hidden" name="id" value="<?= $data['ID'] ?? '' ?>">
         <input type="hidden" name="unreported_mode" value="<?= $isUnreportedMode ? 1 : 0 ?>">

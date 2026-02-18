@@ -3,7 +3,7 @@
    ACCESS CONTROL
 ========================= */
 $allowedRoles = [1, 2, 5];
-if (!isset($_SESSION['role_id']) || !in_array((int)$_SESSION['role_id'], $allowedRoles, true)) {
+if (!isset($_SESSION['login_role_id']) || !in_array((int)$_SESSION['login_role_id'], $allowedRoles, true)) {
     die("Unauthorized access.");
 }
 
@@ -130,8 +130,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && in_array($visitType, ['maximum','mi
         <div class="table-pagination" data-table="reportTable"></div>
     </div>
 </div>
-
-<link rel="stylesheet" href="../assets/css/report-type.css?v=<?= filemtime('../assets/css/report-type.css'); ?>">
 
 <script>
 document.getElementById('resBtn').onclick = () => {

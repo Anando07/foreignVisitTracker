@@ -1,6 +1,6 @@
 <?php
 // Check if user has permission to view this page
-if (in_array($role_id, [1, 2, 5])):
+if (in_array($roleId, [1, 2, 5])):
 
     // Fetch all unreported visits
     $sql = "
@@ -57,7 +57,7 @@ if (in_array($role_id, [1, 2, 5])):
                     <th>Days</th>
                     <th>GO</th>
                     <th>Uploaded by</th>
-                    <?php if (in_array($role_id, [1, 5])): ?>
+                    <?php if (in_array($roleId, [1, 5])): ?>
                         <th>Actions</th>
                     <?php endif; ?>
                 </tr>
@@ -93,7 +93,7 @@ if (in_array($role_id, [1, 2, 5])):
                         <?= $rev_go_links ?>
                     </td>
                     <td><?= htmlspecialchars($visit['editor_name'] ?? $visit['Editor']) ?></td>
-                    <?php if (in_array($role_id, [1, 5])): ?>
+                    <?php if (in_array($roleId, [1, 5])): ?>
                         <td>
                             <button title="Reported" class="btn btn-sm btn-warning"
                                 onclick="confirmReportedVisit(<?= $visit['ID'] ?>)">

@@ -4,7 +4,7 @@ require_once ("repositories/UserRepository.php");
 require_once ("helpers/UserService.php");
 require_once ("helpers/ProfileService.php");
 require_once ("helpers/PasswordService.php");
-
+require_once "helpers/ForeignVisitService.php";
 /* =========================
    PREVENT BROWSER CACHING
 ========================= */
@@ -85,7 +85,7 @@ $current_page = $page;
 <link rel="stylesheet" href="assets/css/profile.css?v=<?= filemtime('assets/css/profile.css'); ?>">
 <link rel="stylesheet" href="assets/css/user.css?v=<?= filemtime('assets/css/user.css'); ?>">
 <link rel="stylesheet" href="assets/css/entry-form.css?v=<?= filemtime('assets/css/entry-form.css'); ?>">
-
+<link rel="stylesheet" href="assets/css/report-type.css?v=<?= filemtime('assets/css/report-type.css'); ?>">
 <style>
 /* Active sidebar link */
 .sidebar a.active {
