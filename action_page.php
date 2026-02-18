@@ -1,16 +1,16 @@
 <?php
 session_start();
 require_once "config.php";
-require_once "../controllers/ForeignVisitController.php";
+
 /* =========================
    AUTHORIZATION
 ========================= */
-if (!isset($_SESSION['role_id'])) {
+if (!isset($_SESSION['login_role_id'])) {
     header("Location: auth/login.php");
     exit;
 }
 
-if (!in_array((int)$_SESSION['role_id'], [1,2,5], true)) {
+if (!in_array((int)$_SESSION['login_role_id'], [1,2,5], true)) {
     die("Unauthorized access.");
 }
 
@@ -29,7 +29,7 @@ function successBox($title, $message, $link) {
         border:1px solid #28a745;
         font-family:Arial'>
         
-        <img src='SuccessIcon.png' width='120'><br><br>
+        <img src='assets/images/SuccessIcon.png' width='120'><br><br>
         <h3 style='color:#28a745;'>$title</h3>
         <p>$message</p><br>
         <a href='$link' style='
@@ -69,7 +69,7 @@ if (isset($_GET['delete'])) {
     successBox(
         "Deleted Successfully",
         "Foreign visit record and all related files were removed.",
-        "template/base.php?page=ViewVisits"
+        "base.php?page=ViewVisits"
     );
     exit;
 }

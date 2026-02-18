@@ -78,7 +78,7 @@ function confirmDeleteVisit(id) {
             confirmButtonText: 'Yes, delete it!'
         }).then((finalResult) => {
             if (finalResult.isConfirmed) {
-                window.location.href = "controllers/ForeignViditController.php?delete=" + id;
+                window.location.href = "action_page.php?delete=" + id;
             }
         });
     });
