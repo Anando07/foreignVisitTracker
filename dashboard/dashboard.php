@@ -20,7 +20,7 @@ $totalCountry = mysqli_fetch_assoc($qCountries)['total'] ?? 0;
 // ======================
 
 // Users
-if ($role_id == 1) {
+if (in_array($role, ['Administrator'])) {
 $users = mysqli_query($db, "SELECT ID, Name, UserName, Email, Designation, Status FROM Admin ORDER BY ID DESC");
 }
 // Visits
@@ -144,7 +144,7 @@ while($row = mysqli_fetch_assoc($cadreCounts)){
 <!-- ======================
      USERS TABLE
 ====================== -->
-<?php if ($role_id === 1): ?>
+<?php if (in_array($role, ['Administrator'])): ?>
 <div class="fvt-card" id="usersSection" style="display:none;">
     <h3>User List</h3>
     <button class="btn btn-primary mb-2" onclick="printTable('userTable')">Print Users</button>
@@ -178,7 +178,7 @@ while($row = mysqli_fetch_assoc($cadreCounts)){
 <!-- ======================
      VISITS TABLE
 ====================== -->
-<?php if (in_array($role_id, [1,2], true)): ?>
+<?php if (in_array($role, ['Administrator', 'Admin'])): ?>
 <div class="fvt-card" id="visitsSection" style="display:none;">
     <h3>Foreign Visit List</h3>
     <button class="btn btn-primary mb-2" onclick="printTable('visitTable')">Print Visits</button>

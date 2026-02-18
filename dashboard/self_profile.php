@@ -23,7 +23,8 @@
                        value="<?= htmlspecialchars($user['Contact']) ?>">
             </div>
 
-            <?php if($_SESSION['role_id'] == 1): ?>
+            
+            <?php if ($role === 'Administrator'): ?>
                 <div class="form-group">
                     <label>Username</label>
                     <input type="text" name="username" class="fvt-input"

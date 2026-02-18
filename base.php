@@ -18,7 +18,7 @@ header("Expires: 0");
    LOGIN CHECK
 ========================= */
 $auth->checkLogin(); // redirects if not logged in
-
+$auth->checkRole(['Administrator', 'Admin', 'User', 'Visitor', 'Operator']);
 /* =========================
    FORCE DASHBOARD AFTER LOGIN
 ========================= */
@@ -32,27 +32,27 @@ if (!isset($_GET['page'])) {
    SESSION DATA
 ========================= */
 $userId       = $_SESSION['login_user_id'];
-$roleId       = (int) $_SESSION['role_id'];
-$username      = $_SESSION['login_user'];
-$userFullname = $_SESSION['user_name'];
-$roleName     = $_SESSION['role_name'];
-$designation   = $_SESSION['user_designation'] ?? 'N/A';
+$userFullname = $_SESSION['login_user_name'];
+$designation  = $_SESSION['login_user_designation'] ?? 'N/A';
+$username     = $_SESSION['login_user'];
+$roleId       = (int) $_SESSION['login_role_id'];
+$role         = $_SESSION['login_role'];
+
 
 /* =========================
    PAGE ROUTING
 ========================= */
 $allowed_pages = [
     'dashboard'       => 'dashboard/dashboard.php',
-    'profile'  => 'dashboard/profile.php',
+    'self_profile'  => 'dashboard/self_profile.php',
     'self_change_password' => 'dashboard/self_change_password.php',
     'change_password' => 'auth/change_password.php',
     'home'            => 'user/home.php',
     'AddEditUser'     => 'user/AddEditUser.php',
     'Users'           => 'user/Users.php',
-    'NewEntry'        => '../NewEntry.php',
-    'ShowDashboard'   => '../ShowDashboard.php',
-    'add_visit'       => '../admin/add_visit.php',
-    'ViewVisits'      => '../ViewVisits.php',
+    'NewEntry'        => 'entries/NewEntry.php',
+    'UnreportedVisits'=> 'entries/UnreportedVisits.php',
+    'ViewVisits'      => 'entries/ViewVisits.php',
     'Report'          => '../Report.php',
     'UnreportedVisits'=> '../UnreportedVisits.php',
     'MaxMinReport'    => '../MaxMinReport.php',
@@ -60,12 +60,11 @@ $allowed_pages = [
 ];
 
 $admin_pages = [
-    'dashboard',
     'AddEditUser',
     'Users',
-    'add_visit',
-    'ViewVisits',
-    'settings'
+    'NewEntry',
+    'UnreportedVisits',
+    'ViewVisits'
 ];
 
 // Redirect non-admins from admin pages
@@ -106,7 +105,7 @@ $current_page = $page;
     <?php include("includes/header.php"); ?>
 
     <div class="fvt-content">
-        <!-- ✅ FLASH MESSAGE -->
+        <!-- FLASH MESSAGE -->
         <div style="text-align:center; margin-bottom:15px;">
             <?= $auth->flashMessage(); ?>
         </div>

@@ -1,7 +1,6 @@
 <?php
 
 $service = new UserService($db);
-
 // ======================
 // ADD / EDIT USER
 // ======================
