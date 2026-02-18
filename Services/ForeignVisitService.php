@@ -6,7 +6,6 @@ class ForeignVisitService {
         $this->db = $db;
     }
 
-    /* ====================== GET BY ID ====================== */
     public function getVisitById($id){
         $stmt = $this->db->prepare("SELECT * FROM ForeignVisit WHERE ID=?");
         $stmt->bind_param("i", $id);
@@ -14,15 +13,14 @@ class ForeignVisitService {
         return $stmt->get_result()->fetch_assoc();
     }
 
-    /* ====================== SAVE / UPDATE ====================== */
     public function saveVisit($data, $files, $isEdit=false, $id=0){
-
         if ($isEdit && empty($id)) {
             return ['error' => 'Invalid update request'];
         }
 
         $unreported = isset($data['unreported_mode']) && $data['unreported_mode'] == 1;
 
+        // Collect fields
         $serviceID = trim($data['serviceID'] ?? '');
         $cadre = trim($data['cadreName'] ?? '');
         $office = trim($data['office'] ?? '');
@@ -73,6 +71,26 @@ class ForeignVisitService {
             if ($actualArr === '') $errors[] = "Actual Arrival required";
         }
 
+        /* ====================== FILE VALIDATION ====================== */
+        $fileName = null;
+        if (!empty($files['go_file']['name'])) {
+            $allowedTypes = ['image/jpeg','application/pdf'];
+            $fileType = $files['go_file']['type'];
+            $fileSize = $files['go_file']['size'];
+
+            if (!in_array($fileType, $allowedTypes)) {
+                $errors[] = "GO file must be JPG or PDF";
+            }
+            if ($fileSize > 512 * 1024) { // 512 KB
+                $errors[] = "GO file must be less than 512 KB";
+            }
+
+            if (empty($errors)) {
+                $fileName = time().'_'.$files['go_file']['name'];
+                move_uploaded_file($files['go_file']['tmp_name'], "uploads/".$fileName);
+            }
+        }
+
         if (!empty($errors)) {
             return ['error' => implode('<br>', $errors)];
         }
@@ -81,13 +99,6 @@ class ForeignVisitService {
         $days = 0;
         if ($startDate && $endDate) {
             $days = (strtotime($endDate) - strtotime($startDate)) / 86400 + 1;
-        }
-
-        /* ====================== FILE ====================== */
-        $fileName = null;
-        if (!empty($files['go_file']['name'])) {
-            $fileName = time().'_'.$files['go_file']['name'];
-            move_uploaded_file($files['go_file']['tmp_name'], "uploads/".$fileName);
         }
 
         /* ====================== UPDATE ====================== */
@@ -122,10 +133,12 @@ class ForeignVisitService {
                 $this->db->query("INSERT INTO RevisedGO (ID, RevGO) VALUES ($id,'$fileName')");
             }
 
-            return ['success' =>
-                $unreported
-                ? "Unreported foreign visit updated successfully."
-                : "Foreign visit updated successfully."
+            // Return type for controller to redirect correctly
+            return [
+                'success' => $unreported
+                    ? "Unreported foreign visit updated successfully."
+                    : "Foreign visit updated successfully.",
+                'type' => $unreported ? 'unreported_update' : 'update'
             ];
         }
 
@@ -145,7 +158,7 @@ class ForeignVisitService {
         );
         $stmt->execute();
 
-        return ['success' => "Foreign visit added successfully."];
+        return ['success' => "Foreign visit added successfully.", 'type' => 'insert'];
     }
 
     public function getAllVisits(){
@@ -162,4 +175,5 @@ class ForeignVisitService {
         return $res->fetch_all(MYSQLI_ASSOC);
     }
 }
+
 ?>
