@@ -1,20 +1,21 @@
-<?php 
+<?php
 error_reporting(E_ALL ^ E_NOTICE);
 session_start();
 
 /* =========================
    AUTH CHECK
 ========================= */
-if (!isset($_SESSION['login_user'])) {
+if (!isset($_SESSION['login_user_id'])) {
     die("<br><br><center>
         You are presently logged out. Please log in to access this page.
         <br><br>
-        <a href='./Login.php'>Click here to log in</a>
+        <a href='auth/Login.php'>Click here to log in</a>
     </center>");
 }
 
-include("config.php");
-require('fpdf181/fpdf.php');
+require_once __DIR__ . '/../../config.php';
+require_once __DIR__ . '/../../fpdf181/fpdf.php';
+
 
 /* =========================
    PDF INIT
@@ -30,7 +31,11 @@ $logoHeight = 20;
 $pageWidth  = $pdf->GetPageWidth();
 $x = ($pageWidth - $logoWidth) / 2;
 $y = 10;
-$pdf->Image('Logo.jpeg', $x, $y, $logoWidth, $logoHeight);
+
+$logoPath = __DIR__ . '/../../assets/images/Logo.jpeg';
+
+$pdf->Image($logoPath, $x, $y, $logoWidth, $logoHeight);
+
 
 /* =========================
    INPUT PARAMETERS

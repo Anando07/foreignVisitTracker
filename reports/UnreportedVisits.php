@@ -18,7 +18,7 @@
             </button>
 
             <!-- PDF Button -->
-            <button class="btn btn-success" onclick="window.open('../pdfUnreportedCases.php', '_blank')">
+            <button class="btn btn-success" onclick="window.open('pdf/templates/pdfUnreportedCases.php', '_blank')">
                 📄 Generate PDF
             </button>
         </div>
@@ -56,7 +56,7 @@
                     $result2 = mysqli_query($db, "SELECT * FROM RevisedGO WHERE ID = " . $visit["ID"]);
                     if($result2->num_rows > 0){
                         while($row2 = $result2->fetch_assoc()){
-                            $rev_go_links .= "<br><a href='../uploads/".$row2["RevGO"]."' target='_blank'>Click</a>";
+                            $rev_go_links .= "<br><a href='uploads/".$row2["RevGO"]."' target='_blank'>Click</a>";
                         }
                     }
                 ?>
@@ -73,7 +73,7 @@
                     <td><?= $visit["EndDate"] ?><br>(<?= $actualArrival ?>)</td>
                     <td><?= $visit["Days"] ?></td>
                     <td>
-                        <a href='../uploads/<?= $visit["GO"] ?>' target='_blank'>Click</a>
+                        <a href='uploads/<?= $visit["GO"] ?>' target='_blank'>Click</a>
                         <?= $rev_go_links ?>
                     </td>
                     <td><?= htmlspecialchars($visit['editor_name'] ?? $visit['Editor']) ?></td>

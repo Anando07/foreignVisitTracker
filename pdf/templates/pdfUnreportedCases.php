@@ -1,22 +1,31 @@
 <?php 
 error_reporting (E_ALL ^ E_NOTICE);
 session_start();
-if(isset($_SESSION['login_user'])) {
-    $word = $_SESSION['login_user'];
+if(isset($_SESSION['login_user_id'])) {
+    $word = $_SESSION['login_user_id'];
     //echo "Welcome, " . $word; 
 } else {
     die("<br><br><center>You are presently logged out. Please log in to access this page. <br> <br> <a href = ./Login.php> Click here to log in </a></center>");  
 }
-include("config.php");
-require ('fpdf181/fpdf.php');
+require_once __DIR__ . '/../../config.php';
+require_once __DIR__ . '/../../fpdf181/fpdf.php';
+/* =========================
+   PDF INIT
+========================= */
 $pdf = new FPDF();
 $pdf->AddPage();
-//$pdf->Image('Logo.jpeg', 183, 250, 25, 25); 
-$pdf->Image('BD50.png', 10,5, 20, 20); //$x, $y, $width, $height
-//$pdf->Image('Logo.jpeg', 95,5, 20, 20); //$x, $y, $width, $height 
-$pdf->Image('Mujib100.png', 182,5, 25, 20); //$x, $y, $width, $height 
-$pdf->SetFont('Arial','B',12);	
-$pdf->SetTextColor(255,0,0);
+/* =========================
+   HEADER LOGO (CENTER)
+========================= */
+$logoWidth  = 20;
+$logoHeight = 20;
+$pageWidth  = $pdf->GetPageWidth();
+$x = ($pageWidth - $logoWidth) / 2;
+$y = 10;
+
+$logoPath = __DIR__ . '/../../assets/images/Logo.jpeg';
+
+$pdf->Image($logoPath, $x, $y, $logoWidth, $logoHeight);
 
 $nameOverallReqEncoded = $_GET['nameOverallReq'];   
 $nameOverallReq = urldecode($nameOverallReqEncoded);
@@ -27,9 +36,7 @@ $sql = "SELECT * from ForeignVisit WHERE ActualArrival = 0000-00-00 AND EndDate 
 $query = $db->query($sql); //or die(mysql_error());
 
 $pdf->SetFont('Arial','',12); 
-$pdf->Ln();	
-$pdf->Ln();	
-$pdf->Ln();	
+$pdf->Ln(25);
 
 //$this->Cell(0,10,'Center text:',0,0,'C');     
 //$pdf->SetTextColor(255,0,0);  

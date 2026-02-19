@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && in_array($visitType, ['maximum','mi
                 <button type="button" id="resBtn" class="btn btn-reset">Reset</button>
 
                 <?php if($visitType): ?>
-                    <a href="../pdfMaxMinReport.php?visit_type=<?= $visitType ?>&start_date=<?= $startDate ?>&end_date=<?= $endDate ?>"
+                    <a href="pdf/templates/pdfMaxMinReport.php?visit_type=<?= $visitType ?>&start_date=<?= $startDate ?>&end_date=<?= $endDate ?>"
                        target="_blank"
                        class="btn btn-download">PDF</a>
                 <?php endif; ?>

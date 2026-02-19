@@ -132,14 +132,14 @@ while($row = mysqli_fetch_assoc($res)) $purposes[] = $row['Purpose'];
                     $encodedValue = urlencode($searchValue);
                     $pdfFile = '';
                     switch($searchType) {
-                        case 'service_id': $pdfFile = "../pdfReportIndividualByID.php?idReq=$encodedValue&FromDate=$startDate&ToDate=$endDate"; break;
-                        case 'name':       $pdfFile = "../pdfReportIndividualByName.php?nameReq=$encodedValue&FromDate=$startDate&ToDate=$endDate"; break;
-                        case 'designation':$pdfFile = "../pdfReportIndividualByDesignation.php?designationReq=$encodedValue&FromDate=$startDate&ToDate=$endDate"; break;
-                        case 'cadre':      $pdfFile = "../pdfReportIndividualByCadre.php?cadreReq=$encodedValue&FromDate=$startDate&ToDate=$endDate"; break;
-                        case 'office':     $pdfFile = "../pdfReportIndividualByOffice.php?officeReq=$encodedValue&FromDate=$startDate&ToDate=$endDate"; break;
-                        case 'country':    $pdfFile = "../pdfReportIndividualByCountry.php?countryReq=$encodedValue&FromDate=$startDate&ToDate=$endDate"; break;
-                        case 'fund':       $pdfFile = "../pdfReportIndividualByFund.php?fundReq=$encodedValue&FromDate=$startDate&ToDate=$endDate"; break;
-                        case 'purpose':    $pdfFile = "../pdfReportIndividualByPurpose.php?purposeReq=$encodedValue&FromDate=$startDate&ToDate=$endDate"; break;
+                        case 'service_id': $pdfFile = "pdf/templates/pdfReportIndividualByID.php?idReq=$encodedValue&FromDate=$startDate&ToDate=$endDate"; break;
+                        case 'name':       $pdfFile = "pdf/templates/pdfReportIndividualByName.php?nameReq=$encodedValue&FromDate=$startDate&ToDate=$endDate"; break;
+                        case 'designation':$pdfFile = "pdf/templates/pdfReportIndividualByDesignation.php?designationReq=$encodedValue&FromDate=$startDate&ToDate=$endDate"; break;
+                        case 'cadre':      $pdfFile = "pdf/templates/pdfReportIndividualByCadre.php?cadreReq=$encodedValue&FromDate=$startDate&ToDate=$endDate"; break;
+                        case 'office':     $pdfFile = "pdf/templates/pdfReportIndividualByOffice.php?officeReq=$encodedValue&FromDate=$startDate&ToDate=$endDate"; break;
+                        case 'country':    $pdfFile = "pdf/templates/pdfReportIndividualByCountry.php?countryReq=$encodedValue&FromDate=$startDate&ToDate=$endDate"; break;
+                        case 'fund':       $pdfFile = "pdf/templates/pdfReportIndividualByFund.php?fundReq=$encodedValue&FromDate=$startDate&ToDate=$endDate"; break;
+                        case 'purpose':    $pdfFile = "pdf/templates/pdfReportIndividualByPurpose.php?purposeReq=$encodedValue&FromDate=$startDate&ToDate=$endDate"; break;
                     }
                 ?>
                     <a href="<?= $pdfFile ?>" target="_blank" class="btn btn-download">PDF</a>
@@ -179,7 +179,7 @@ while($row = mysqli_fetch_assoc($res)) $purposes[] = $row['Purpose'];
                             $res_rev = mysqli_query($db, "SELECT * FROM RevisedGO WHERE ID = " . intval($row["ID"]));
                             if($res_rev && mysqli_num_rows($res_rev) > 0){
                                 while($rev = mysqli_fetch_assoc($res_rev)){
-                                    $rev_go_links .= "<br><a href='../uploads/".htmlspecialchars($rev["RevGO"])."' target='_blank'>Click</a>";
+                                    $rev_go_links .= "<br><a href='uploads/".htmlspecialchars($rev["RevGO"])."' target='_blank'>Click</a>";
                                 }
                             }
                         ?>
@@ -196,7 +196,7 @@ while($row = mysqli_fetch_assoc($res)) $purposes[] = $row['Purpose'];
                             <td><?= htmlspecialchars($row["EndDate"]) ?><br>(<?= htmlspecialchars($actualArrival) ?>)</td>
                             <td><?= htmlspecialchars($row["Days"]) ?></td>
                             <td>
-                                <a href='../uploads/<?= htmlspecialchars($row["GO"]) ?>' target='_blank'>Click</a>
+                                <a href='uploads/<?= htmlspecialchars($row["GO"]) ?>' target='_blank'>Click</a>
                                 <?= $rev_go_links ?>
                             </td>
                         </tr>
