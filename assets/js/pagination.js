@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+
     const rowsPerPage = 10;
 
     function paginateTable(tableId) {
@@ -14,7 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const end = start + rowsPerPage;
 
             rows.forEach(row => row.style.display = 'none');
-            rowsToRender.slice(start, end).forEach(row => row.style.display = '');
+            const paginatedRows = rowsToRender.slice(start, end);
+            paginatedRows.forEach(row => row.style.display = '');
 
             renderPagination(rowsToRender.length);
         }
@@ -22,8 +24,10 @@ document.addEventListener('DOMContentLoaded', () => {
         function renderPagination(totalRows) {
             const totalPages = Math.ceil(totalRows / rowsPerPage);
             paginationContainer.innerHTML = '';
+
             if (totalPages <= 1) return;
 
+            // Previous arrow
             const prevBtn = document.createElement('button');
             prevBtn.innerHTML = '◀';
             prevBtn.disabled = currentPage === 1;
@@ -31,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
             prevBtn.onclick = () => renderTablePage(currentPage - 1, rows);
             paginationContainer.appendChild(prevBtn);
 
+            // Circle page numbers
             for (let i = 1; i <= totalPages; i++) {
                 const btn = document.createElement('button');
                 btn.textContent = i;
@@ -39,6 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 paginationContainer.appendChild(btn);
             }
 
+            // Next arrow
             const nextBtn = document.createElement('button');
             nextBtn.innerHTML = '▶';
             nextBtn.disabled = currentPage === totalPages;
@@ -47,6 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
             paginationContainer.appendChild(nextBtn);
         }
 
+        // Search functionality
         const searchInput = document.querySelector(`.table-search[data-table="${tableId}"]`);
         if (searchInput) {
             searchInput.addEventListener('input', function () {
@@ -58,11 +65,14 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
+        // Initial render
         renderTablePage(1, rows);
     }
 
+    // Automatically paginate all tables with .table-pagination
     document.querySelectorAll('.table-pagination').forEach(p => {
         const tableId = p.dataset.table;
         paginateTable(tableId);
     });
+
 });
