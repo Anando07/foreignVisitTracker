@@ -82,10 +82,9 @@ $current_page = $page;
 <title>FVT - <?= ucfirst(htmlspecialchars($page)); ?></title>
 
 <link rel="stylesheet" href="assets/css/style.css?v=<?= filemtime('assets/css/style.css'); ?>">
-<link rel="stylesheet" href="assets/css/profile.css?v=<?= filemtime('assets/css/profile.css'); ?>">
 <link rel="stylesheet" href="assets/css/user.css?v=<?= filemtime('assets/css/user.css'); ?>">
 <link rel="stylesheet" href="assets/css/entry-form.css?v=<?= filemtime('assets/css/entry-form.css'); ?>">
-<!-- <link rel="stylesheet" href="assets/css/report-type.css?v=<?= filemtime('assets/css/report-type.css'); ?>"> -->
+<link rel="stylesheet" href="assets/css/report.css?v=<?= filemtime('assets/css/report.css'); ?>">
 <style>
 /* Active sidebar link */
 .sidebar a.active {

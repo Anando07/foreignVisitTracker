@@ -3,7 +3,7 @@
 ?>
 
 <div class="fvt-card" id="visitsSection">
-    <h3 style="color:red; text-align:center;">Unreported Foreign Visits</h3>
+    <h2 class="page-title" style="color:red; text-align:center;">Unreported Foreign Visits</h2>
 
     <!-- Search and Print/PDF -->
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">

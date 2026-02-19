@@ -4,8 +4,7 @@ require_once __DIR__."/../controllers/UserController.php";
 ?>
 
 <div class="fvt-card" id="usersSection">
-    <h3>User List</h3>
-
+    <h2 class="page-title">Users</h2>
     <!-- Search and Print -->
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
         <input type="text" class="table-search fvt-input" placeholder="Search users..." data-table="userTable" style="width:48%;">

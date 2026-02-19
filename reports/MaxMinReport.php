@@ -54,13 +54,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && in_array($visitType, ['maximum','mi
 ?>
 
 <div class="fvt-card">
-    <h2 class="report-title">Maximum / Minimum Foreign Visit Report</h2>
+    <h2 class="page-title">Maximum / Minimum Foreign Visit Report</h2>
 
     <form method="post" class="fvt-form" id="reportForm">
         <div class="form-grid">
 
             <!-- Report Type -->
-            <select name="visit_type" id="visitType" required>
+            <select name="visit_type" id="visitType" required class="wide-field">
                 <option value="">Select Report Type</option>
                 <option value="maximum" <?= $visitType=='maximum'?'selected':'' ?>>Maximum Visits</option>
                 <option value="minimum" <?= $visitType=='minimum'?'selected':'' ?>>Minimum Visits</option>

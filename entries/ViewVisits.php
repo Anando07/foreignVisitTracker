@@ -3,8 +3,7 @@
 ?>
 
 <div class="fvt-card" id="visitsSection">
-    <h3 style="color:red; text-align:center;">Foreign Visits</h3>
-
+     <h2 class="page-title">Foreign Visits</h2>
     <!-- Search and Print -->
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
         <input type="text" class="table-search fvt-input" placeholder="Search visits..." data-table="visitTable" style="width:48%;">
@@ -67,7 +66,7 @@
                     <?php if (in_array($role, ['Administrator', 'Operator'])): ?>
                         <td>
                             <button title="Edit" class="btn btn-sm btn-warning" onclick="confirmEditVisit(<?= $visit['ID'] ?>)">✏️</button>
-                            <button class="btn btn-sm btn-danger" onclick="confirmDeleteVisit(<?= $visit['ID'] ?>)">🗑️</button>
+                            <button  class="btn btn-sm btn-danger" onclick="confirmDeleteVisit(<?= $visit['ID'] ?>)">🗑️</button>
                         </td>
                     <?php endif; ?>
                 </tr>
