@@ -1,7 +1,7 @@
 <?php require_once __DIR__."/../controllers/ProfileController.php"; ?>
 
 <div class="fvt-card">
-    <div class="fvt-header">👤 Update Profile</div>
+    <div class="fvt-page-header" style="text-align:center;">👤 Update Profile</div>
 
     <form id="profileForm" method="post">
         <div class="fvt-grid">

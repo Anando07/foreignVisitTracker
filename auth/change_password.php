@@ -7,7 +7,7 @@ $controller->adminReset($targetUserId);
 ?>
 
 <div class="fvt-card">
-    <div class="fvt-header">🔑 Change Password for <?= htmlspecialchars($user['Name']) ?></div>
+    <div class="fvt-page-header">🔑 Change Password for <?= htmlspecialchars($user['Name']) ?></div>
 
     <?php if(isset($_SESSION['msg'])): ?>
     <div class="alert" style="background: <?= $_SESSION['msg_type']=='success'?'#d1fae5':'#fee2e2' ?>; color: <?= $_SESSION['msg_type']=='success'?'#065f46':'#b91c1c' ?>;">

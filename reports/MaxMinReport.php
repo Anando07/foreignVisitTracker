@@ -54,8 +54,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && in_array($visitType, ['maximum','mi
 ?>
 
 <div class="fvt-card">
-    <h2 class="page-title">Maximum / Minimum Foreign Visit Report</h2>
-
+    <div class="fvt-page-header">
+       Maximum / Minimum Foreign Visit Report
+    </div>
+    <!-- <h2 class="page-title">Maximum / Minimum Foreign Visit Report</h2> -->
     <form method="post" class="fvt-form" id="reportForm">
         <div class="form-grid">
 

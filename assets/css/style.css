@@ -145,25 +145,30 @@ body {
 }
 
 /* =========================
-   HEADER
+   TOP NAVBAR
 ========================= */
-.fvt-header {
+.fvt-topbar {
     min-height: 56px;
     padding: 0 20px;
     background: rgba(0, 0, 0, 0.6);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    box-shadow: 0 6px 16px rgba(0, 255, 255, 0.2);
     position: sticky;
     top: 0;
-    z-index: 10;
+    z-index: 2000;
     margin-bottom: 12px;
     border-radius: 10px;
     color: #00f6ff;
     text-shadow: 0 0 4px #00f6ff;
 }
 
+.fvt-topbar-right {
+    margin-left: auto;
+    font-weight: 600;
+}
+
+/* Hamburger Icon */
 .hamburger {
     font-size: 22px;
     cursor: pointer;
@@ -176,7 +181,87 @@ body {
 }
 
 /* =========================
-   CONTENT
+   PAGE / CARD HEADER
+========================= */
+.fvt-page-header {
+    padding: 14px 18px;
+    font-size: 18px;
+    font-weight: 600;
+    background: rgba(0, 0, 0, 0.6);
+    color: #e0f2fe;
+    text-align:center;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+/* =========================
+   TOP USER DROPDOWN
+========================= */
+.user-dropdown {
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+    margin-left: auto;
+}
+
+.user-name {
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background 0.25s ease;
+}
+
+.user-name:hover {
+    background: rgba(0, 255, 255, 0.15);
+}
+
+.user-menu {
+    position: absolute;
+    right: 0;
+    top: 120%;
+    min-width: 190px;
+    background: rgba(0, 0, 0, 0.9);
+    border-radius: 10px;
+    box-shadow: 0 8px 22px rgba(0, 255, 255, 0.35);
+    overflow: hidden;
+    display: none;
+    z-index: 999;
+    animation: dropdownFade 0.25s ease;
+}
+
+.user-dropdown:hover .user-menu {
+    display: block;
+}
+
+.user-menu a {
+    display: block;
+    padding: 10px 14px;
+    color: #00f6ff;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background 0.25s ease;
+}
+
+.user-menu a:hover {
+    background: rgba(0, 255, 255, 0.18);
+}
+
+.user-menu a.logout {
+    color: #ff5c5c;
+}
+
+.user-menu a.logout:hover {
+    background: rgba(255, 92, 92, 0.2);
+}
+
+@keyframes dropdownFade {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================
+   CONTENT AREA
 ========================= */
 .fvt-content {
     padding: 24px;
@@ -217,39 +302,16 @@ body {
     text-shadow: 0 0 3px #00f6ff;
 }
 
-.fvt-table tbody tr:nth-child(odd) {
-    background: rgba(0, 0, 0, 0.3);
-}
-
-.fvt-table tbody tr:nth-child(even) {
-    background: rgba(0, 0, 0, 0.2);
-}
-
-.fvt-table tbody tr:hover {
-    background: white;
-    transition: background 0.25s ease;
-    color: #1a1b1b;
-}
+.fvt-table tbody tr:nth-child(odd) { background: rgba(0,0,0,0.3); }
+.fvt-table tbody tr:nth-child(even) { background: rgba(0,0,0,0.2); }
+.fvt-table tbody tr:hover { background: white; color: #1a1b1b; transition: 0.25s; }
 
 /* =========================
    BADGES
 ========================= */
-.badge {
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
-}
-
-.badge-success {
-    background: #22ffb0;
-    color: #000;
-}
-
-.badge-danger {
-    background: #ff2277;
-    color: #fff;
-}
+.badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+.badge-success { background: #22ffb0; color: #000; }
+.badge-danger { background: #ff2277; color: #fff; }
 
 /* =========================
    PAGINATION (NEON CIRCLES)
@@ -257,7 +319,7 @@ body {
 .table-pagination {
     margin-top: 18px;
     display: flex;
-    flex-wrap: wrap; /* wrap to next row after limit */
+    flex-wrap: wrap;
     gap: 6px;
     justify-content: flex-start;
 }
@@ -267,7 +329,7 @@ body {
     height: 28px;
     border-radius: 50%;
     border: 1px solid #00f6ff;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0,0,0,0.5);
     color: #00f6ff;
     cursor: pointer;
     font-size: 13px;
@@ -275,35 +337,19 @@ body {
     align-items: center;
     justify-content: center;
     transition: all 0.25s ease;
-    box-shadow: 0 0 6px rgba(0, 255, 255, 0.5);
+    box-shadow: 0 0 6px rgba(0,255,255,0.5);
 }
 
 .circle-btn:hover,
-.circle-btn.active {
-    background: #00f6ff;
-    color: #0d0f2a;
-    box-shadow: 0 0 12px rgba(0, 255, 255, 0.8);
-}
+.circle-btn.active { background: #00f6ff; color: #0d0f2a; box-shadow: 0 0 12px rgba(0,255,255,0.8); }
 
-.circle-arrow {
-    border: none;
-    background: none;
-    font-size: 20px;
-    cursor: pointer;
-    color: #00f6ff;
-    transition: all 0.3s ease;
-}
+.circle-arrow { border: none; background: none; font-size: 20px; cursor: pointer; color: #00f6ff; transition: all 0.3s ease; }
+.circle-arrow:disabled { color: rgba(0,255,255,0.3); cursor: not-allowed; }
 
-.circle-arrow:disabled {
-    color: rgba(0, 255, 255, 0.3);
-    cursor: not-allowed;
-}
 /* =========================
-   COMMON SEARCH INPUT
+   SEARCH INPUTS
 ========================= */
-.fvt-search,
-.fvt-input,
-.table-search {
+.fvt-search, .fvt-input, .table-search {
     width: 100%;
     max-width: 260px;
     padding: 8px 12px;
@@ -318,19 +364,17 @@ body {
 
 .fvt-search::placeholder,
 .fvt-input::placeholder,
-.table-search::placeholder {
-    color: #6b7280;
-}
+.table-search::placeholder { color: #6b7280; }
 
 .fvt-search:focus,
 .fvt-input:focus,
 .table-search:focus {
     border-color: #2563eb;
-    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.2);
 }
 
 /* =========================
-   COMMON ACTION BUTTON
+   BUTTONS
 ========================= */
 .fvt-action-btn,
 .btn.btn-primary,
@@ -344,48 +388,35 @@ body {
     font-weight: 500;
     cursor: pointer;
     transition: all 0.25s ease;
-    color: #000 !important;      /* black text */
+    color: #000 !important;
 }
 
-/* =========================
-   PRIMARY BUTTON
-========================= */
 .btn.btn-primary {
     background-color: #2563eb;
     border-color: #2563eb;
 }
-
 .btn.btn-primary:hover {
     background-color: #1e40af;
     border-color: #1e40af;
     transform: translateY(-1px);
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.2);
 }
 
-/* =========================
-   SUCCESS BUTTON (PDF)
-========================= */
 .btn.btn-success {
     background-color: #22c55e;
     border-color: #22c55e;
 }
-
 .btn.btn-success:hover {
     background-color: #16a34a;
     border-color: #16a34a;
     transform: translateY(-1px);
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.2);
 }
 
-/* =========================
-   ACTIVE / CLICK EFFECT
-========================= */
-.btn:active {
-    transform: scale(0.97);
-}
+.btn:active { transform: scale(0.97); }
 
 /* =========================
-   BUTTON GROUP FIX
+   FLEX FIXES
 ========================= */
 .fvt-table-actions,
 .button-group,
@@ -394,24 +425,14 @@ div[style*="display:flex"] {
 }
 
 /* =========================
-   MOBILE FRIENDLY
+   RESPONSIVE / MOBILE
 ========================= */
 @media (max-width: 768px) {
     .fvt-search,
     .fvt-input,
     .table-search,
-    .btn {
-        width: 100%;
-    }
-}
-/* =========================
-   RESPONSIVE
-========================= */
-@media (max-width: 768px) {
-    .fvt-sidebar {
-        position: fixed;
-    }
-    .fvt-main {
-        margin-left: 64px;
-    }
+    .btn { width: 100%; }
+
+    .fvt-sidebar { position: fixed; }
+    .fvt-main { margin-left: 64px; }
 }

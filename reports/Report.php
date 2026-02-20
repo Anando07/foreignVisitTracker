@@ -96,7 +96,10 @@ while($row = mysqli_fetch_assoc($res)) $purposes[] = $row['Purpose'];
 ?>
 
 <div class="fvt-card">
-    <h2 class="page-title">Time Based Different Type Report</h2>
+    <div class="fvt-page-header">
+       Time Based Different Type Report
+    </div>
+    <!-- <h2 class="page-title">Time Based Different Type Report</h2> -->
     <form method="post" class="fvt-form" id="reportForm">
         <div class="form-grid">
             <!-- Search Type -->

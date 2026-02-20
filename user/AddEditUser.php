@@ -1,7 +1,7 @@
 <?php require_once __DIR__."/../controllers/UserController.php"; ?>
 
 <div class="fvt-card">
-    <div class="fvt-header">
+    <div class="fvt-page-header">
         <?= $isEdit ? "✏️ Edit User" : "➕ Add New User" ?>
     </div>
 

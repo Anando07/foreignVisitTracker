@@ -4,7 +4,7 @@ $controller = new PasswordController($db, $userId, $role);
 $controller->selfChange();
 ?>
 <div class="fvt-card">
-    <div class="fvt-header">🔑 Change Password</div>
+    <div class="fvt-page-header">🔑 Change Password</div>
 
     <form id="passwordForm" method="post" autocomplete="off">
         <div class="fvt-grid">

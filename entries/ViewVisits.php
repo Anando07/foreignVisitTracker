@@ -3,7 +3,10 @@
 ?>
 
 <div class="fvt-card" id="visitsSection">
-     <h2 class="page-title">Foreign Visits</h2>
+    <div class="fvt-page-header">
+       Foreign Visits
+    </div>
+     <!-- <h2 class="page-title">Foreign Visits</h2> -->
     <!-- Search and Print -->
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
         <input type="text" class="table-search fvt-input" placeholder="Search visits..." data-table="visitTable" style="width:48%;">
@@ -25,7 +28,7 @@
                     <th>Funding</th>
                     <th>Purpose</th>
                     <th>Start Date<br>(Actual Departure)</th>
-                    <th>End Date<br>(Actual Arrival)</th>
+                    <!-- <th>End Date<br>(Actual Arrival)</th> -->
                     <th>Days</th>
                     <th>GO</th>
                     <th>Uploaded by</th>
@@ -58,13 +61,13 @@
                     <td><?= htmlspecialchars($visit["FundingSource"]) ?></td>
                     <td><?= htmlspecialchars($visit["Purpose"]) ?></td>
                     <td><?= $visit["StartDate"] ?><br>(<?= $actualDeparture ?>)</td>
-                    <td><?= $visit["EndDate"] ?><br>(<?= $actualArrival ?>)</td>
+                    <!-- <td><?= $visit["EndDate"] ?><br>(<?= $actualArrival ?>)</td> -->
                     <td><?= $visit["Days"] ?></td>
                     <td>
                         <a href='uploads/<?= $visit["GO"] ?>' target='_blank'>Click</a>
                         <?= $rev_go_links ?>
                     </td>
-                    <td><?= htmlspecialchars($visit['uploader_name'] ?? $visit['Uploader']) ?></td>
+                    <td><?= htmlspecialchars($visit['admin_name'] ?? $visit['Uploader']) ?></td>
                     <?php if (in_array($role, ['Administrator', 'Operator'])): ?>
                         <td>
                             <button title="Edit" class="btn btn-sm btn-warning" onclick="confirmEditVisit(<?= $visit['ID'] ?>)">✏️</button>

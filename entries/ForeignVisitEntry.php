@@ -5,7 +5,7 @@ require_once __DIR__."/../controllers/ForeignVisitController.php";
 
 
 <div class="fvt-card">
-    <div class="fvt-header">
+    <div class="fvt-page-header">
         <?= $update
             ? ($isUnreportedMode ? "✏️ Edit Unreported Visit" : "✏️ Edit Foreign Visit")
             : "➕ New Foreign Visit Entry"

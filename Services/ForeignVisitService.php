@@ -155,7 +155,15 @@ class ForeignVisitService {
     }
 
     public function getAllVisits(){
-        return $this->db->query("SELECT * FROM ForeignVisit ORDER BY ID DESC")->fetch_all(MYSQLI_ASSOC);
+        return $this->db->query("
+            SELECT 
+                ForeignVisit.*,
+                Admin.NAME AS admin_name
+            FROM ForeignVisit
+            LEFT JOIN Admin 
+                ON Admin.ID = ForeignVisit.Uploader
+            ORDER BY ForeignVisit.ID DESC
+        ")->fetch_all(MYSQLI_ASSOC);
     }
 
     public function getAllUnreportedVisits(){
