@@ -95,31 +95,25 @@ while($row = mysqli_fetch_assoc($cadreCounts)){
 ====================== -->
 <div class="fvt-card" style="display:flex; justify-content:space-around; flex-wrap:wrap; gap:20px; text-align:center;">
     <div style="flex:1 1 400px; max-width:500px;">
-        <h3>Foreign Visits by Purpose</h3>
         <canvas id="purposePieChart"></canvas>
     </div>
     <div style="flex:1 1 400px; max-width:500px;">
-        <h3>Foreign Visits by Country</h3>
         <canvas id="countryPieChart"></canvas>
     </div>
 </div>
 <div class="fvt-card" style="display:flex; justify-content:space-around; flex-wrap:wrap; gap:20px; text-align:center;">
     <div style="flex:1 1 400px; max-width:500px;">
-        <h3>Designated Foreign Visits</h3>
         <canvas id="designationPieChart"></canvas>
     </div>
     <div style="flex:1 1 400px; max-width:500px;">
-        <h3>Foreign Visits by Funding Source</h3>
         <canvas id="fundingPieChart"></canvas>
     </div>
 </div>
 <div class="fvt-card" style="display:flex; justify-content:space-around; flex-wrap:wrap; gap:20px; text-align:center;">
     <div style="flex:1 1 400px; max-width:500px;">
-        <h3>Office Foreign Visits</h3>
         <canvas id="officePieChart"></canvas>
     </div>
     <div style="flex:1 1 400px; max-width:500px;">
-        <h3>Foreign Visits by Cadre</h3>
         <canvas id="cadrePieChart"></canvas>
     </div>
 </div>
@@ -145,10 +139,11 @@ while($row = mysqli_fetch_assoc($cadreCounts)){
      USERS TABLE
 ====================== -->
 <?php if (in_array($role, ['Administrator'])): ?>
-<div class="fvt-card" id="usersSection" style="display:none;">
+<div class="fvt-table-actions" id="usersSection" style="display:none;">
     <h3>User List</h3>
+    <input type="text" id="userSearch" class="fvt-search" placeholder="Search users...">
     <button class="btn btn-primary mb-2" onclick="printTable('userTable')">Print Users</button>
-    <input type="text" id="userSearch" class="fvt-input" placeholder="Search users...">
+   
     <table class="fvt-table" id="userTable">
         <thead>
             <tr>
@@ -179,10 +174,10 @@ while($row = mysqli_fetch_assoc($cadreCounts)){
      VISITS TABLE
 ====================== -->
 <?php if (in_array($role, ['Administrator', 'Admin'])): ?>
-<div class="fvt-card" id="visitsSection" style="display:none;">
+<div class="fvt-table-actions" id="visitsSection" style="display:none;">
     <h3>Foreign Visit List</h3>
+    <input type="text" id="visitSearch" class="fvt-search" placeholder="Search visits...">
     <button class="btn btn-primary mb-2" onclick="printTable('visitTable')">Print Visits</button>
-    <input type="text" id="visitSearch" class="fvt-input" placeholder="Search visits...">
     <table class="fvt-table" id="visitTable">
         <thead>
             <tr>
@@ -220,10 +215,10 @@ while($row = mysqli_fetch_assoc($cadreCounts)){
 <!-- ======================
      COUNTRIES TABLE
 ====================== -->
-<div class="fvt-card" id="countrySection" style="display:none;">
+<div class="fvt-table-actions" id="countrySection" style="display:none;">
     <h3>Destination Countries</h3>
+    <input type="text" id="countrySearch" class="fvt-search" placeholder="Search countries...">
     <button class="btn btn-primary mb-2" onclick="printTable('countryTable')">Print Countries</button>
-    <input type="text" id="countrySearch" class="fvt-input" placeholder="Search countries...">
     <table class="fvt-table" id="countryTable">
         <thead>
             <tr>

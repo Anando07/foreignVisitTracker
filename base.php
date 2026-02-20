@@ -1,6 +1,7 @@
 <?php
 require_once("init.php");
 require_once ("repositories/UserRepository.php");
+require_once ("repositories/PasswordRepository.php");
 require_once ("services/UserService.php");
 require_once ("services/ProfileService.php");
 require_once ("services/PasswordService.php");
@@ -82,6 +83,7 @@ $current_page = $page;
 <title>FVT - <?= ucfirst(htmlspecialchars($page)); ?></title>
 
 <link rel="stylesheet" href="assets/css/style.css?v=<?= filemtime('assets/css/style.css'); ?>">
+<link rel="stylesheet" href="assets/css/dashboard.css?v=<?= filemtime('assets/css/dashboard.css'); ?>">
 <link rel="stylesheet" href="assets/css/user.css?v=<?= filemtime('assets/css/user.css'); ?>">
 <link rel="stylesheet" href="assets/css/entry-form.css?v=<?= filemtime('assets/css/entry-form.css'); ?>">
 <link rel="stylesheet" href="assets/css/report.css?v=<?= filemtime('assets/css/report.css'); ?>">

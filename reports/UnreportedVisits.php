@@ -12,13 +12,11 @@
 
         <!-- Buttons -->
         <div style="display:flex; gap:10px;">
-            <!-- Print Button -->
-            <button class="btn btn-primary" onclick="printVisitTable()">
+            <button class="btn btn-primary fvt-action-btn" onclick="printVisitTable()">
                 🖨️ Print Visits
             </button>
 
-            <!-- PDF Button -->
-            <button class="btn btn-success" onclick="window.open('pdf/templates/pdfUnreportedCases.php', '_blank')">
+            <button class="btn btn-success fvt-action-btn" onclick="window.open('pdf/templates/pdfUnreportedCases.php', '_blank')">
                 📄 Generate PDF
             </button>
         </div>

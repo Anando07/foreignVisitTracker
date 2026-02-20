@@ -7,7 +7,9 @@
     <!-- Search and Print -->
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
         <input type="text" class="table-search fvt-input" placeholder="Search visits..." data-table="visitTable" style="width:48%;">
-        <button class="btn btn-primary" onclick="printVisitTable()">🖨️ Print Visits</button>
+        <button class="btn btn-primary fvt-action-btn" onclick="printVisitTable()">
+            🖨️ Print Visits
+        </button>
     </div>
 
     <div style="overflow-x:auto;">

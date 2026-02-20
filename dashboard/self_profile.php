@@ -1,63 +1,92 @@
 <?php require_once __DIR__."/../controllers/ProfileController.php"; ?>
 
-<div class="user-card">
-    <div class="user-card-header">👤 Update Profile</div>
-    <form method="post">
-        <div class="form-grid">
+<div class="fvt-card">
+    <div class="fvt-header">👤 Update Profile</div>
 
-            <div class="form-group">
-                <label>Full Name</label>
-                <input type="text" name="name" class="fvt-input"
-                       value="<?= htmlspecialchars($user['Name']) ?>" required>
+    <form id="profileForm" method="post">
+        <div class="fvt-grid">
+
+            <!-- Full Name -->
+            <div class="fvt-group">
+                <label>Full Name <span class="required">*</span></label>
+                <input type="text" name="name" required class="fvt-input" value="<?= htmlspecialchars($user['Name']) ?>">
+                <div class="error-msg"></div>
             </div>
 
-            <div class="form-group">
-                <label>Designation</label>
-                <input type="text" name="designation" class="fvt-input"
-                       value="<?= htmlspecialchars($user['Designation']) ?>" required>
+            <!-- Designation -->
+            <div class="fvt-group">
+                <label>Designation <span class="required">*</span></label>
+                <input type="text" name="designation" required class="fvt-input" value="<?= htmlspecialchars($user['Designation']) ?>">
+                <div class="error-msg"></div>
             </div>
 
-            <div class="form-group">
+            <!-- Contact -->
+            <div class="fvt-group">
                 <label>Contact</label>
-                <input type="text" name="contact" class="fvt-input"
-                       value="<?= htmlspecialchars($user['Contact']) ?>">
+                <input type="text" name="contact" class="fvt-input" value="<?= htmlspecialchars($user['Contact']) ?>">
+                <div class="error-msg"></div>
             </div>
 
-            
             <?php if ($role === 'Administrator'): ?>
-                <div class="form-group">
-                    <label>Username</label>
-                    <input type="text" name="username" class="fvt-input"
-                           value="<?= htmlspecialchars($user['UserName']) ?>">
+                <!-- Username -->
+                <div class="fvt-group">
+                    <label>Username <span class="required">*</span></label>
+                    <input type="text" name="username" required class="fvt-input" value="<?= htmlspecialchars($user['UserName']) ?>">
+                    <div class="error-msg"></div>
                 </div>
 
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" name="email" class="fvt-input"
-                           value="<?= htmlspecialchars($user['Email']) ?>">
+                <!-- Email -->
+                <div class="fvt-group">
+                    <label>Email <span class="required">*</span></label>
+                    <input type="email" name="email" required class="fvt-input" value="<?= htmlspecialchars($user['Email']) ?>">
+                    <div class="error-msg"></div>
                 </div>
 
-                <div class="form-group">
-                    <label>Role</label>
-                    <select name="role_id" class="fvt-input">
-                        <?php foreach($roles as $id=>$r): ?>
-                            <option value="<?= $id ?>" <?= $user['Role_ID']==$id?'selected':'' ?>>
-                                <?= $r ?>
-                            </option>
+                <!-- Role -->
+                <div class="fvt-group">
+                    <label>Role <span class="required">*</span></label>
+                    <select name="role_id" required class="fvt-input">
+                        <option value="">Select Role</option>
+                        <?php foreach($roles as $id => $r): ?>
+                            <option value="<?= $id ?>" <?= $user['Role_ID']==$id?'selected':'' ?>><?= $r ?></option>
                         <?php endforeach; ?>
                     </select>
+                    <div class="error-msg"></div>
                 </div>
             <?php endif; ?>
 
-            <div class="form-group">
+            <!-- Status -->
+            <div class="fvt-group">
                 <label>Status</label>
-                <input type="text" class="fvt-input"
-                       value="<?= $user['Status']==1?'Active':'Inactive' ?>" readonly>
+                <input type="text" class="fvt-input" value="<?= $user['Status']==1?'Active':'Inactive' ?>" readonly>
             </div>
 
         </div>
-        <div class="actions">
-            <button class="btn btn-success">Update</button>
+
+        <!-- Action Buttons -->
+        <div class="fvt-actions" style="text-align:center; margin-top:16px;">
+            <button class="btn btn-success fvt-action-btn">Update Profile</button>
         </div>
     </form>
 </div>
+
+<script>
+// Simple form validation
+document.getElementById("profileForm").addEventListener("submit", function(e){
+    let ok=true;
+    document.querySelectorAll(".error-msg").forEach(x=>x.innerText="");
+    document.querySelectorAll(".fvt-input").forEach(x=>x.classList.remove("error"));
+
+    function err(el,msg){
+        el.classList.add("error");
+        el.nextElementSibling.innerText=msg;
+        ok=false;
+    }
+
+    document.querySelectorAll(".fvt-input[required]").forEach(el=>{
+        if(!el.value) err(el,"Required");
+    });
+
+    if(!ok) e.preventDefault();
+});
+</script>

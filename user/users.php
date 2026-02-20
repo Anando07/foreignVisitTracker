@@ -7,8 +7,10 @@ require_once __DIR__."/../controllers/UserController.php";
     <h2 class="page-title">Users</h2>
     <!-- Search and Print -->
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-        <input type="text" class="table-search fvt-input" placeholder="Search users..." data-table="userTable" style="width:48%;">
-        <button class="btn btn-primary" onclick="printTable('userTable')">🖨️ Print Users</button>
+       <input type="text" class="table-search fvt-input" placeholder="Search users..." data-table="userTable" style="width:48%;">
+       <button class="btn btn-primary fvt-action-btn" onclick="printTable('userTable')">
+            🖨️ Print Users
+       </button>
     </div>
 
     <table class="fvt-table" id="userTable">

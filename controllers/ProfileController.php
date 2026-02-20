@@ -16,6 +16,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['msg_type'] = "error";
     }
 
-    header("Location: base.php?page=profile");
+    header("Location: base.php?page=self_profile");
     exit;
 }

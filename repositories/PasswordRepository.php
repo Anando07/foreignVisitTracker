@@ -1,5 +1,5 @@
 <?php
-class UserRepository {
+class PasswordRepository {
 
     private $db;
 

@@ -1,111 +1,108 @@
 <?php require_once __DIR__."/../controllers/UserController.php"; ?>
-  
-<div class="user-card">
 
-    <div class="user-card-header">
-    <?= $isEdit ? "✏️ Edit User" : "➕ Add New User" ?>
+<div class="fvt-card">
+    <div class="fvt-header">
+        <?= $isEdit ? "✏️ Edit User" : "➕ Add New User" ?>
     </div>
 
-    <?php if(isset($_SESSION['msg'])): ?>
-    <div class="alert" style="background: <?= $_SESSION['msg_type']=='success'?'#d1fae5':'#fee2e2' ?>; color: <?= $_SESSION['msg_type']=='success'?'#065f46':'#b91c1c' ?>;">
-        <?= $_SESSION['msg']; unset($_SESSION['msg'], $_SESSION['msg_type']); ?>
-    </div>
-    <?php endif; ?>
-
-    <form method="post">
-        <div class="form-grid">
+    <form id="userForm" method="post">
+        <div class="fvt-grid">
 
             <!-- Full Name -->
-            <div class="form-group">
-                <label>Full Name</label>
+            <div class="fvt-group">
+                <label>Full Name <span class="required">*</span></label>
                 <input type="text" name="name" required class="fvt-input" value="<?= htmlspecialchars($name) ?>">
+                <div class="error-msg"></div>
             </div>
 
             <!-- Designation -->
-            <div class="form-group">
-                <label>Designation</label>
+            <div class="fvt-group">
+                <label>Designation <span class="required">*</span></label>
                 <select name="designation" required class="fvt-input">
                     <option value="">Select Designation</option>
                     <?php
                     $designations = [
-                    'Senior Secretary','Secretary','Additional Secretary','Joint Secretary',
-                    'Deputy Secretary','Senior Assistant Secretary','Assistant Secretary',
-                    'Senior System Analyst','System Analyst','Programmer',
-                    'Assistant Programmer','Assistant Maintenance Engineer','Computer Operator'
+                        'Senior Secretary','Secretary','Additional Secretary','Joint Secretary',
+                        'Deputy Secretary','Senior Assistant Secretary','Assistant Secretary',
+                        'Senior System Analyst','System Analyst','Programmer',
+                        'Assistant Programmer','Assistant Maintenance Engineer','Computer Operator'
                     ];
                     foreach($designations as $d):
                     ?>
                     <option value="<?= $d ?>" <?= $designation==$d?'selected':'' ?>><?= $d ?></option>
                     <?php endforeach; ?>
                 </select>
+                <div class="error-msg"></div>
             </div>
 
             <!-- Username -->
-            <div class="form-group">
-                <label>Username</label>
+            <div class="fvt-group">
+                <label>Username <span class="required">*</span></label>
                 <input type="text" name="username" required class="fvt-input" value="<?= htmlspecialchars($username) ?>">
+                <div class="error-msg"></div>
             </div>
 
             <!-- Email -->
-            <div class="form-group">
-                <label>Email</label>
+            <div class="fvt-group">
+                <label>Email <span class="required">*</span></label>
                 <input type="email" name="email" required class="fvt-input" value="<?= htmlspecialchars($email) ?>">
+                <div class="error-msg"></div>
             </div>
 
             <!-- Contact -->
-            <div class="form-group">
+            <div class="fvt-group">
                 <label>Contact</label>
                 <input type="text" name="contact" class="fvt-input" value="<?= htmlspecialchars($contact) ?>">
+                <div class="error-msg"></div>
             </div>
 
             <!-- Role -->
-            <div class="form-group">
-                <label>Role</label>
+            <div class="fvt-group">
+                <label>Role <span class="required">*</span></label>
                 <select name="role_id" required class="fvt-input">
                     <option value="">Select Role</option>
                     <?php foreach($roles as $sl => $roleName): ?>
-                        <option value="<?= $sl ?>" <?= $role_id==$sl ? 'selected' : '' ?>>
-                            <?= $roleName ?>
-                        </option>
+                        <option value="<?= $sl ?>" <?= $role_id==$sl ? 'selected' : '' ?>><?= $roleName ?></option>
                     <?php endforeach; ?>
                 </select>
+                <div class="error-msg"></div>
             </div>
 
             <!-- Status -->
-            <div class="form-group">
+            <div class="fvt-group">
                 <label>Status</label>
                 <select name="status" class="fvt-input">
                     <option value="1" <?= $status==1?'selected':'' ?>>Active</option>
                     <option value="0" <?= $status==0?'selected':'' ?>>Inactive</option>
                 </select>
             </div>
+
             <?php if(!$isEdit): ?>
             <!-- Password -->
-            <div class="form-group password-wrapper">
-                <label>Password</label>
+            <div class="fvt-group password-wrapper">
+                <label>Password <span class="required">*</span></label>
                 <input type="password" name="password" id="password" required class="fvt-input">
                 <span toggle="#password" class="toggle-password">👁️</span>
                 <small id="strength"></small>
+                <div class="error-msg"></div>
             </div>
 
             <!-- Confirm Password -->
-            <div class="form-group password-wrapper">
-                <label>Confirm Password</label>
+            <div class="fvt-group password-wrapper">
+                <label>Confirm Password <span class="required">*</span></label>
                 <input type="password" name="confirm" id="confirm" required class="fvt-input">
                 <span toggle="#confirm" class="toggle-password">👁️</span>
                 <small id="match"></small>
+                <div class="error-msg"></div>
             </div>
             <?php endif; ?>
 
-
         </div>
 
-        <!-- Buttons Centered -->
-        <div class="actions">
-            <a href="base.php?page=Users" class="btn btn-secondary">Cancel</a>
-            <button class="btn btn-success"><?= $isEdit?'Update User':'Save User' ?></button>
+        <div class="fvt-actions" style="text-align:center; margin-top:16px;">
+            <a href="base.php?page=Users" class="btn btn-secondary fvt-action-btn">Cancel</a>
+            <button class="btn btn-success fvt-action-btn"><?= $isEdit?'Update User':'Save User' ?></button>
         </div>
-
     </form>
 </div>
 
@@ -148,5 +145,26 @@ document.querySelectorAll('.toggle-password').forEach(el => {
             el.textContent='👁️'; 
         }
     });
+});
+
+// Simple form validation
+document.getElementById("userForm").addEventListener("submit", function(e){
+    let ok=true;
+    document.querySelectorAll(".error-msg").forEach(x=>x.innerText="");
+    document.querySelectorAll(".fvt-input").forEach(x=>x.classList.remove("error"));
+
+    function err(el,msg){
+        el.classList.add("error");
+        el.nextElementSibling.innerText=msg;
+        ok=false;
+    }
+
+    document.querySelectorAll(".fvt-input[required]").forEach(el=>{
+        if(!el.value) err(el,"Required");
+    });
+
+    if(pwd && cp && pwd.value !== cp.value) err(cp,"Passwords do not match");
+
+    if(!ok) e.preventDefault();
 });
 </script>
