@@ -1,6 +1,4 @@
-<?php 
-require_once __DIR__."/../controllers/ForeignVisitReportController.php";
-?>
+<?php require_once __DIR__."/../controllers/ForeignVisitReportController.php";?>
 <div class="fvt-card">
     <div class="fvt-page-header">
         Time Based Different Type Report
