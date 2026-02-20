@@ -29,16 +29,16 @@
                     <th>#</th>
                     <th>ID</th>
                     <th>Name</th>
-                    <th>Designation</th>
-                    <th>Workplace</th>
+                    <th>Designation/Office</th>
+                    <!-- <th>Workplace</th> -->
                     <th>Country</th>
                     <th>Funding</th>
                     <th>Purpose</th>
                     <th>Start Date<br>(Actual Departure)</th>
-                    <th>End Date<br>(Actual Arrival)</th>
+                    <!-- <th>End Date<br>(Actual Arrival)</th> -->
                     <th>Days</th>
                     <th>GO</th>
-                    <th>Uploaded by</th>
+                    <!-- <th>Updated by</th> -->
                     <?php if (in_array($roleId, [1, 5])): ?>
                         <th>Actions</th>
                     <?php endif; ?>
@@ -62,19 +62,19 @@
                     <td><?= $i + 1 ?></td>
                     <td><?= $visit["ServiceID"] ?><br>(<?= $visit["Cadre"] ?>)</td>
                     <td><?= htmlspecialchars($visit["Name"]) ?></td>
-                    <td><?= htmlspecialchars($visit["Designation"]) ?><br>(Grade-<?= $visit["Grade"] ?>)</td>
-                    <td><?= htmlspecialchars($visit["Workplace"]) ?>, <?= htmlspecialchars($visit["Office"]) ?></td>
+                    <td><?= htmlspecialchars($visit["Designation"]) ?><br>(Grade-<?= $visit["Grade"] ?><br><?= htmlspecialchars($visit["Workplace"]) ?><br><?= htmlspecialchars($visit["Office"]) ?>)</td>
+                    <!-- <td><?= htmlspecialchars($visit["Workplace"]) ?>, <?= htmlspecialchars($visit["Office"]) ?></td> -->
                     <td><?= htmlspecialchars($visit["DestinationCountry"]) ?></td>
                     <td><?= htmlspecialchars($visit["FundingSource"]) ?></td>
                     <td><?= htmlspecialchars($visit["Purpose"]) ?></td>
                     <td><?= $visit["StartDate"] ?><br>(<?= $actualDeparture ?>)</td>
-                    <td><?= $visit["EndDate"] ?><br>(<?= $actualArrival ?>)</td>
+                    <!-- <td><?= $visit["EndDate"] ?><br>(<?= $actualArrival ?>)</td> -->
                     <td><?= $visit["Days"] ?></td>
                     <td>
                         <a href='uploads/<?= $visit["GO"] ?>' target='_blank'>Click</a>
                         <?= $rev_go_links ?>
                     </td>
-                    <td><?= htmlspecialchars($visit['editor_name'] ?? $visit['Editor']) ?></td>
+                    <!-- <td><?= htmlspecialchars($visit['editor_name'] ?? $visit['Editor']) ?></td> -->
                     <?php if (in_array($roleId, [1, 5])): ?>
                         <td>
                             <button title="Reported" class="btn btn-sm btn-warning"

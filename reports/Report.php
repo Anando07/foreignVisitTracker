@@ -158,13 +158,13 @@ while($row = mysqli_fetch_assoc($res)) $purposes[] = $row['Purpose'];
                     <th>#</th>
                     <th>ID</th>
                     <th>Name</th>
-                    <th>Designation</th>
-                    <th>Workplace</th>
+                    <th>Designation/Office</th>
+                    <!-- <th>Workplace</th> -->
                     <th>Country</th>
                     <th>Funding</th>
                     <th>Purpose</th>
                     <th>Start Date<br>(Actual Departure)</th>
-                    <th>End Date<br>(Actual Arrival)</th>
+                    <!-- <th>End Date<br>(Actual Arrival)</th> -->
                     <th>Days</th>
                     <th>GO</th>
                 </tr>
@@ -189,13 +189,13 @@ while($row = mysqli_fetch_assoc($res)) $purposes[] = $row['Purpose'];
                             <td><?= $i ?></td>
                             <td><?= htmlspecialchars($row["ServiceID"]) ?><br>(<?= htmlspecialchars($row["Cadre"]) ?>)</td>
                             <td><?= htmlspecialchars($row["Name"]) ?></td>
-                            <td><?= htmlspecialchars($row["Designation"]) ?><br>(Grade-<?= htmlspecialchars($row["Grade"]) ?>)</td>
-                            <td><?= htmlspecialchars($row["Workplace"]) ?>, <?= htmlspecialchars($row["Office"]) ?></td>
+                            <td><?= htmlspecialchars($row["Designation"]) ?><br>(Grade-<?= htmlspecialchars($row["Grade"]) ?><br><?= htmlspecialchars($row["Workplace"]) ?><br><?= htmlspecialchars($row["Office"]) ?>)</td>
+                            <!-- <td><?= htmlspecialchars($row["Workplace"]) ?>, <?= htmlspecialchars($row["Office"]) ?></td> -->
                             <td><?= htmlspecialchars($row["DestinationCountry"]) ?></td>
                             <td><?= htmlspecialchars($row["FundingSource"]) ?></td>
                             <td><?= htmlspecialchars($row["Purpose"]) ?></td>
                             <td><?= htmlspecialchars($row["StartDate"]) ?><br>(<?= htmlspecialchars($actualDeparture) ?>)</td>
-                            <td><?= htmlspecialchars($row["EndDate"]) ?><br>(<?= htmlspecialchars($actualArrival) ?>)</td>
+                            <!-- <td><?= htmlspecialchars($row["EndDate"]) ?><br>(<?= htmlspecialchars($actualArrival) ?>)</td> -->
                             <td><?= htmlspecialchars($row["Days"]) ?></td>
                             <td>
                                 <a href='uploads/<?= htmlspecialchars($row["GO"]) ?>' target='_blank'>Click</a>
