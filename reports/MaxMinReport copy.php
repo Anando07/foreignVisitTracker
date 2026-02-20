@@ -1,4 +1,58 @@
-<?php require_once __DIR__."/../controllers/ForeignVisitReportController.php"; ?>
+<?php
+/* =========================
+   ACCESS CONTROL
+========================= */
+$allowedRoles = [1, 2, 5];
+if (!isset($_SESSION['login_role_id']) || !in_array((int)$_SESSION['login_role_id'], $allowedRoles, true)) {
+    die("Unauthorized access.");
+}
+
+/* =========================
+   FORM INPUT
+========================= */
+$visitType  = $_POST['visit_type']  ?? ''; // maximum | minimum
+$startDate  = $_POST['start_date']  ?? '';
+$endDate    = $_POST['end_date']    ?? '';
+$result     = null;
+
+/* =========================
+   VALIDATE DATE RANGE
+========================= */
+$dateCondition = '';
+if (!empty($startDate) && !empty($endDate)) {
+    $dateCondition = " AND fv.StartDate BETWEEN '" . mysqli_real_escape_string($db, $startDate) . "' 
+                                        AND '" . mysqli_real_escape_string($db, $endDate) . "'";
+}
+
+/* =========================
+   QUERY
+========================= */
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && in_array($visitType, ['maximum','minimum'])) {
+
+    $order = ($visitType === 'maximum') ? 'DESC' : 'ASC';
+
+    $sql = "
+        SELECT 
+            fv.ServiceID,
+            fv.Name,
+            fv.Designation,
+            fv.Office,
+            fv.DestinationCountry,
+            fv.FundingSource,
+            fv.Purpose,
+            COUNT(*) AS visit_times
+        FROM ForeignVisit fv
+        WHERE 1=1
+        $dateCondition
+        GROUP BY fv.ServiceID, fv.Name, fv.Designation, fv.Office, 
+                 fv.DestinationCountry, fv.FundingSource, fv.Purpose
+        ORDER BY visit_times $order
+    ";
+
+    $result = mysqli_query($db, $sql);
+}
+?>
+
 <div class="fvt-card">
     <div class="fvt-page-header">
        Maximum / Minimum Foreign Visit Report
@@ -53,8 +107,8 @@
             </thead>
 
             <tbody>
-                <?php if($result && count($result) > 0): $i=1; ?>
-                    <?php foreach($result as $row): ?>
+                <?php if($result && mysqli_num_rows($result)): $i=1; ?>
+                    <?php while($row=mysqli_fetch_assoc($result)): ?>
                         <tr>
                             <td><?= $i++ ?></td>
                             <td><?= htmlspecialchars($row['ServiceID']) ?></td>
@@ -66,7 +120,7 @@
                             <td><?= htmlspecialchars($row['Purpose']) ?></td>
                             <td style="font-weight:bold; text-align:center;"><?= $row['visit_times'] ?></td>
                         </tr>
-                    <?php endforeach; ?>
+                    <?php endwhile; ?>
                 <?php elseif($_SERVER['REQUEST_METHOD']==='POST'): ?>
                     <tr>
                         <td colspan="9" style="text-align:center;">No records found</td>

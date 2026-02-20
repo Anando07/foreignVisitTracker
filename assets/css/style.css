@@ -11,7 +11,7 @@
 body {
     display: flex;
     min-height: 100vh;
-    background: linear-gradient(135deg, #ECFCCA, #F0FDF4);
+    background: linear-gradient(135deg, #c7f3c7, #e1eecf);
     color: #040404;
     transition: all 0.3s ease;
 }
@@ -187,8 +187,8 @@ body {
     padding: 14px 18px;
     font-size: 18px;
     font-weight: 600;
-    background: rgba(0, 0, 0, 0.6);
-    color: #e0f2fe;
+    background:  #00f6ff;
+    color: #26068e;
     text-align:center;
     border-radius: 8px;
     margin-bottom: 12px;

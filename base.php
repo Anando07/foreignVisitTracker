@@ -2,10 +2,12 @@
 require_once("init.php");
 require_once ("repositories/UserRepository.php");
 require_once ("repositories/PasswordRepository.php");
+require_once ("repositories/ForeignVisitReportRepository.php");
 require_once ("services/UserService.php");
 require_once ("services/ProfileService.php");
 require_once ("services/PasswordService.php");
 require_once ("services/ForeignVisitService.php");
+require_once ("services/ForeignVisitReportService.php");
 /* =========================
    PREVENT BROWSER CACHING
 ========================= */
@@ -130,7 +132,6 @@ $current_page = $page;
 <script src="assets/js/designation.js?v=<?= filemtime('assets/js/designation.js'); ?>"></script>
 <script src="assets/js/verify_password.js?v=<?= filemtime('assets/js/verify_password.js'); ?>"></script>
 <script src="assets/js/delete_verify_password.js?v=<?= filemtime('assets/js/delete_verify_password.js'); ?>"></script>
-<script src="assets/js/datalist.js?v=<?= filemtime('assets/js/datalist.js'); ?>"></script>
 
 </body>
 </html>
