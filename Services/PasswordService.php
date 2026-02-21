@@ -7,7 +7,12 @@ class PasswordService {
     public function __construct($db) {
         $this->repo = new PasswordRepository($db);
     }
-
+    /* ==========================
+       GET USER BY ID
+    ========================== */
+    public function getUserById($userId) {
+        return $this->repo->getUserById($userId);
+    }
     /* ==========================
        COMMON PASSWORD RULES
     ========================== */
@@ -37,9 +42,9 @@ class PasswordService {
     /* ==========================
        SELF PASSWORD CHANGE
     ========================== */
-    public function changeWithCurrent($userId, $current, $new, $confirm) {
+    public function selfResetPassword($userId, $current, $new, $confirm) {
 
-        $user = $this->repo->getPasswordHash($userId);
+        $user = $this->repo->getCurrentHashPassword($userId);
         if (!$user)
             return "User not found!";
 
@@ -62,7 +67,7 @@ class PasswordService {
     /* ==========================
        ADMIN RESET PASSWORD
     ========================== */
-    public function resetPassword($userId, $password, $confirm) {
+    public function adminResetPassword($userId, $password, $confirm) {
 
         if ($userId <= 0)
             return ['error' => 'Invalid user'];

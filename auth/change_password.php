@@ -3,7 +3,16 @@
 require_once __DIR__ . "/../controllers/PasswordController.php";
 $targetUserId = (int)($_GET['id'] ?? 0);
 $controller = new PasswordController($db, $userId, $role);
-$controller->adminReset($targetUserId);
+$controller->adminResetPassword($targetUserId);
+//Fetch the user name
+$user = $controller->getUserForAdminReset($targetUserId);
+if (!$user) {
+    $_SESSION['msg'] = "❌ User not found!";
+    $_SESSION['msg_type'] = "error";
+    header("Location: base.php?page=users");
+    exit;
+}
+
 ?>
 
 <div class="fvt-card">

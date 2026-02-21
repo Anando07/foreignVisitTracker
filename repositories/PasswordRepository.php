@@ -36,21 +36,10 @@ class PasswordRepository {
         return $roles;
     }
 
-    /* ======================
-       GET ALL USERS
-    ====================== */
-    public function getAllUsers(){
-        $users = [];
-        $res = $this->db->query("SELECT * FROM Admin ORDER BY ID ASC");
-        while($u = $res->fetch_assoc()){
-            $users[] = $u;
-        }
-        return $users;
-    }
     /* ==========================
     GET PASSWORD HASH
     ========================== */
-    public function getPasswordHash($id) {
+    public function getCurrentHashPassword($id) {
         $stmt = $this->db->prepare("SELECT Passcode FROM Admin WHERE ID=?");
         $stmt->bind_param("i", $id);
         $stmt->execute();

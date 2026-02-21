@@ -1,35 +1,51 @@
 <?php
 // includes/Auth.php
+
 class Auth {
     private $db;
+    private $roles = [];
 
     public function __construct($db) {
         $this->db = $db;
+
         if(session_status() === PHP_SESSION_NONE) {
             session_start();
         }
+
+        $this->loadRoles();
     }
 
-    // Login method
-    public function login($usernameOrEmail, $password) {
+    /* =========================
+       Load all roles from DB
+    ========================= */
+    private function loadRoles() {
+        $result = $this->db->query("SELECT SL, Role FROM Role");
+        if($result) {
+            while ($row = $result->fetch_assoc()) {
+                $this->roles[(int)$row['SL']] = $row['Role'];
+            }
+        }
+    }
 
+    public function roleName($roleId) {
+        return $this->roles[$roleId] ?? null;
+    }
+
+    /* =========================
+       LOGIN
+    ========================= */
+    public function login($usernameOrEmail, $password) {
         $stmt = $this->db->prepare("
             SELECT 
-                A.ID,
-                A.Name,
-                A.Designation,
-                A.Email,
-                A.Contact,
-                A.UserName,
-                A.Passcode,
-                A.Role_ID,
-                A.Status,
-                R.Role
-            FROM Admin A
-            LEFT JOIN Role R ON A.Role_ID = R.SL
-            WHERE A.UserName = ? OR A.Email = ?
-            LIMIT 1
+                ID, Name, Designation, Email, Contact,
+                UserName, Passcode, Role_ID, Status
+            FROM Admin
+            WHERE UserName = ? OR Email = ? LIMIT 1
         ");
+
+        if(!$stmt) {
+            die("Prepare failed: " . $this->db->error);
+        }
 
         $stmt->bind_param("ss", $usernameOrEmail, $usernameOrEmail);
         $stmt->execute();
@@ -52,29 +68,25 @@ class Auth {
             return false;
         }
 
-        // Prevent session fixation
         session_regenerate_id(true);
 
-        // Set session
-        $_SESSION['login_user_id']          = $user['ID'];
+        $_SESSION['login_user_id']          = (int)$user['ID'];
         $_SESSION['login_user_name']        = $user['Name'];
         $_SESSION['login_user_email']       = $user['Email'];
         $_SESSION['login_user_designation'] = $user['Designation'];
         $_SESSION['login_username']         = $user['UserName'];
         $_SESSION['login_role_id']          = (int)$user['Role_ID'];
-        $_SESSION['login_role']             = $user['Role'] ?? '';
+        $_SESSION['login_role']             = $this->roleName((int)$user['Role_ID']);
 
         return true;
     }
 
-    // Logout
     public function logout() {
         session_unset();
         session_destroy();
     }
 
-    // Check if user is logged in
-    public function checkLogin() {
+    public function requireLogin() {
         if(!isset($_SESSION['login_user_id'])){
             $this->setMessage("Please login to access this page.", "warning");
             header("Location: auth/login.php");
@@ -82,26 +94,23 @@ class Auth {
         }
     }
 
-    // Role access check
-    public function checkRole(array $allowedRoles = []) {
-        $userRole = $_SESSION['login_role'] ?? null;
+    public function requireRole($allowedRoleIds = []) {
+        $roleId = $_SESSION['login_role_id'] ?? null;
 
-        // If no roles specified, allow all logged-in users
-        if (empty($allowedRoles)) return;
+        if(empty($allowedRoleIds)) return;
 
-        if (!$userRole || !in_array($userRole, $allowedRoles)) {
-            die("<center><h3>Access Denied: You do not have permission to view this page.</h3></center>");
+        if(!$roleId || !in_array($roleId, $allowedRoleIds)) {
+            http_response_code(403);
+            die("<center><h3>🚫 Access Denied: You do not have permission to view this page.</h3></center>");
         }
     }
 
-    // Flash message setter
-    private function setMessage($msg, $type = "info"){
+    private function setMessage($msg, $type="info") {
         $_SESSION['msg'] = $msg;
         $_SESSION['msg_type'] = $type;
     }
 
-    // Flash message getter
-    public function flashMessage(){
+    public function flashMessage() {
         if(isset($_SESSION['msg'])){
             $msg = $_SESSION['msg'];
             $type = $_SESSION['msg_type'] ?? 'info';
@@ -110,5 +119,35 @@ class Auth {
         }
         return '';
     }
+
+    /* =========================
+       SESSION GETTERS
+    ========================= */
+    public function userId(): ?int {
+        return $_SESSION['login_user_id'] ?? null;
+    }
+
+    public function username(): ?string {
+        return $_SESSION['login_username'] ?? null;
+    }
+
+    public function role(): ?string {
+        return $_SESSION['login_role'] ?? null;
+    }
+
+    public function roleId(): ?int {
+        return $_SESSION['login_role_id'] ?? null;
+    }
+
+    public function fullname(): ?string {
+        return $_SESSION['login_user_name'] ?? null;
+    }
+
+    public function designation(): ?string {
+        return $_SESSION['login_user_designation'] ?? null;
+    }
+
+    public function roles(): array {
+        return $this->roles;
+    }
 }
-?>

@@ -1,7 +1,7 @@
 <?php 
 require_once __DIR__."/../controllers/PasswordController.php";
 $controller = new PasswordController($db, $userId, $role);
-$controller->selfChange();
+$controller->selfResetPassword();
 ?>
 <div class="fvt-card">
     <div class="fvt-page-header">🔑 Change Password</div>

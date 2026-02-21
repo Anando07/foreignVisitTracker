@@ -10,15 +10,26 @@ class PasswordController {
         $this->role    = $role;
     }
 
+    public function getUserForAdminReset($targetUserId) {
+        if ($this->role !== 'Administrator') {
+            $_SESSION['msg'] = "❌ Unauthorized access!";
+            $_SESSION['msg_type'] = "error";
+            header("Location: base.php?page=users");
+            exit;
+        }
+
+        return $this->service->getUserById($targetUserId);
+    }
+
     /* ==========================
        SELF PASSWORD CHANGE
        (ALL USERS)
     ========================== */
-    public function selfChange() {
+    public function selfResetPassword() {
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-            $result = $this->service->changeWithCurrent(
+            $result = $this->service->selfResetPassword(
                 $this->userId,
                 $_POST['current_password'] ?? '',
                 $_POST['password'] ?? '',
@@ -42,18 +53,17 @@ class PasswordController {
        ADMIN RESET PASSWORD
        (ADMINISTRATOR ONLY)
     ========================== */
-    public function adminReset($targetUserId) {
+    public function adminResetPassword($targetUserId) {
 
         if ($this->role !== 'Administrator') {
             $_SESSION['msg'] = "❌ Unauthorized access!";
             $_SESSION['msg_type'] = "error";
-            header("Location: base.php?page=dashboard");
+            header("Location: base.php?page=users");
             exit;
         }
-
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-            $result = $this->service->resetPassword(
+            $result = $this->service->adminResetPassword(
                 $targetUserId,
                 $_POST['password'] ?? '',
                 $_POST['confirm'] ?? ''
