@@ -31,6 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     if (isset($result['error'])){
         $_SESSION['msg'] = "❌ ".$result['error'];
         $_SESSION['msg_type'] = "error";
+        header("Location: base.php?page=AddEditUser");
     } else {
         $_SESSION['msg'] = "✅ ".$result['success'];
         $_SESSION['msg_type'] = "success";

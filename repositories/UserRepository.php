@@ -47,6 +47,35 @@ class UserRepository {
         }
         return $users;
     }
+
+
+    /* ======================
+       INSERT USER
+    ====================== */
+    public function insertUser($name, $designation, $office, $username, $pass,
+                               $email, $contact, $status, $role_id){
+        $stmt = $this->db->prepare("
+            INSERT INTO Admin (Name, Designation, Office, UserName, Passcode, Email, Contact, Status, Role_ID)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ");
+        $stmt->bind_param("sssssssii", $name, $designation, $office, $username, $pass, $email, $contact, $status, $role_id);
+        $stmt->execute();
+    }
+
+    /* ======================
+       UPDATE USER
+    ====================== */
+    public function updateUser($id, $name, $designation, $office, $username,
+                               $email, $contact, $status, $role_id){
+        $stmt = $this->db->prepare("
+            UPDATE Admin SET
+            Name=?, Designation=?, Office=?, UserName=?, Email=?, Contact=?, Status=?, Role_ID=?
+            WHERE ID=?
+        ");
+        $stmt->bind_param("sssssssii", $name, $designation, $office, $username, $email, $contact, $status, $role_id, $id);
+        $stmt->execute();
+    }
+
     /* ==========================
     GET PASSWORD HASH
     ========================== */
