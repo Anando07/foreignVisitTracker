@@ -32,6 +32,7 @@ class ProfileService {
         $updateData = [
             'Name'        => $data['name'],
             'Designation' => $data['designation'],
+            'Office' => $data['office'],
             'Contact'     => $data['contact']
         ];
 

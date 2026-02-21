@@ -9,7 +9,7 @@ class ProfileRepository {
     // Get a user by ID
     public function getUserById(int $id): ?array {
         $stmt = $this->db->prepare("
-            SELECT ID, Name, UserName, Email, Role_ID, Designation, Contact, Status
+            SELECT ID, Name, UserName, Email, Role_ID, Designation, Office, Contact, Status
             FROM Admin
             WHERE ID = ? LIMIT 1
         ");
@@ -35,9 +35,9 @@ class ProfileRepository {
     // Update user profile in DB
     public function updateUserProfile(int $userId, array $data, bool $updateSensitive = false): bool {
         // Prepare base query
-        $sql = "UPDATE Admin SET Name=?, Designation=?, Contact=?";
-        $params = [$data['Name'], $data['Designation'], $data['Contact']];
-        $types = "sss";
+        $sql = "UPDATE Admin SET Name=?, Designation=?, Office=?, Contact=?";
+        $params = [$data['Name'], $data['Designation'], $data['Office'], $data['Contact']];
+        $types = "ssss";
 
         // Add sensitive fields if admin
         if ($updateSensitive) {

@@ -13,10 +13,29 @@
                 <div class="error-msg"></div>
             </div>
 
+            <!-- Office -->
+            <div class="fvt-group">
+                <label>Office <span class="required">*</span></label>
+                <select name="office" id="office" class="fvt-input" required>
+                    <option value="">Select</option>
+                    <?php
+                    $offices = ["MoF"=>"Ministry of Finance","IRD"=>"IRD","NBR"=>"NBR","NSD"=>"NSD","TAT"=>"TAT","CEVT"=>"CEVT"];
+                    foreach($offices as $k=>$v){
+                        $sel = ($user['Office'] ?? '')==$k?'selected':''; 
+                        echo "<option value='$k' $sel>$v</option>";
+                    }
+                    ?>
+                </select>
+                <div class="error-msg"></div>
+            </div>
+
             <!-- Designation -->
             <div class="fvt-group">
                 <label>Designation <span class="required">*</span></label>
-                <input type="text" name="designation" required class="fvt-input" value="<?= htmlspecialchars($user['Designation']) ?>">
+                <select name="designation" id="designation" class="fvt-input" required
+                        data-selected="<?= htmlspecialchars($user['Designation'] ?? '') ?>">
+                    <option value="">Select Office First</option>
+                </select>
                 <div class="error-msg"></div>
             </div>
 

@@ -123,6 +123,7 @@ $role         = $auth->role();
         <script src="assets/js/sidebar.js?v=<?= filemtime('assets/js/sidebar.js'); ?>"></script>
         <script src="assets/js/pagination.js?v=<?= filemtime('assets/js/pagination.js'); ?>"></script>
         <script src="assets/js/designation.js?v=<?= filemtime('assets/js/designation.js'); ?>"></script>
+         <script src="assets/js/profile_designation.js?v=<?= filemtime('assets/js/profile_designation.js'); ?>"></script>
         <script src="assets/js/verify_password.js?v=<?= filemtime('assets/js/verify_password.js'); ?>"></script>
         <script src="assets/js/delete_verify_password.js?v=<?= filemtime('assets/js/delete_verify_password.js'); ?>"></script>
 

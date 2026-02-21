@@ -23,6 +23,7 @@ class UserService {
     public function saveUser($data, $isEdit=false, $id=null){
         $name        = mysqli_real_escape_string($this->db, $data['name']);
         $designation = mysqli_real_escape_string($this->db, $data['designation']);
+        $office      = mysqli_real_escape_string($this->db, $data['office']);
         $username    = mysqli_real_escape_string($this->db, $data['username']);
         $email       = mysqli_real_escape_string($this->db, $data['email']);
         $contact     = mysqli_real_escape_string($this->db, $data['contact']);
@@ -47,17 +48,17 @@ class UserService {
 
         if($isEdit){
             $stmt = $this->db->prepare("
-                UPDATE Admin SET Name=?, Designation=?, UserName=?, Email=?, Contact=?, Status=?, Role_ID=? WHERE ID=?
+                UPDATE Admin SET Name=?, Designation=?, Office=?, UserName=?, Email=?, Contact=?, Status=?, Role_ID=? WHERE ID=?
             ");
-            $stmt->bind_param("ssssssii", $name, $designation, $username, $email, $contact, $status, $role_id, $id);
+            $stmt->bind_param("sssssssii", $name, $designation, $office, $username, $email, $contact, $status, $role_id, $id);
             $stmt->execute();
             return ['success'=>"User updated successfully!"];
         } else {
             $stmt = $this->db->prepare("
-                INSERT INTO Admin (Name, Designation, UserName, Passcode, Email, Contact, Status, Role_ID)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO Admin (Name, Designation, Office, UserName, Passcode, Email, Contact, Status, Role_ID)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
             ");
-            $stmt->bind_param("ssssssii", $name, $designation, $username, $password_hashed, $email, $contact, $status, $role_id);
+            $stmt->bind_param("sssssssii", $name, $designation, $office, $username, $password_hashed, $email, $contact, $status, $role_id);
             $stmt->execute();
             return ['success'=>"User added successfully!"];
         }

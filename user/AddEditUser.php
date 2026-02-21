@@ -15,22 +15,28 @@
                 <div class="error-msg"></div>
             </div>
 
+            <!-- Office -->
+            <div class="fvt-group">
+                <label>Office <span class="required">*</span></label>
+                <select name="office" id="office" class="fvt-input" required>
+                    <option value="">Select</option>
+                    <?php
+                    $offices = ["MoF"=>"Ministry of Finance","IRD"=>"IRD","NBR"=>"NBR","NSD"=>"NSD","TAT"=>"TAT","CEVT"=>"CEVT"];
+                    foreach($offices as $k=>$v){
+                        $sel = ($user['Office'] ?? '')==$k?'selected':''; 
+                        echo "<option value='$k' $sel>$v</option>";
+                    }
+                    ?>
+                </select>
+                <div class="error-msg"></div>
+            </div>
+
             <!-- Designation -->
             <div class="fvt-group">
                 <label>Designation <span class="required">*</span></label>
-                <select name="designation" required class="fvt-input">
-                    <option value="">Select Designation</option>
-                    <?php
-                    $designations = [
-                        'Senior Secretary','Secretary','Additional Secretary','Joint Secretary',
-                        'Deputy Secretary','Senior Assistant Secretary','Assistant Secretary',
-                        'Senior System Analyst','System Analyst','Programmer',
-                        'Assistant Programmer','Assistant Maintenance Engineer','Computer Operator'
-                    ];
-                    foreach($designations as $d):
-                    ?>
-                    <option value="<?= $d ?>" <?= $designation==$d?'selected':'' ?>><?= $d ?></option>
-                    <?php endforeach; ?>
+                <select name="designation" id="designation" class="fvt-input" required
+                        data-selected="<?= htmlspecialchars($user['Designation'] ?? '') ?>">
+                    <option value="">Select Office First</option>
                 </select>
                 <div class="error-msg"></div>
             </div>
