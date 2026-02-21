@@ -1,5 +1,9 @@
 <?php require_once __DIR__."/../controllers/UserController.php"; ?>
-
+<?php if (!empty($errorMessage)): ?>
+    <div style="text-align:center; color:red" class="alert alert-danger">
+        ❌ <?= htmlspecialchars($errorMessage) ?>
+    </div>
+<?php endif; ?>
 <div class="fvt-card">
     <div class="fvt-page-header">
         <?= $isEdit ? "✏️ Edit User" : "➕ Add New User" ?>

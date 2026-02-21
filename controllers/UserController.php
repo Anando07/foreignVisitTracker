@@ -29,9 +29,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     $result = $service->saveUser($_POST, $isEdit, $id);
 
     if (isset($result['error'])){
-        $_SESSION['msg'] = "❌ ".$result['error'];
-        $_SESSION['msg_type'] = "error";
-        header("Location: base.php?page=AddEditUser");
+        // $_SESSION['msg'] = "❌ ".$result['error'];
+        // $_SESSION['msg_type'] = "error";
+        $errorMessage = $result['error'];
     } else {
         $_SESSION['msg'] = "✅ ".$result['success'];
         $_SESSION['msg_type'] = "success";
